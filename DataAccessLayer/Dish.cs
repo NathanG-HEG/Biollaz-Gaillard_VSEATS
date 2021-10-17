@@ -5,7 +5,7 @@
 
 using System;
 
-public class Dishe
+public class Dish
 {
     public int idDish { get; set; }
     public string name { get; set; }
