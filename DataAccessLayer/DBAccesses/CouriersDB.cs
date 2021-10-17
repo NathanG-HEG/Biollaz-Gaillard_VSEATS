@@ -8,7 +8,7 @@ namespace DataAccessLayer.DBAccesses
 {
     public class CouriersDB : ICouriersDB
     {
-        IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         public CouriersDB(IConfiguration configuration)
         {
@@ -19,9 +19,11 @@ namespace DataAccessLayer.DBAccesses
         public int AddCourier(int idArea, string firstName, string lastName, string emailAddress, string password)
         {
           
-                string connectionString = Configuration.GetConnectionString("DefaultConnection");
+                string connectionString = Configuration.GetConnectionString("RemoteConnection");
+                //string connectionString = Configuration.GetSection("ConnectionStrings").ToString();
+                Console.WriteLine(connectionString);
                 //string connectionString = "Data Source = 153.109.124.35; Initial Catalog = Biollaz_vsEAT; Integrated Security = False; User Id = 6231db; Password = Pwd46231.; MultipleActiveResultSets = True";
-            int result = 0;
+                int result = 0;
 
                 try
                 {
