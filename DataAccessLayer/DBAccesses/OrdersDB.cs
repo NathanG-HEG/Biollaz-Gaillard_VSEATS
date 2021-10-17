@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.DBAccesses
 {
-    class OrdersDB
+    public class OrdersDB
     {
     }
 }

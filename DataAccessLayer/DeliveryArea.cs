@@ -7,9 +7,9 @@ using System;
 
 public class DeliveryArea
 {
-    public int idArea { get; set; }
-    public string name { get; set; }
-    public int postcode { get; set; }
+    public int IdArea { get; set; }
+    public string Name { get; set; }
+    public int Postcode { get; set; }
 
 
 

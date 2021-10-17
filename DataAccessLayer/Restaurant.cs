@@ -7,12 +7,12 @@ using System;
 
 public class Restaurant
 {
-    public int idRestaurant { get; set; }
-    public string name { get; set; }
-    public string emailAddress { get; set; }
-    public string password { get; set; }
-    public string image { get; set; }
-    public string logo { get; set; }
+    public int IdRestaurant { get; set; }
+    public string Name { get; set; }
+    public string EmailAddress { get; set; }
+    public string Password { get; set; }
+    public string Image { get; set; }
+    public string Logo { get; set; }
 
 
 }

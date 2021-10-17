@@ -7,11 +7,11 @@ using System;
 
 public class Dish
 {
-    public int idDish { get; set; }
-    public string name { get; set; }
-    public int price { get; set; }
-    public string image { get; set; }
-    public bool isAvailable { get; set; }
+    public int IdDish { get; set; }
+    public string Name { get; set; }
+    public int Price { get; set; }
+    public string Image { get; set; }
+    public bool IsAvailable { get; set; }
 
 
 

@@ -12,16 +12,14 @@ namespace DataAccessLayer
     // Created: 17 October 2021 10:47:53
     // Purpose: Definition of Class Order
 
-    using System;
-
     public class Order
     {
-        public int idOrder { get; set; }
-        public DateTime expectedDeliveryTime { get; set; }
-        public DateTime timeOfOrder { get; set; }
-        public DateTime timeOfDelivery { get; set; }
-        public string deliveryAddress { get; set; }
-        public int orderTotal { get; set; }
+        public int IdOrder { get; set; }
+        public DateTime ExpectedDeliveryTime { get; set; }
+        public DateTime TimeOfOrder { get; set; }
+        public DateTime TimeOfDelivery { get; set; }
+        public string DeliveryAddress { get; set; }
+        public int OrderTotal { get; set; }
 
 
 
