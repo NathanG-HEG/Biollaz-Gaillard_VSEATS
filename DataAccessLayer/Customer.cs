@@ -15,7 +15,7 @@ public class Customer
 
     public override string ToString()
     {
-        return "IdCustomer: " + IdCustomer +
+        return "\nIdCustomer: " + IdCustomer +
                "\nfirstName: " + FirstName +
                "\nlastName: " + LastName +
                "\nemailAddress: " + EmailAddress +

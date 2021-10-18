@@ -8,6 +8,7 @@ using System;
 public class Dish
 {
     public int IdDish { get; set; }
+    public int IdRestaurant { get; set; }
     public string Name { get; set; }
     public int Price { get; set; }
     public string Image { get; set; }
@@ -15,7 +16,8 @@ public class Dish
 
     public override string ToString()
     {
-        return "IdDish: " + IdDish +
+        return "\nIdDish: " + IdDish +
+               "\nIdRestaurant: " + IdDish +
                "\nName: " + Name +
                "\nPrice: " + Price+
                "\nImage: " + Image +

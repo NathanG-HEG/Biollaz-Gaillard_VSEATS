@@ -15,7 +15,7 @@ namespace DataAccessLayer
 
         public override string ToString()
         {
-            return "ID_dish: " + ID_Dish +
+            return "\nID_dish: " + ID_Dish +
                    "\nID_order: " + ID_order +
                    "\nQuantity: " + Quantity;
         }

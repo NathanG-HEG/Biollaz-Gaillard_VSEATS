@@ -13,7 +13,7 @@ public class DeliveryArea
 
     public override string ToString()
     {
-        return "IdArea: " + IdArea +
+        return "\nIdArea: " + IdArea +
                "\nName: " + Name +
                "\nPostcode: " + Postcode;
     }

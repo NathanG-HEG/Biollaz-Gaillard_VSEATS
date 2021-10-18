@@ -42,22 +42,148 @@ namespace DataAccessLayer.DBAccesses
 
         public List<Dish> GetAllDishesByRestaurant(int idRestaurant)
         {
-            throw new NotImplementedException();
+            string connectionStrings = Connection.GetConnectionString();
+            List<Dish> dishes = null;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                {
+                    string query = "SELECT * FROM Dishes WHERE ID_Restaurant=@idRestaurant;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@idRestaurant", idRestaurant);
+
+                    cn.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            if (dishes == null)
+                                dishes = new List<Dish>();
+
+                            Dish dish = new Dish();
+
+                            dish.IdDish = (int) dr["ID_dish"];
+                            dish.IdRestaurant = (int) dr["ID_restaurant"];
+                            dish.Name = (string) dr["name"];
+                            dish.Price = (int) dr["price"];
+                            dish.IsAvailable = (bool) dr["isAvailable"];
+
+                            if (dr["image"] != DBNull.Value)
+                                dish.Image = (string) dr["image"];
+
+                            dishes.Add(dish);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception occurred while accessing dishes: " + e.Message);
+                Console.WriteLine(e.StackTrace);
+            }
+
+            return dishes;
         }
 
         public Dish GetDishById(int idDish)
         {
-            throw new NotImplementedException();
+            string connectionStrings = Connection.GetConnectionString();
+            Dish dish = null;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                {
+                    string query = "SELECT * FROM Dishes WHERE ID_dish=@idDish;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@idDish", idDish);
+
+                    cn.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            dish = new Dish();
+
+                            dish.IdDish = (int)dr["ID_dish"];
+                            dish.IdRestaurant = (int)dr["ID_restaurant"];
+                            dish.Name = (string)dr["name"];
+                            dish.Price = (int)dr["price"];
+                            dish.IsAvailable = (bool)dr["isAvailable"];
+
+                            if (dr["image"] != DBNull.Value)
+                                dish.Image = (string) dr["image"];
+                        }
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception occurred while accessing dish " + idDish + ": " + e.Message);
+            }
+
+            return dish;
         }
 
-        public void SetAvailability(int idDish, bool isAvailable)
+        public int SetAvailability(int idDish, bool isAvailable)
         {
-            throw new NotImplementedException();
+            string connectionString = Connection.GetConnectionString();
+            int result = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    string query = "UPDATE Dishes " +
+                                   "SET IsAvailable = @isAvailable " +
+                                   "WHERE ID_dish = @idDish;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@idDish", idDish);
+                    cmd.Parameters.AddWithValue("@isAvailable", isAvailable);
+
+                    cn.Open();
+
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception caught while setting dish status: " + e.Message);
+            }
+            return result;
         }
 
-        public void SetPrice(int idDish, int price)
+        public int SetPrice(int idDish, int price)
         {
-            throw new NotImplementedException();
+            string connectionString = Connection.GetConnectionString();
+            int result = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    string query = "UPDATE Dishes " +
+                                   "SET price = @price " +
+                                   "WHERE ID_dish = @idDish;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@idDish", idDish);
+                    cmd.Parameters.AddWithValue("@price", price);
+
+                    cn.Open();
+
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception caught while setting dish price: " + e.Message);
+            }
+            return result;
         }
     }
 }
