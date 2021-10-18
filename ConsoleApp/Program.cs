@@ -16,19 +16,10 @@ namespace ConsoleApp
         static void Main(string[] args)
 
         {
-            CouriersDB cdb = new CouriersDB(Configuration);
 
-            //cdb.AddCourier(1, "jl", "Ruço", "d@gmail.com", "dogPWD");
+            DishesDB ddb = new DishesDB();
 
-           // List <Courier> couriers = cdb.GetAllCouriersByArea(1);
-
-            //foreach (var c in couriers)
-            //{
-              //  Console.WriteLine(c);
-            //}
-
-            Courier c = cdb.GetCourierByLogin("d@gmail.com", "dogPWD");
-            Console.WriteLine(c);
+            
 
         }
     }

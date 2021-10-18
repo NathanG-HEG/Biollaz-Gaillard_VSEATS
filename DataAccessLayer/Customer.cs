@@ -13,4 +13,13 @@ public class Customer
     public string EmailAddress { get; set; }
     public string Password { get; set; }
 
+    public override string ToString()
+    {
+        return "IdCustomer: " + IdCustomer +
+               "\nfirstName: " + FirstName +
+               "\nlastName: " + LastName +
+               "\nemailAddress: " + EmailAddress +
+               "\npassword: " + Password;
+    }
+
 }

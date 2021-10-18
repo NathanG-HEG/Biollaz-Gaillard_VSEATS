@@ -8,8 +8,7 @@ namespace DataAccessLayer.Interfaces
 {
     public interface ICustomersDB
     {
-        public List<Customer> GetAllCustomersByArea(int idArea);
-        public void AddCustomer(string firstname, string lastname, string emailAddress, string password);
+        public int AddCustomer(string firstname, string lastname, string emailAddress, string password);
         public Customer GetCustomerByLogin(string emailAddress, string password);
         public Customer GetCustomerById(int idCustomer);
     }

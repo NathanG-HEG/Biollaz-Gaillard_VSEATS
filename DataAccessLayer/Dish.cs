@@ -13,6 +13,13 @@ public class Dish
     public string Image { get; set; }
     public bool IsAvailable { get; set; }
 
-
+    public override string ToString()
+    {
+        return "IdDish: " + IdDish +
+               "\nName: " + Name +
+               "\nPrice: " + Price+
+               "\nImage: " + Image +
+               "\nIsAvailable: " + IsAvailable;
+    }
 
 }

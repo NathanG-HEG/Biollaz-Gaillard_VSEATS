@@ -8,7 +8,7 @@ namespace DataAccessLayer.Interfaces
 {
     public interface IDeliveryAreasDB
     {
-        public void AddDeliveryArea(string name, int postcode);
+        public int AddDeliveryArea(string name, int postcode);
         public DeliveryArea GetDeliveryAreaByName(string name);
         public DeliveryArea GetDeliveryAreaByPostcode(int postcode);
 

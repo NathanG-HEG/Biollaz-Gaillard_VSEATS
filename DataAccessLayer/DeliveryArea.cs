@@ -11,6 +11,11 @@ public class DeliveryArea
     public string Name { get; set; }
     public int Postcode { get; set; }
 
-
+    public override string ToString()
+    {
+        return "IdArea: " + IdArea +
+               "\nName: " + Name +
+               "\nPostcode: " + Postcode;
+    }
 
 }
