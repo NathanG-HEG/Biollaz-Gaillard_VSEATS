@@ -76,7 +76,7 @@ namespace DataAccessLayer.DBAccesses
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception occurred while accessing courier " + idCustomer + ": " + e.Message);
+                Console.WriteLine("Exception occurred while accessing customer " + idCustomer + ": " + e.Message);
                 Console.WriteLine(e.StackTrace);
             }
 

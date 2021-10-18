@@ -34,7 +34,6 @@ namespace DataAccessLayer.DBAccesses
                     result = cmd.ExecuteNonQuery();
 
                 }
-
             }
             catch (Exception e)
             {
