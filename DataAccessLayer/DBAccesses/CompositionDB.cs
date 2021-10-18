@@ -42,7 +42,44 @@ namespace DataAccessLayer.DBAccesses
 
         public List<Composition> GetCompositionsByOrder(int idOrder)
         {
-            throw new NotImplementedException();
+            string connectionStrings = Connection.GetConnectionString();
+            List<Composition> compositions = null;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                {
+                    string query = "SELECT * FROM compose WHERE ID_order=@idOrder;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@idOrder", idOrder);
+
+                    cn.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            if (compositions == null)
+                                compositions = new List<Composition>();
+
+                            Composition composition = new Composition();
+
+                            composition.ID_Dish = (int)dr["ID_dish"];
+                            composition.ID_order = (int)dr["ID_order"];
+                            composition.Quantity = (int)dr["quantity"];
+
+                            compositions.Add(composition);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception occurred while accessing compositions for "+idOrder+": " + e.Message);
+            }
+
+            return compositions;
         }
     }
 }

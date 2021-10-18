@@ -25,8 +25,18 @@ namespace DataAccessLayer
 
         public int IdArea { get; set; }
 
-
-
+        public override string ToString()
+        {
+            return "idOrder: " + IdOrder +
+                   "\nidCustomer: " + IdCustomer +
+                   "\nidCourier: " + IdCourier +
+                   "\nexpectedDeliveryTime: " + ExpectedDeliveryTime +
+                   "\ntimeOfOrder: " + TimeOfOrder +
+                   "\ntimeOfDelivery: " + TimeOfDelivery +
+                   "\ndeliveryAddress: " + DeliveryAddress +
+                   "\norderTotal: " + OrderTotal +
+                   "\nidArea: " + IdArea;
+        }
     }
 
 }

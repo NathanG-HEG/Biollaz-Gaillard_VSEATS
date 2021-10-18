@@ -221,9 +221,32 @@ namespace DataAccessLayer.DBAccesses
             return orders;
         }
 
-        public int SetTotal(int total)
+        public int SetTotal(int idOrder, int total)
         {
-            throw new NotImplementedException();
+            string connectionString = Connection.GetConnectionString();
+            int result = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    string query = "UPDATE Orders " +
+                                   "SET orderTotal = @total " +
+                                   "WHERE ID_Order = @idOrder;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@total", total);
+                    cmd.Parameters.AddWithValue("@timeOfDelivery", DateTime.Now);
+
+                    cn.Open();
+
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception caught while setting order status: " + e.Message);
+            }
+            return result;
         }
     }
 }

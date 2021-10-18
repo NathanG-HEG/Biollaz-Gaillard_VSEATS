@@ -15,5 +15,14 @@ public class Restaurant
     public string Image { get; set; }
     public string Logo { get; set; }
 
-
+    public override string ToString()
+    {
+        return "idRestaurant: " + IdRestaurant +
+               "\nidArea: " + IdArea +
+               "\nname: " + Name +
+               "\nemailAddress: " + EmailAddress +
+               "\npassword: " + Password +
+               "\nimage: " + Image +
+               "\nlogo: " + Logo;
+    }
 }

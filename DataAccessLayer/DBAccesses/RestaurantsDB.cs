@@ -173,7 +173,7 @@ namespace DataAccessLayer.DBAccesses
             {
                 using (SqlConnection cn = new SqlConnection(connectionStrings))
                 {
-                    string query = "SELECT * FROM Restaurants WHERE @idArea = idArea;";
+                    string query = "SELECT * FROM Restaurants WHERE @idArea = id_Area;";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@idArea", idArea);
 
