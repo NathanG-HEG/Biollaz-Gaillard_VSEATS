@@ -9,7 +9,7 @@ namespace DataAccessLayer.Interfaces
 {
     public interface IOrdersDB
     {
-        public void AddOrder(int idCustomer, int idCourier, int idArea, List<Dish> dishes, string deliveryAddress);
+        public int AddOrder(int idCustomer, int idCourier, int idArea, List<Dish> dishes, string deliveryAddress);
         public void SetOrderToDelivered(int idOrder);
         public List<Order> GetAllOrdersByCustomer(int idCustomer);
         public List<Order> GetAllOrdersByCourier(int idCourier);

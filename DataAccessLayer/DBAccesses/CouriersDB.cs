@@ -18,7 +18,6 @@ namespace DataAccessLayer.DBAccesses
 
         public int AddCourier(int idArea, string firstName, string lastName, string emailAddress, string password)
         {
-
             string connectionString = Connection.GetConnectionString();
             int result = 0;
 

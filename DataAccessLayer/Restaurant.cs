@@ -8,6 +8,7 @@ using System;
 public class Restaurant
 {
     public int IdRestaurant { get; set; }
+    public int IdArea { get; set; }
     public string Name { get; set; }
     public string EmailAddress { get; set; }
     public string Password { get; set; }
