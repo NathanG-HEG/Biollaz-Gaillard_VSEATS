@@ -15,6 +15,13 @@ public class Courier
     public string Password { get; set; }
 
 
-
-
+    public override string ToString()
+    {
+        return "idCourier: " + IdCourier +
+               "\nidArea: " + IdArea +
+               "\nfirstName: " + FirstName +
+               "\nlastName: " + LastName +
+               "\nemailAddress: " + EmailAddress +
+               "\npassword: " + Password;
+    }
 }

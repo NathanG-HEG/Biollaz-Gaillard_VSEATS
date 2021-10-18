@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using DataAccessLayer.DBAccesses;
 
@@ -17,7 +18,18 @@ namespace ConsoleApp
         {
             CouriersDB cdb = new CouriersDB(Configuration);
 
-            cdb.AddCourier(1, "David", "Russo", "d@gmail.com", "dogPWD");
+            //cdb.AddCourier(1, "jl", "Ruço", "d@gmail.com", "dogPWD");
+
+           // List <Courier> couriers = cdb.GetAllCouriersByArea(1);
+
+            //foreach (var c in couriers)
+            //{
+              //  Console.WriteLine(c);
+            //}
+
+            Courier c = cdb.GetCourierByLogin("d@gmail.com", "dogPWD");
+            Console.WriteLine(c);
+
         }
     }
 }
