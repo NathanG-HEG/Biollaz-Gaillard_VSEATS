@@ -234,7 +234,7 @@ namespace DataAccessLayer.DBAccesses
                                    "WHERE ID_Order = @idOrder;";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@total", total);
-                    cmd.Parameters.AddWithValue("@timeOfDelivery", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@idOrder", idOrder);
 
                     cn.Open();
 
@@ -243,7 +243,7 @@ namespace DataAccessLayer.DBAccesses
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception caught while setting order status: " + e.Message);
+                Console.WriteLine("Exception caught while setting order total: " + e.Message);
             }
             return result;
         }
