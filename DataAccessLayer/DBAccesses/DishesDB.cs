@@ -17,13 +17,14 @@ namespace DataAccessLayer.DBAccesses
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionString))
+                using (SqlConnection cn = new SqlConnection(connectionString)) 
                 {
-                    string query = "INSERT INTO Dishes (ID_restaurant, name, price, isAvailable) VALUES (@firstName, @lastName, @emailAddress, @password, true)";
+                    string query = "INSERT INTO Dishes (ID_restaurant, name, price, isAvailable) VALUES (@idRestaurant, @name, @price, @isAvailable)";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@idRestaurant", idRestaurant);
                     cmd.Parameters.AddWithValue("@name", name);
                     cmd.Parameters.AddWithValue("@price", price);
+                    cmd.Parameters.AddWithValue("@isAvailable", true);
 
                     cn.Open();
 
