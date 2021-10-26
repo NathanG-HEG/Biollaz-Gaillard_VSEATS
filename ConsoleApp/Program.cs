@@ -22,14 +22,15 @@ namespace ConsoleApp
              * Sets the total of an order using the 'compose' table.
              * ID of order here, '1'.
              */
+            
             CompositionDB cdb = new CompositionDB();
             DishesDB ddb = new DishesDB();
             OrdersDB odb = new OrdersDB();
+            
             //cdb.AddComposition(1, 1, 5);
             //cdb.AddComposition(2, 1, 1);
-            List<Composition> compositions = cdb.GetCompositionsByOrder(1);
-            
 
+            List<Composition> compositions = cdb.GetCompositionsByOrder(1);
             int total = 0;
             foreach (var c in compositions)
             {
