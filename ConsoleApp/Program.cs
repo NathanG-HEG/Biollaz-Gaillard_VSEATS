@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using DataAccessLayer;
 using DataAccessLayer.DBAccesses;
+using System.Text.RegularExpressions;
 
 namespace ConsoleApp
 {
@@ -23,12 +24,12 @@ namespace ConsoleApp
              * ID of order here, '1'.
              */
             CompositionDB cdb = new CompositionDB();
-            DishesDB ddb = new DishesDB(Configuration);
+            DishesDB ddb = new DishesDB();
             OrdersDB odb = new OrdersDB();
             //cdb.AddComposition(1, 1, 5);
             //cdb.AddComposition(2, 1, 1);
             //List<Composition> compositions = cdb.GetCompositionsByOrder(1);
-            
+
             /*
             int total = 0;
             foreach (var c in compositions)
@@ -38,7 +39,11 @@ namespace ConsoleApp
             }
             odb.SetTotal(1, total);*/
 
-            ddb.AddDish(1, "Penne au pesto", 22);
+            string emailAddress = "bbiollaz@gmail.com";
+            string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            Regex rg = new Regex(pattern);
+
+            Console.WriteLine(rg.IsMatch(emailAddress));
 
         }
     }

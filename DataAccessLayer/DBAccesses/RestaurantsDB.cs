@@ -207,5 +207,15 @@ namespace DataAccessLayer.DBAccesses
 
             return restaurants;
         }
+
+        public int UpdateImage(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int UpdateLogo(string path)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
