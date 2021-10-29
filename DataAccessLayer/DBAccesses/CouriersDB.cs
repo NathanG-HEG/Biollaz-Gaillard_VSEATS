@@ -8,13 +8,6 @@ namespace DataAccessLayer.DBAccesses
 {
     public class CouriersDB : ICouriersDB
     {
-        private IConfiguration Configuration { get; }
-
-        public CouriersDB(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
 
         public int AddCourier(int idArea, string firstName, string lastName, string emailAddress, string password)
         {
