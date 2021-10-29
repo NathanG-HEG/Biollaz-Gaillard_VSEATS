@@ -40,6 +40,11 @@ namespace DataAccessLayer.DBAccesses
             return result;
         }
 
+        public int DeleteComposition(int idComposition)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Composition> GetCompositionsByOrder(int idOrder)
         {
             string connectionStrings = Connection.GetConnectionString();

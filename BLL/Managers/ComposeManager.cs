@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccessLayer;
 using DataAccessLayer.DBAccesses;
 
 namespace BLL
 {
-    public class ComposeManager
+    public class ComposeManager : IComposeManager
     {
         private DishesDB DishesDb { get; }
         private OrdersDB OrdersDb { get; }
@@ -20,5 +21,19 @@ namespace BLL
             CompositionDb = new CompositionDB();
         }
 
+        public int AddComposition(int idDish, int idOrder, int quantity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Composition> GetCompositionsByOrder(int idOrder)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteComposition(int idComposition)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
