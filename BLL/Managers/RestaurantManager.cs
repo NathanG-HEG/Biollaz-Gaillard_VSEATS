@@ -27,7 +27,11 @@ namespace BLL
 
         public void CreateRestaurant(int idArea, string name, string emailAddress, string password)
         {
-            RestaurantsDb.AddRestaurant(idArea, name, emailAddress, password);
+            int result = RestaurantsDb.AddRestaurant(idArea, name, emailAddress, password);
+            if (result == 0)
+            {
+                throw new DataBaseException("Error occurred, restaurant " + name + " was not created.");
+            }
         }
 
         public void UpdateImage(string path)

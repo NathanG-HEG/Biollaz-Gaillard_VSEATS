@@ -43,6 +43,59 @@ namespace DataAccessLayer.DBAccesses
             return result;
         }
 
+        public Order GetOrderById(int orderID)
+        {
+            string connectionStrings = Connection.GetConnectionString();
+            Order order = null;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                {
+                    string query = "SELECT * FROM Orders WHERE ID_Order=@orderID;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@orderID", orderID);
+
+                    cn.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            order = new Order();
+
+                            order.IdOrder = (int)dr["ID_order"];
+                            order.IdCustomer = (int)dr["ID_customer"];
+                            order.IdCourier = (int)dr["ID_courrier"];
+                            order.IdArea = (int)dr["ID_area"];
+                            order.ExpectedDeliveryTime = (DateTime)dr["expectedDeliveryTime"];
+                            order.TimeOfOrder = (DateTime)dr["timeOfOrder"];
+
+                            if (dr["timeOfDelivery"] != null)
+                            {
+                                order.TimeOfDelivery = (DateTime?)dr["timeOfDelivery"];
+                            }
+                            order.DeliveryAddress = (string)dr["delivery_address"];
+                            if (dr["orderTotal"] != null)
+                            {
+                                order.OrderTotal = (int)dr["orderTotal"];
+                            }
+
+
+                        }
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception occurred while accessing order " + orderID + ": " + e.Message);
+                Console.WriteLine(e.StackTrace);
+            }
+
+            return order;
+        }
+
         public int SetOrderToDelivered(int idOrder)
         {
             string connectionString = Connection.GetConnectionString();
@@ -71,7 +124,7 @@ namespace DataAccessLayer.DBAccesses
             return result;
         }
 
-        
+
 
         public List<Order> GetAllOrdersByCustomer(int idCustomer)
         {
@@ -96,16 +149,22 @@ namespace DataAccessLayer.DBAccesses
                                 orders = new List<Order>();
 
                             Order order = new Order();
-
                             order.IdOrder = (int)dr["ID_order"];
-                            order.IdCustomer = (int) dr["ID_customer"];
-                            order.IdCourier = (int) dr["ID_courrier"];
+                            order.IdCustomer = (int)dr["ID_customer"];
+                            order.IdCourier = (int)dr["ID_courrier"];
                             order.IdArea = (int)dr["ID_area"];
                             order.ExpectedDeliveryTime = (DateTime)dr["expectedDeliveryTime"];
                             order.TimeOfOrder = (DateTime)dr["timeOfOrder"];
-                            order.TimeOfDelivery = (DateTime)dr["timeOfDelivery"];
+
+                            if (dr["timeOfDelivery"] != null)
+                            {
+                                order.TimeOfDelivery = (DateTime?)dr["timeOfDelivery"];
+                            }
                             order.DeliveryAddress = (string)dr["delivery_address"];
-                            order.OrderTotal = (int) dr["orderTotal"];
+                            if (dr["orderTotal"] != null)
+                            {
+                                order.OrderTotal = (int)dr["orderTotal"];
+                            }
 
                             orders.Add(order);
                         }
@@ -115,7 +174,7 @@ namespace DataAccessLayer.DBAccesses
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception occurred while accessing orders for customer "+idCustomer+": " + e.Message);
+                Console.WriteLine("Exception occurred while accessing orders for customer " + idCustomer + ": " + e.Message);
             }
 
             return orders;
@@ -130,7 +189,7 @@ namespace DataAccessLayer.DBAccesses
             {
                 using (SqlConnection cn = new SqlConnection(connectionStrings))
                 {
-                    string query = "SELECT * FROM ORDER WHERE ID_courrier=@idCourier;";
+                    string query = "SELECT * FROM Orders WHERE ID_courrier=@idCourier;";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@idCourier", idCourier);
 
@@ -151,9 +210,16 @@ namespace DataAccessLayer.DBAccesses
                             order.IdArea = (int)dr["ID_area"];
                             order.ExpectedDeliveryTime = (DateTime)dr["expectedDeliveryTime"];
                             order.TimeOfOrder = (DateTime)dr["timeOfOrder"];
-                            order.TimeOfDelivery = (DateTime)dr["timeOfDelivery"];
+
+                            if (dr["timeOfDelivery"] != null)
+                            {
+                                order.TimeOfDelivery = (DateTime?)dr["timeOfDelivery"];
+                            }
                             order.DeliveryAddress = (string)dr["delivery_address"];
-                            order.OrderTotal = (int)dr["orderTotal"];
+                            if (dr["orderTotal"] != DBNull.Value)
+                            {
+                                order.OrderTotal = (int)dr["orderTotal"];
+                            }
 
                             orders.Add(order);
                         }
@@ -164,6 +230,7 @@ namespace DataAccessLayer.DBAccesses
             catch (Exception e)
             {
                 Console.WriteLine("Exception occurred while accessing orders: " + e.Message);
+                Console.WriteLine(e.StackTrace);
             }
 
             return orders;
@@ -178,7 +245,7 @@ namespace DataAccessLayer.DBAccesses
             {
                 using (SqlConnection cn = new SqlConnection(connectionStrings))
                 {
-                    string query = "SELECT * FROM Order o " +
+                    string query = "SELECT * FROM Orders o " +
                                    "INNER JOIN Compose com ON o.ID_order = com.ID_order " +
                                    "INNER JOIN Dishes d ON d.ID_dish = com.ID_dish" +
                                    "WHERE d.ID_Restaurant = @idRestaurant";
@@ -200,11 +267,18 @@ namespace DataAccessLayer.DBAccesses
                             order.IdCustomer = (int)dr["ID_customer"];
                             order.IdCourier = (int)dr["ID_courrier"];
                             order.IdArea = (int)dr["ID_area"];
-                            order.ExpectedDeliveryTime = (DateTime)dr["expectedDeliverTime"];
+                            order.ExpectedDeliveryTime = (DateTime)dr["expectedDeliveryTime"];
                             order.TimeOfOrder = (DateTime)dr["timeOfOrder"];
-                            order.TimeOfDelivery = (DateTime)dr["timeOfDelivery"];
+
+                            if (dr["timeOfDelivery"] != null)
+                            {
+                                order.TimeOfDelivery = (DateTime?)dr["timeOfDelivery"];
+                            }
                             order.DeliveryAddress = (string)dr["delivery_address"];
-                            order.OrderTotal = (int)dr["orderTotal"];
+                            if (dr["orderTotal"] != null)
+                            {
+                                order.OrderTotal = (int)dr["orderTotal"];
+                            }
 
                             orders.Add(order);
                         }

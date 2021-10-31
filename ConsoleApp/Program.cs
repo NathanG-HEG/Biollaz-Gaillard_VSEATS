@@ -5,6 +5,7 @@ using System.IO;
 using DataAccessLayer;
 using DataAccessLayer.DBAccesses;
 using System.Text.RegularExpressions;
+using BLL;
 
 namespace ConsoleApp
 {
@@ -39,12 +40,19 @@ namespace ConsoleApp
             }
             odb.SetTotal(1, total);*/
 
+            /*
             string emailAddress = "bbiollaz@gmail.com";
             string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
             Regex rg = new Regex(pattern);
 
-            Console.WriteLine(rg.IsMatch(emailAddress));
+            Console.WriteLine(rg.IsMatch(emailAddress));*/
 
+            DishManager dm = new DishManager();
+            //dm.AddDish(1, "Pizza bianca", 8);
+            //dm.SetAvailability(3, true);
+            //dm.SetPrice(4, 8);
+            DeliveryAreaManager dlm = new DeliveryAreaManager();
+            Console.WriteLine(dlm.GetDeliveryAreaByPostcode(1950));
         }
     }
 }
