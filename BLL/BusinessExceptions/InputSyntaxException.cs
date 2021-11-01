@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BLL.BusinessExceptions
 {
-    public class InputSyntaxException
+    public class InputSyntaxException : Exception
     {
         public string Message { get; }
         public InputSyntaxException(string message)

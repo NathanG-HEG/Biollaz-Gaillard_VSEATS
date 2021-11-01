@@ -8,7 +8,7 @@ namespace BLL.Interfaces
 {
     public interface IntICourierManager
     {
-        public int AddCourier(int idArea, string firstName, string lastName, string emailAddress, string password);
+        public void AddCourier(int idArea, string firstName, string lastName, string emailAddress, string password);
         public List<Courier> GetAllCouriersByArea(int idArea);
         public Courier GetCourierByLogin(string emailAddress, string password);
         public Courier GetCourierById(int idCourier);

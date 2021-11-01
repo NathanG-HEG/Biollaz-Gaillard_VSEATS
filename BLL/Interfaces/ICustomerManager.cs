@@ -8,7 +8,7 @@ namespace BLL.Interfaces
 {
     interface ICustomerManager
     {
-        public int CreateCustomer(string firstname, string lastname, string emailAddress, string password);
+        public void CreateCustomer(string firstname, string lastname, string emailAddress, string password);
         public Customer GetCustomerByLogin(string emailAddress, string password);
         public Customer GetCustomerById(int idCustomer);
 
