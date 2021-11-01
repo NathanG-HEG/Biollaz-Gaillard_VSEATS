@@ -26,12 +26,12 @@ namespace BLL
 
         public DeliveryArea GetDeliveryAreaByName(string name)
         {
-            throw new NotImplementedException();
+            return DeliveryAreasDb.GetDeliveryAreaByName(name);
         }
 
         public DeliveryArea GetDeliveryAreaByPostcode(int postcode)
         {
-            throw new NotImplementedException();
+            return DeliveryAreasDb.GetDeliveryAreaByPostcode(postcode);
         }
     }
 }
