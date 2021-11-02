@@ -235,10 +235,12 @@ namespace DataAccessLayer.DBAccesses
                             order.ExpectedDeliveryTime = (DateTime)dr["expectedDeliveryTime"];
                             order.TimeOfOrder = (DateTime)dr["timeOfOrder"];
 
+
                             if (dr["timeOfDelivery"] != null)
-                            {
+                            { 
                                 order.TimeOfDelivery = (DateTime?)dr["timeOfDelivery"];
                             }
+
                             order.DeliveryAddress = (string)dr["delivery_address"];
                             if (dr["orderTotal"] != DBNull.Value)
                             {
