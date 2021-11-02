@@ -27,8 +27,24 @@ namespace BLL
             CompositionDb = new CompositionDB();
         }
 
-        public void CreateNewOrder(int idCustomer, int idCourier, int idArea, DateTime expectedDeliveryTime, string deliveryAddress)
+        public void CreateNewOrder(int idCustomer, int idArea, DateTime expectedDeliveryTime, string deliveryAddress)
         {
+            // Finds an available courier in the area
+            int idCourier=-1;
+            List<Courier> availableCouriers = CouriersDb.GetAllCouriersByArea(idArea);
+            foreach (var c in availableCouriers)
+            {
+                if (c.numberOfCurrentOrders < Utilities.MaxOrdersSimultaneously)
+                {
+                    idCourier = c.IdCourier;
+                    break;
+                }
+            }
+            // if no courier were found, throw businessRuleException
+            if (idCourier == -1)
+            {
+                throw new BusinessRuleException("No courier available at area: " + idArea);
+            }
             //result is the number of rows affected, so if it is 0 then the order was not added
             int result = OrdersDb.AddOrder(idCustomer, idCourier, idArea, expectedDeliveryTime, deliveryAddress);
             if (result == 0)

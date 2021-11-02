@@ -26,10 +26,14 @@ namespace BLL
 
         public void AddCourier(int idArea, string firstName, string lastName, string emailAddress, string password)
         {
+            //Checks if email and passwords syntax are correct
             if (!Utilities.IsEmailAddressCorrect(emailAddress))
                 throw new InputSyntaxException(emailAddress + " is not valid");
             if(!Utilities.IsPasswordSyntaxCorrect(password))
                 throw new InputSyntaxException("Password must contain at least 8 characters, a number and a capital");
+            // Checks if email address is redundant
+
+
 
             if (CouriersDb.AddCourier(idArea, firstName, lastName, emailAddress, password) == 0)
             {

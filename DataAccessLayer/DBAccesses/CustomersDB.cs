@@ -83,6 +83,49 @@ namespace DataAccessLayer.DBAccesses
             return customer;
         }
 
+        public List<Customer> GetAllCustomers()
+        {
+            string connectionStrings = Connection.GetConnectionString();
+            List<Customer> customers = null;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                {
+                    string query = "SELECT * FROM Customers;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    
+                    cn.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            if (customers == null)
+                                customers = new List<Customer>();
+
+                            Customer customer = new Customer();
+
+                            customer.IdCustomer = (int)dr["ID_customer"];
+                            customer.FirstName = (string)dr["firstname"];
+                            customer.LastName = (string)dr["lastname"];
+                            customer.EmailAddress = (string)dr["emailAddress"];
+                            customer.Password = (string)dr["password"];
+
+                            customers.Add(customer);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception occurred while accessing customers: " + e.Message);
+            }
+
+            return customers;
+        }
+
         public Customer GetCustomerByLogin(string emailAddress, string password)
         {
             string connectionStrings = Connection.GetConnectionString();

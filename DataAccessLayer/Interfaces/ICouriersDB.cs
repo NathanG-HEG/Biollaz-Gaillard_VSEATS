@@ -12,6 +12,6 @@ namespace DataAccessLayer.Interfaces
         public List<Courier> GetAllCouriersByArea(int idArea);
         public Courier GetCourierByLogin(string emailAddress, string password);
         public Courier GetCourierById(int idCourier);
-
+        public List<Courier> GetAllCouriers();
     }
 }

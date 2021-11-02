@@ -14,6 +14,13 @@ public class Courier
     public string EmailAddress { get; set; }
     public string Password { get; set; }
 
+    public int numberOfCurrentOrders { get; set; }
+
+    public Courier()
+    {
+        numberOfCurrentOrders = 0;
+    }
+
 
     public override string ToString()
     {

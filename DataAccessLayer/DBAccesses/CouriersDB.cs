@@ -128,6 +128,49 @@ namespace DataAccessLayer.DBAccesses
             return courier;
         }
 
+        public List<Courier> GetAllCouriers()
+        {
+            string connectionStrings = Connection.GetConnectionString();
+            List<Courier> couriers = null;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                {
+                    string query = "SELECT * FROM Courriers;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    
+                    cn.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            if (couriers == null)
+                                couriers = new List<Courier>();
+
+                            Courier courier = new Courier();
+
+                            courier.IdCourier = (int)dr["ID_courrier"];
+                            courier.IdArea = (int)dr["ID_area"];
+                            courier.FirstName = (string)dr["firstName"];
+                            courier.LastName = (string)dr["lastName"];
+                            courier.EmailAddress = (string)dr["emailAddress"];
+                            courier.Password = (string)dr["password"];
+
+                            couriers.Add(courier);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception occurred while accessing couriers: " + e.Message);
+            }
+
+            return couriers;
+        }
+
         public Courier GetCourierByLogin(string emailAddress, string password)
         {
             string connectionStrings = Connection.GetConnectionString();

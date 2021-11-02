@@ -11,5 +11,6 @@ namespace DataAccessLayer.Interfaces
         public int AddCustomer(string firstname, string lastname, string emailAddress, string password);
         public Customer GetCustomerByLogin(string emailAddress, string password);
         public Customer GetCustomerById(int idCustomer);
+        public List<Customer> GetAllCustomers();
     }
 }
