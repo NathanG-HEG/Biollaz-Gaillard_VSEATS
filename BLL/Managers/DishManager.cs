@@ -34,35 +34,25 @@ namespace BLL
 
         public void SetAvailability(int idDish, bool isAvailable)
         {
-            //check that a dish with the given id exists
-            Dish dish = DishesDb.GetDishById(idDish);
-            if (dish == null)
+            //result is the number of rows affected, so if it is 0 then the dish was not added
+            int result = DishesDb.SetAvailability(idDish, isAvailable);
+            if (result == 0)
             {
-                throw new DataBaseException("No dish matching the id " + idDish + " was found");
-            }
-
-            //only set the isAvailable status if it is different than the current one
-            if (dish.IsAvailable != isAvailable)
-            {
-                DishesDb.SetAvailability(idDish, isAvailable);
+                throw new DataBaseException("Error occurred, dish " + idDish + "  availability has not been set.");
             }
 
         }
 
         public void SetPrice(int idDish, int price)
         {
-            //check that a dish with the given id exists
-            Dish dish = DishesDb.GetDishById(idDish);
-            if (dish == null)
+
+            //result is the number of rows affected, so if it is 0 then the dish was not added
+            int result = DishesDb.SetPrice(idDish, price);
+            if (result == 0)
             {
-                throw new DataBaseException("No dish matching the id " + idDish + " was found");
+                throw new DataBaseException("Error occurred, dish " + idDish + "  price has not been set.");
             }
 
-            //only set the price if it is different than the current one
-            if (dish.Price != price)
-            {
-                DishesDb.SetPrice(idDish, price);
-            }
         }
 
         public List<Dish> GetAllDishesByRestaurant(int idRestaurant)
