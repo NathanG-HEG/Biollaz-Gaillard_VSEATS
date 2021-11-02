@@ -14,7 +14,6 @@ namespace DataAccessLayer.DBAccesses
         {
             string connectionString = Connection.GetConnectionString();
             int result = 0;
-
             try
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
@@ -80,8 +79,6 @@ namespace DataAccessLayer.DBAccesses
                             {
                                 order.OrderTotal = (int)dr["orderTotal"];
                             }
-
-
                         }
                     }
                 }
@@ -94,6 +91,11 @@ namespace DataAccessLayer.DBAccesses
             }
 
             return order;
+        }
+
+        public int DeleteOrder(int idOrder)
+        {
+            throw new NotImplementedException();
         }
 
         public int SetOrderToDelivered(int idOrder)

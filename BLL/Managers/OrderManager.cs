@@ -27,14 +27,19 @@ namespace BLL
             CompositionDb = new CompositionDB();
         }
 
-        public void CreateNewOrder(int idCustomer, int idCourier, int idArea, DateTime ExpectedDeliveryTime, string deliveryAddress)
+        public void CreateNewOrder(int idCustomer, int idCourier, int idArea, DateTime expectedDeliveryTime, string deliveryAddress)
         {
             //result is the number of rows affected, so if it is 0 then the order was not added
-            int result = OrdersDb.AddOrder(idCustomer, idCourier, idArea, ExpectedDeliveryTime, deliveryAddress);
+            int result = OrdersDb.AddOrder(idCustomer, idCourier, idArea, expectedDeliveryTime, deliveryAddress);
             if (result == 0)
             {
                 throw new DataBaseException("Error occurred, order was not created.");
             }
+        }
+
+        public void DeleteOrder(int idOrder)
+        {
+            OrdersDb.DeleteOrder(idOrder);
         }
 
         public void SetOrderToDelivered(int idOrder)

@@ -26,7 +26,7 @@ namespace BLL
         public void AddComposition(int idDish, int idOrder, int quantity)
         {
             // input checks
-            if (quantity <= 0 || quantity > 999_999_999)
+            if (quantity <= 0 || quantity > Utilities.MaxQuantity)
                 throw new InputSyntaxException("Quantity must be a positive integer lesser than 1,000,000,000");
             if (DishesDb.GetDishById(idDish) == null)
                 throw new DataBaseException("Dish " + idDish + " does not exist");

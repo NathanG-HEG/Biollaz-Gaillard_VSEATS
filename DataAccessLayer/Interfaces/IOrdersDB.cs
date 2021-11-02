@@ -16,6 +16,7 @@ namespace DataAccessLayer.Interfaces
         public List<Order> GetAllOrdersByRestaurant(int idRestaurant);
         public int SetTotal(int order, int total);
         public Order GetOrderById(int idOrder);
+        public int DeleteOrder(int idOrder);
 
 
     }
