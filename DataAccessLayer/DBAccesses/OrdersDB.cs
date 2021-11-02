@@ -72,7 +72,7 @@ namespace DataAccessLayer.DBAccesses
 
                             if (dr["timeOfDelivery"] != null)
                             {
-                                order.TimeOfDelivery = (DateTime?)dr["timeOfDelivery"];
+                                order.TimeOfDelivery = (DateTime)dr["timeOfDelivery"];
                             }
                             order.DeliveryAddress = (string)dr["delivery_address"];
                             if (dr["orderTotal"] != null)
@@ -159,7 +159,7 @@ namespace DataAccessLayer.DBAccesses
             {
                 using (SqlConnection cn = new SqlConnection(connectionStrings))
                 {
-                    string query = "SELECT * FROM ORDER WHERE ID_customer=@idCustomer;";
+                    string query = "SELECT * FROM ORDERS WHERE ID_customer=@idCustomer;";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@idCustomer", idCustomer);
 
@@ -180,12 +180,12 @@ namespace DataAccessLayer.DBAccesses
                             order.ExpectedDeliveryTime = (DateTime)dr["expectedDeliveryTime"];
                             order.TimeOfOrder = (DateTime)dr["timeOfOrder"];
 
-                            if (dr["timeOfDelivery"] != null)
+                            if (dr["timeOfDelivery"] != DBNull.Value)
                             {
-                                order.TimeOfDelivery = (DateTime?)dr["timeOfDelivery"];
+                                order.TimeOfDelivery = (DateTime)dr["timeOfDelivery"];
                             }
                             order.DeliveryAddress = (string)dr["delivery_address"];
-                            if (dr["orderTotal"] != null)
+                            if (dr["orderTotal"] != DBNull.Value)
                             {
                                 order.OrderTotal = (int)dr["orderTotal"];
                             }
@@ -199,6 +199,7 @@ namespace DataAccessLayer.DBAccesses
             catch (Exception e)
             {
                 Console.WriteLine("Exception occurred while accessing orders for customer " + idCustomer + ": " + e.Message);
+                Console.WriteLine(e.StackTrace);
             }
 
             return orders;
@@ -236,9 +237,9 @@ namespace DataAccessLayer.DBAccesses
                             order.TimeOfOrder = (DateTime)dr["timeOfOrder"];
 
 
-                            if (dr["timeOfDelivery"] != null)
-                            { 
-                                order.TimeOfDelivery = (DateTime?)dr["timeOfDelivery"];
+                            if (dr["timeOfDelivery"] != DBNull.Value)
+                            {
+                                order.TimeOfDelivery = (DateTime)dr["timeOfDelivery"];
                             }
 
                             order.DeliveryAddress = (string)dr["delivery_address"];
@@ -273,8 +274,8 @@ namespace DataAccessLayer.DBAccesses
                 {
                     string query = "SELECT * FROM Orders o " +
                                    "INNER JOIN Compose com ON o.ID_order = com.ID_order " +
-                                   "INNER JOIN Dishes d ON d.ID_dish = com.ID_dish" +
-                                   "WHERE d.ID_Restaurant = @idRestaurant";
+                                   "INNER JOIN Dishes d ON d.ID_dish = com.ID_dish " +
+                                   "WHERE d.ID_Restaurant = @idRestaurant;";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@idRestaurant", idRestaurant);
 
@@ -296,12 +297,12 @@ namespace DataAccessLayer.DBAccesses
                             order.ExpectedDeliveryTime = (DateTime)dr["expectedDeliveryTime"];
                             order.TimeOfOrder = (DateTime)dr["timeOfOrder"];
 
-                            if (dr["timeOfDelivery"] != null)
+                            if (dr["timeOfDelivery"] != DBNull.Value)
                             {
-                                order.TimeOfDelivery = (DateTime?)dr["timeOfDelivery"];
+                                order.TimeOfDelivery = (DateTime)dr["timeOfDelivery"];
                             }
                             order.DeliveryAddress = (string)dr["delivery_address"];
-                            if (dr["orderTotal"] != null)
+                            if (dr["orderTotal"] != DBNull.Value)
                             {
                                 order.OrderTotal = (int)dr["orderTotal"];
                             }

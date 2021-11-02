@@ -61,13 +61,7 @@ namespace BLL
 
         public void SetOrderToDelivered(int idOrder)
         {
-            //check that the order has not already been delivered
-            Order order = OrdersDb.GetOrderById(idOrder);
-            if (order.TimeOfDelivery!= null)
-            {
-                throw new BusinessRuleException("Order has already been set to delivered");
-            }
-
+            
             //result is the number of rows affected, so if it is 0 then the status was not updated
             int result = OrdersDb.SetOrderToDelivered(idOrder);
             if (result == 0)
