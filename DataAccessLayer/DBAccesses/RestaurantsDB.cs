@@ -208,14 +208,60 @@ namespace DataAccessLayer.DBAccesses
             return restaurants;
         }
 
-        public int UpdateImage(string path)
+        public int UpdateImage(string path, int idRestaurant)
         {
-            throw new NotImplementedException();
+            string connectionString = Connection.GetConnectionString();
+            int result = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    string query = "UPDATE restaurants " +
+                                   "SET image = @path " +
+                                   "WHERE id_restaurant = @idRestaurant;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@idRestaurant", idRestaurant);
+                    cmd.Parameters.AddWithValue("@path", path);
+
+                    cn.Open();
+
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception caught while setting image path: " + e.Message);
+            }
+            return result;
         }
 
-        public int UpdateLogo(string path)
+        public int UpdateLogo(string path, int idRestaurant)
         {
-            throw new NotImplementedException();
+            string connectionString = Connection.GetConnectionString();
+            int result = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    string query = "UPDATE restaurants " +
+                                   "SET logo = @path " +
+                                   "WHERE id_restaurant = @idRestaurant;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@idRestaurant", idRestaurant);
+                    cmd.Parameters.AddWithValue("@path", path);
+
+                    cn.Open();
+
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception caught while setting logo path: " + e.Message);
+            }
+            return result;
         }
     }
 }
