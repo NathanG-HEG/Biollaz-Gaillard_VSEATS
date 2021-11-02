@@ -53,8 +53,11 @@ namespace ConsoleApp
             //dm.AddDish(1, "Pizza bianca", 8);
             //dm.SetAvailability(3, true);
             //dm.SetPrice(4, 8);
-            DeliveryAreaManager dlm = new DeliveryAreaManager();
-            Console.WriteLine(dlm.GetDeliveryAreaByPostcode(1950));
+            //DeliveryAreaManager dlm = new DeliveryAreaManager();
+            //Console.WriteLine(dlm.GetDeliveryAreaByPostcode(1950));
+
+            OrderManager odm = new OrderManager();
+            odm.DeleteOrder(1);
         }
     }
 }

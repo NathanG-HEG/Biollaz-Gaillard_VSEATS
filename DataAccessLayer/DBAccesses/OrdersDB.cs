@@ -95,7 +95,29 @@ namespace DataAccessLayer.DBAccesses
 
         public int DeleteOrder(int idOrder)
         {
-            throw new NotImplementedException();
+            string connectionString = Connection.GetConnectionString();
+            int result = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    string query = "DELETE Orders WHERE @idOrder = ID_order;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@idOrder", idOrder);
+
+                    cn.Open();
+
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception caught while removing composition by order: " + e.Message);
+            }
+
+            return result;
+
         }
 
         public int SetOrderToDelivered(int idOrder)

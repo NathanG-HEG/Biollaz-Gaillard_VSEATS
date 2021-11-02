@@ -39,6 +39,7 @@ namespace BLL
 
         public void DeleteOrder(int idOrder)
         {
+            CompositionDb.DeleteCompositionByOrder(idOrder);
             OrdersDb.DeleteOrder(idOrder);
         }
 

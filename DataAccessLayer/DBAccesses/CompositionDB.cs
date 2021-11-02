@@ -45,6 +45,32 @@ namespace DataAccessLayer.DBAccesses
             throw new NotImplementedException();
         }
 
+        public int DeleteCompositionByOrder(int idOrder)
+        {
+            string connectionString = Connection.GetConnectionString();
+            int result = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    string query = "DELETE Compose WHERE @idOrder = ID_order;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@idOrder", idOrder);
+
+                    cn.Open();
+
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception caught while removing composition by order: " + e.Message);
+            }
+
+            return result;
+        }
+
         public List<Composition> GetCompositionsByOrder(int idOrder)
         {
             string connectionStrings = Connection.GetConnectionString();
