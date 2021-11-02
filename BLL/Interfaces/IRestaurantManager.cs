@@ -9,8 +9,8 @@ namespace BLL.Interfaces
     public interface IRestaurantManager
     {
         public void CreateRestaurant(int idArea, string name, string emailAddress, string password);
-        public void UpdateImage(string path);
-        public void UpdateLogo(string path);
+        public void UpdateImage(string path, int idRestaurant);
+        public void UpdateLogo(string path, int idRestaurant);
         public Restaurant GetRestaurantByLogin(string email, string password);
         public Restaurant GetRestaurantByName(string name);
         public List<Restaurant> GetAllRestaurantsArea(int idArea);
