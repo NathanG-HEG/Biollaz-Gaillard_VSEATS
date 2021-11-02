@@ -20,6 +20,8 @@ namespace BLL
             List<Customer> customers = customersDb.GetAllCustomers();
             foreach (var c in customers)
             {
+                Console.WriteLine(c.EmailAddress);
+
                 if (c.EmailAddress.Equals(emailAddress))
                 {
                     return true;

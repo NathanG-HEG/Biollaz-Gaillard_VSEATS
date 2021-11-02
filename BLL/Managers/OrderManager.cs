@@ -17,6 +17,7 @@ namespace BLL
         private CouriersDB CouriersDb { get; }
         private DeliveryAreasDB DeliveryAreasDb { get; }
         private CompositionDB CompositionDb { get; }
+        private DishesDB DishesDb { get; }
 
         public OrderManager()
         {
@@ -25,6 +26,7 @@ namespace BLL
             CouriersDb = new CouriersDB();
             DeliveryAreasDb = new DeliveryAreasDB();
             CompositionDb = new CompositionDB();
+            DishesDb = new DishesDB();
         }
 
         public void CreateNewOrder(int idCustomer, int idArea, DateTime expectedDeliveryTime, string deliveryAddress)
@@ -61,6 +63,7 @@ namespace BLL
 
         public void DeleteOrder(int idOrder)
         {
+            //compositions related to the order must be deleted first to respect referential integrity 
             CompositionDb.DeleteCompositionByOrder(idOrder);
             OrdersDb.DeleteOrder(idOrder);
         }
@@ -91,9 +94,17 @@ namespace BLL
             return OrdersDb.GetAllOrdersByRestaurant(idRestaurant);
         }
 
-        public int SetTotal(int idOrder, int total)
+        public void SetTotal(int idOrder)
         {
-            throw new NotImplementedException();
+            List<Composition> compositions = CompositionDb.GetCompositionsByOrder(idOrder);
+
+            int total = 0;
+            foreach (var c in compositions)
+            {
+                Dish dish = DishesDb.GetDishById(c.ID_Dish);
+                total += dish.Price * c.Quantity;
+            }
+            OrdersDb.SetTotal(idOrder, total); 
         }
 
         public Order GetOrderById(int idOrder)

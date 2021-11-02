@@ -28,6 +28,9 @@ namespace BLL
             if (!Utilities.IsPasswordSyntaxCorrect(password))
                 throw new InputSyntaxException("Password must contain at least 8 characters, a number and a capital");
 
+            if (Utilities.IsEmailAddressInDatabase(emailAddress))
+                throw new BusinessRuleException("An account using this email address already exists");
+
             if (CustomersDb.AddCustomer(firstname, lastname, emailAddress, password) == 0)
             {
                 // AddCustomer == 0 means no row were affected

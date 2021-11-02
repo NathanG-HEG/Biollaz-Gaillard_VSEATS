@@ -50,23 +50,13 @@ namespace ConsoleApp
             Console.WriteLine(rg.IsMatch(emailAddress));*/
 
             DishManager dm = new DishManager();
-            //dm.AddDish(1, "Pizza bianca", 8);
-            //dm.SetAvailability(3, true);
-            //dm.SetPrice(4, 8);
-            //DeliveryAreaManager dlm = new DeliveryAreaManager();
-            //Console.WriteLine(dlm.GetDeliveryAreaByPostcode(1950));
+       
 
             OrderManager odm = new OrderManager();
+            CustomerManager cmm = new CustomerManager();
+           
 
-            //odm.CreateNewOrder(3, 3, DateTime.Now, "Rue de chien 32");
-            odm.CreateNewOrder(3, 6, DateTime.Now, "Zermatt street 1");
-
-
-            /*List<Order> orders = odm.GetAllOrdersByRestaurant(1);
-            foreach (var VARIABLE in orders)
-            {
-                Console.WriteLine(VARIABLE);
-            }*/
+            odm.SetTotal(10);
         }
     }
 }
