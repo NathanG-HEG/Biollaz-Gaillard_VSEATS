@@ -34,7 +34,7 @@ namespace BLL
             }
         }
 
-        public void UpdateImage(string path)
+        public void UpdateImage(string path, int idRestaurant)
         {
             //creating a file instance to check its existence
             var image = new FileInfo(path);
@@ -42,7 +42,7 @@ namespace BLL
             //update the DB if the path is valid
             if (image.Exists)
             {
-                if (RestaurantsDb.UpdateImage(path)!=0)
+                if (RestaurantsDb.UpdateImage(path, idRestaurant)!=0)
                 {
                     throw new DataBaseException("File could not be found");
                 }
@@ -50,7 +50,7 @@ namespace BLL
 
         }
 
-        public void UpdateLogo(string path)
+        public void UpdateLogo(string path, int idRestaurant)
         {
             //creating a file instance to check its existence
             var image = new FileInfo(path);
@@ -58,7 +58,7 @@ namespace BLL
             //update the DB if the path is valid
             if (image.Exists)
             {
-                if (RestaurantsDb.UpdateLogo(path) != 0)
+                if (RestaurantsDb.UpdateLogo(path, idRestaurant) != 0)
                 {
                     throw new DataBaseException("File could not be found");
                 }
