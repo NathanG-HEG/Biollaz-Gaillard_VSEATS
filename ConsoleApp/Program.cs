@@ -57,11 +57,16 @@ namespace ConsoleApp
             //Console.WriteLine(dlm.GetDeliveryAreaByPostcode(1950));
 
             OrderManager odm = new OrderManager();
-            List<Order> orders = odm.GetAllOrdersByRestaurant(1);
+
+            //odm.CreateNewOrder(3, 3, DateTime.Now, "Rue de chien 32");
+            odm.CreateNewOrder(3, 6, DateTime.Now, "Zermatt street 1");
+
+
+            /*List<Order> orders = odm.GetAllOrdersByRestaurant(1);
             foreach (var VARIABLE in orders)
             {
                 Console.WriteLine(VARIABLE);
-            }
+            }*/
         }
     }
 }

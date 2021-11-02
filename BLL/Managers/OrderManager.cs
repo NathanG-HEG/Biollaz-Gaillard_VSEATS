@@ -31,7 +31,13 @@ namespace BLL
         {
             // Finds an available courier in the area
             int idCourier=-1;
-            List<Courier> availableCouriers = CouriersDb.GetAllCouriersByArea(idArea);
+            List <Courier> availableCouriers = CouriersDb.GetAllCouriersByArea(idArea);
+
+            if (availableCouriers == null)
+            {
+                throw new BusinessRuleException("No courier registered at area " + idArea);
+            }
+
             foreach (var c in availableCouriers)
             {
                 if (c.numberOfCurrentOrders < Utilities.MaxOrdersSimultaneously)
