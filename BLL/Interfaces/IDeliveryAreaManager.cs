@@ -10,5 +10,6 @@ namespace BLL.Interfaces
     {
         public DeliveryArea GetDeliveryAreaByName(string name);
         public DeliveryArea GetDeliveryAreaByPostcode(int postcode);
+        public List<DeliveryArea> GetAllDeliveryAreas();
     }
 }

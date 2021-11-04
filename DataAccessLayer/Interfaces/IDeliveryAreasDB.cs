@@ -11,6 +11,6 @@ namespace DataAccessLayer.Interfaces
         public int AddDeliveryArea(string name, int postcode);
         public DeliveryArea GetDeliveryAreaByName(string name);
         public DeliveryArea GetDeliveryAreaByPostcode(int postcode);
-
+        public List<DeliveryArea> GetAllDeliveryAreas();
     }
 }

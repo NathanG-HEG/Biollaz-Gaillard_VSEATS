@@ -33,5 +33,10 @@ namespace BLL
         {
             return DeliveryAreasDb.GetDeliveryAreaByPostcode(postcode);
         }
+
+        public List<DeliveryArea> GetAllDeliveryAreas()
+        {
+            return DeliveryAreasDb.GetAllDeliveryAreas();
+        }
     }
 }

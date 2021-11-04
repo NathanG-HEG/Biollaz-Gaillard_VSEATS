@@ -118,5 +118,46 @@ namespace DataAccessLayer.DBAccesses
 
             return deliveryArea;
         }
+
+        public List<DeliveryArea> GetAllDeliveryAreas()
+        {
+            string connectionStrings = Connection.GetConnectionString();
+            List<DeliveryArea> deliveryAreas = null;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                {
+                    string query = "SELECT * FROM Delivery_Areas;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+
+                    cn.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            if (deliveryAreas == null)
+                                deliveryAreas = new List<DeliveryArea>();
+
+                            DeliveryArea deliveryArea = new DeliveryArea();
+
+                            deliveryArea.IdArea = (int)dr["ID_area"];
+                            deliveryArea.Name = (string)dr["name"];
+                            deliveryArea.Postcode = (int)dr["postcode"];
+
+                            deliveryAreas.Add(deliveryArea);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception occurred while accessing all delivery areas: " + e.Message);
+            }
+
+            return deliveryAreas;
+        }
     }
 }
