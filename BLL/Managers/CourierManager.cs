@@ -32,7 +32,8 @@ namespace BLL
             if(!Utilities.IsPasswordSyntaxCorrect(password))
                 throw new InputSyntaxException("Password must contain at least 8 characters, a number and a capital");
             // Checks if email address is redundant
-
+            if (Utilities.IsEmailAddressInDatabase(emailAddress))
+                throw new BusinessRuleException("An account using this email address already exists");
 
 
             if (CouriersDb.AddCourier(idArea, firstName, lastName, emailAddress, password) == 0)
@@ -54,15 +55,13 @@ namespace BLL
         public Courier GetCourierByLogin(string emailAddress, string password)
         {
             Courier res = CouriersDb.GetCourierByLogin(emailAddress, password);
-            if (res == null) throw new DataBaseException("No courier found");
+            if (res == null) throw new DataBaseException("Email or password incorrect");
             return res;
         }
 
         public Courier GetCourierById(int idCourier)
         {
-            Courier res = CouriersDb.GetCourierById(idCourier);
-            if (res == null) throw new DataBaseException("No courier found with id " + idCourier);
-            return res;
+            return CouriersDb.GetCourierById(idCourier);
         }
     }
 }

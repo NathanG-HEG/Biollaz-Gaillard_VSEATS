@@ -11,22 +11,33 @@ using DataAccessLayer.DBAccesses;
 
 namespace BLL
 {
-    public class RestaurantManager:IRestaurantManager
+    public class RestaurantManager : IRestaurantManager
 
     {
-    private RestaurantsDB RestaurantsDb { get; }
-    private DishesDB DishesDb { get; }
-    private DeliveryAreasDB DeliveryAreasDb { get; }
+        private RestaurantsDB RestaurantsDb { get; }
+        private DishesDB DishesDb { get; }
+        private DeliveryAreasDB DeliveryAreasDb { get; }
 
-    public RestaurantManager()
-    {
-        RestaurantsDb = new RestaurantsDB();
-        DishesDb = new DishesDB();
-        DeliveryAreasDb = new DeliveryAreasDB();
-    }
+        public RestaurantManager()
+        {
+            RestaurantsDb = new RestaurantsDB();
+            DishesDb = new DishesDB();
+            DeliveryAreasDb = new DeliveryAreasDB();
+        }
 
         public void CreateRestaurant(int idArea, string name, string emailAddress, string password)
         {
+
+            // Checks for syntax errors
+            if (!Utilities.IsEmailAddressCorrect(emailAddress))
+                throw new InputSyntaxException(emailAddress + " is not valid");
+            if (!Utilities.IsPasswordSyntaxCorrect(password))
+                throw new InputSyntaxException("Password must contain at least 8 characters, a number and a capital");
+
+            //check if email address is redundant
+            if (Utilities.IsEmailAddressInDatabase(emailAddress))
+                throw new BusinessRuleException("An account using this email address already exists");
+
             int result = RestaurantsDb.AddRestaurant(idArea, name, emailAddress, password);
             if (result == 0)
             {
@@ -42,7 +53,7 @@ namespace BLL
             //update the DB if the path is valid
             if (image.Exists)
             {
-                if (RestaurantsDb.UpdateImage(path, idRestaurant)!=0)
+                if (RestaurantsDb.UpdateImage(path, idRestaurant) != 0)
                 {
                     throw new DataBaseException("File could not be found");
                 }
@@ -67,7 +78,10 @@ namespace BLL
 
         public Restaurant GetRestaurantByLogin(string email, string password)
         {
-            return RestaurantsDb.GetRestaurantByLogin(email, password);
+            Restaurant res = RestaurantsDb.GetRestaurantByLogin(email, password);
+            if (res == null)
+                throw new DataBaseException("Email or password incorrect");
+            return res;
         }
 
         public Restaurant GetRestaurantByName(string name)

@@ -28,6 +28,7 @@ namespace BLL
             if (!Utilities.IsPasswordSyntaxCorrect(password))
                 throw new InputSyntaxException("Password must contain at least 8 characters, a number and a capital");
 
+            //check if email address is redundant
             if (Utilities.IsEmailAddressInDatabase(emailAddress))
                 throw new BusinessRuleException("An account using this email address already exists");
 
@@ -42,15 +43,13 @@ namespace BLL
         public Customer GetCustomerByLogin(string emailAddress, string password)
         {
             Customer res = CustomersDb.GetCustomerByLogin(emailAddress, password);
-            if (res == null) throw new DataBaseException("No customer found");
+            if (res == null) throw new DataBaseException("Email or password incorrect");
             return res;
         }
 
         public Customer GetCustomerById(int idCustomer)
         {
-            Customer res = CustomersDb.GetCustomerById(idCustomer);
-            if (res == null) throw new DataBaseException("No customer found with id " + idCustomer);
-            return res;
+            return CustomersDb.GetCustomerById(idCustomer);
         }
     }
 }
