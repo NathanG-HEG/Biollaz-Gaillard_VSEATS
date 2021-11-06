@@ -13,13 +13,13 @@ namespace DataAccessLayer.DBAccesses
         public int AddOrder(int idCustomer, int idCourier, int idArea, DateTime expectedDeliveryTime, string deliveryAddress)
         {
             string connectionString = Connection.GetConnectionString();
-            int result = 0;
+            int idOrder = -1;
             try
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "INSERT INTO Orders (ID_customer, ID_Courrier, ID_area, ExpectedDeliveryTime, TimeOfOrder, Delivery_Address)" +
-                                   " VALUES (@idCustomer, @idCourier, @idArea, @expectedDeliveryTime, @timeOfOrder, @deliveryAddress);";
+                                   " VALUES (@idCustomer, @idCourier, @idArea, @expectedDeliveryTime, @timeOfOrder, @deliveryAddress); SELECT SCOPE_IDENTITY();";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@idCustomer", idCustomer);
                     cmd.Parameters.AddWithValue("@idCourier", idCourier);
@@ -30,7 +30,8 @@ namespace DataAccessLayer.DBAccesses
 
                     cn.Open();
 
-                    result = cmd.ExecuteNonQuery();
+                    idOrder = Convert.ToInt32(cmd.ExecuteScalar());
+
 
                 }
             }
@@ -39,7 +40,7 @@ namespace DataAccessLayer.DBAccesses
                 Console.WriteLine("Exception caught while adding order: " + e.Message);
             }
 
-            return result;
+            return idOrder;
         }
 
         public Order GetOrderById(int orderID)
@@ -70,12 +71,12 @@ namespace DataAccessLayer.DBAccesses
                             order.ExpectedDeliveryTime = (DateTime)dr["expectedDeliveryTime"];
                             order.TimeOfOrder = (DateTime)dr["timeOfOrder"];
 
-                            if (dr["timeOfDelivery"] != null)
+                            if (dr["timeOfDelivery"] != DBNull.Value)
                             {
                                 order.TimeOfDelivery = (DateTime)dr["timeOfDelivery"];
                             }
                             order.DeliveryAddress = (string)dr["delivery_address"];
-                            if (dr["orderTotal"] != null)
+                            if (dr["orderTotal"] != DBNull.Value)
                             {
                                 order.OrderTotal = (int)dr["orderTotal"];
                             }
@@ -214,7 +215,7 @@ namespace DataAccessLayer.DBAccesses
             {
                 using (SqlConnection cn = new SqlConnection(connectionStrings))
                 {
-                    string query = "SELECT * FROM Orders WHERE ID_courrier=@idCourier;";
+                    string query = "SELECT * FROM Orders WHERE ID_courrier=@idCourier ORDER BY EXPECTEDDELIVERYTIME DESC;";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@idCourier", idCourier);
 

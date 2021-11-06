@@ -54,9 +54,7 @@ namespace BLL
 
         public Courier GetCourierByLogin(string emailAddress, string password)
         {
-            Courier res = CouriersDb.GetCourierByLogin(emailAddress, password);
-            if (res == null) throw new DataBaseException("Email or password incorrect");
-            return res;
+            return CouriersDb.GetCourierByLogin(emailAddress, password);
         }
 
         public Courier GetCourierById(int idCourier)

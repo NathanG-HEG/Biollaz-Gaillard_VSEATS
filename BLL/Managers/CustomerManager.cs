@@ -42,9 +42,7 @@ namespace BLL
 
         public Customer GetCustomerByLogin(string emailAddress, string password)
         {
-            Customer res = CustomersDb.GetCustomerByLogin(emailAddress, password);
-            if (res == null) throw new DataBaseException("Email or password incorrect");
-            return res;
+            return CustomersDb.GetCustomerByLogin(emailAddress, password);
         }
 
         public Customer GetCustomerById(int idCustomer)

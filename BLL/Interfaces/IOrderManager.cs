@@ -9,7 +9,7 @@ namespace BLL.Interfaces
 {
     public interface IOrderManager
     {
-        public void CreateNewOrder(int idCustomer, int idArea, DateTime expectedDeliveryTime, string deliveryAddress);
+        public int CreateNewOrder(int idCustomer, int idArea, DateTime expectedDeliveryTime, string deliveryAddress);
         public void SetOrderToDelivered(int idOrder);
         public List<Order> GetAllOrdersByCustomer(int idCustomer);
         public List<Order> GetAllOrdersByCourier(int idCourier);

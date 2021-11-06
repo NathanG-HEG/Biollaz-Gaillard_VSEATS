@@ -78,10 +78,7 @@ namespace BLL
 
         public Restaurant GetRestaurantByLogin(string email, string password)
         {
-            Restaurant res = RestaurantsDb.GetRestaurantByLogin(email, password);
-            if (res == null)
-                throw new DataBaseException("Email or password incorrect");
-            return res;
+            return RestaurantsDb.GetRestaurantByLogin(email, password);
         }
 
         public Restaurant GetRestaurantByName(string name)

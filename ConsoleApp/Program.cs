@@ -7,6 +7,7 @@ using DataAccessLayer;
 using DataAccessLayer.DBAccesses;
 using System.Text.RegularExpressions;
 using BLL;
+using BLL.BusinessExceptions;
 
 namespace ConsoleApp
 {
@@ -26,7 +27,6 @@ namespace ConsoleApp
         static void Main(string[] args)
 
         {
-           
             bool running = true;
 
             Console.WriteLine("Welcome!\nType 'help' for help.");
@@ -56,6 +56,9 @@ namespace ConsoleApp
                             Logout();
                         else
                             Console.WriteLine("Not logged in!");
+                        break;
+                    case "order":
+                        if (userCustomer != null) Order();
                         break;
                     case "exit":
                         running = false;
@@ -103,38 +106,39 @@ namespace ConsoleApp
             string emailAddress = Console.ReadLine();
             Console.Write("\nPassword: ");
             string password = Console.ReadLine();
-            try
+
+            CustomerManager cum = new CustomerManager();
+            userCustomer = cum.GetCustomerByLogin(emailAddress, password);
+            if (userCustomer != null)
             {
-                CustomerManager cum = new CustomerManager();
-                userCustomer = cum.GetCustomerByLogin(emailAddress, password);
                 loggedIn = true;
-                Console.WriteLine("Logged in as customer: "+userCustomer.FirstName+" "+userCustomer.LastName);
+                Console.WriteLine("Logged in as customer: " + userCustomer.FirstName + " " + userCustomer.LastName);
+                return;
             }
-            catch (Exception e)
+
+
+            CourierManager com = new CourierManager();
+            userCourier = com.GetCourierByLogin(emailAddress, password);
+            if (userCourier != null)
             {
-                try
-                {
-                    CourierManager com = new CourierManager();
-                    userCourier = com.GetCourierByLogin(emailAddress, password);
-                    loggedIn = true;
-                    Console.WriteLine("Logged in as courier: "+userCourier.FirstName+" "+userCourier.LastName);
-                }
-                catch (Exception e2)
-                {
-                    try
-                    {
-                        RestaurantManager rem = new RestaurantManager();
-                        userRestaurant = rem.GetRestaurantByLogin(emailAddress, password);
-                        loggedIn = true;
-                        Console.WriteLine("Logged in as restaurant: "+userRestaurant.Name);
-                    }
-                    catch (Exception e3)
-                    {
-                        Console.WriteLine("Incorrect email or password! Bye!");
-                        loggedIn = false;
-                    }
-                }
+                loggedIn = true;
+                Console.WriteLine("Logged in as courier: " + userCourier.FirstName + " " + userCourier.LastName);
+                return;
             }
+
+
+            RestaurantManager rem = new RestaurantManager();
+            userRestaurant = rem.GetRestaurantByLogin(emailAddress, password);
+            if (userRestaurant != null)
+            {
+                loggedIn = true;
+                Console.WriteLine("Logged in as restaurant: " + userRestaurant.Name);
+                return;
+            }
+
+            Console.WriteLine("Incorrect email or password! Bye!");
+            loggedIn = false;
+
         }
 
         static void NewRestaurant()
@@ -178,6 +182,104 @@ namespace ConsoleApp
             }
 
             Console.WriteLine("Courier added successfully!");
+        }
+
+        static void Order()
+        {
+
+            Console.WriteLine("Where would you like to be delivered?");
+            DeliveryAreaManager dm = new DeliveryAreaManager();
+            List<DeliveryArea> deliveryAreas = dm.GetAllDeliveryAreas();
+            foreach (var d in deliveryAreas)
+            {
+                Console.WriteLine(d.IdArea + " | " + d.Postcode + " | " + d.Name);
+            }
+            Console.Write("Id area: ");
+            int chosenArea = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Delivery address: ");
+            string address = Console.ReadLine();
+
+            Console.Write("In how many hour quarter would you like to be delivered ?");
+            int nbQuarter = Convert.ToInt32(Console.ReadLine());
+
+            OrderManager om = new OrderManager();
+            int orderID = -1;
+            try
+            {
+                    orderID = om.CreateNewOrder(userCustomer.IdCustomer, chosenArea,
+                    DateTime.Now.AddMinutes(15 * nbQuarter), address);
+            }
+            catch (BusinessRuleException e)
+            {
+                Console.WriteLine(e.Message);
+                return;
+            }
+
+            Console.WriteLine("Restaurants available");
+            RestaurantManager rm = new RestaurantManager();
+            List<Restaurant> restaurants = rm.GetAllRestaurantsArea(chosenArea);
+            foreach (var restaurant in restaurants)
+            {
+                Console.WriteLine(restaurant.IdRestaurant + " | " + restaurant.Name);
+            }
+            Console.Write("Restaurant id: ");
+            int chosenRest = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Available dishes: ");
+            DishManager dishManager = new DishManager();
+            List<Dish> dishes = dishManager.GetAllDishesByRestaurant(chosenRest);
+            int chosenDish;
+            List<int> chosenDishes = new List<int>();
+
+            List<Composition> compositions = new List<Composition>();
+            int nbDishes = 0;
+
+            //propose all dishes until -1 is chosen
+            do
+            {
+                foreach (var d in dishes)
+                {
+                    if (d.IsAvailable)
+                        Console.WriteLine(d.IdDish + " | " + d.Name + " | " + d.Price);
+                }
+
+                Console.Write("Dish id: ");
+                chosenDish = Convert.ToInt32(Console.ReadLine());
+
+                //if the dish already is in the order, just increment the quantity
+                if (chosenDish != -1)
+                {
+                    if (chosenDishes.Contains(chosenDish))
+                    {
+                        compositions[chosenDishes.IndexOf(chosenDish)].Quantity++;
+                    }
+                    else
+                    {
+                        //add the chosen dish to the order with quantity of 1
+                        compositions.Add(new Composition());
+                        compositions[nbDishes].ID_Dish = chosenDish;
+                        compositions[nbDishes].Quantity = 1;
+                        compositions[nbDishes].ID_order = orderID;
+                        nbDishes++;
+
+                        //add the chosenDish id to the checklists
+                        chosenDishes.Add(chosenDish);
+                    }
+                }
+
+
+            } while (chosenDish != -1);
+
+            ComposeManager composeManager = new ComposeManager();
+            foreach (var c in compositions)
+            {
+                composeManager.AddComposition(c.ID_Dish, c.ID_order, c.Quantity);
+            }
+
+            om.SetTotal(orderID);
+            Console.WriteLine("Order successfully created");
+
         }
 
         static void Help()
