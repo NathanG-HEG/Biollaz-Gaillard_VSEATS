@@ -12,14 +12,10 @@ namespace BLL
     public class DishManager:IDishManager
     {
         private DishesDB DishesDb { get; }
-        private CompositionDB CompositionDb { get; }
-        private RestaurantsDB RestaurantsDb { get; }
 
         public DishManager()
         {
             DishesDb = new DishesDB();
-            CompositionDb = new CompositionDB();
-            RestaurantsDb = new RestaurantsDB();
         }
 
         public void AddDish(int idRestaurant, string name, int price)

@@ -15,14 +15,10 @@ namespace BLL
 
     {
         private RestaurantsDB RestaurantsDb { get; }
-        private DishesDB DishesDb { get; }
-        private DeliveryAreasDB DeliveryAreasDb { get; }
 
         public RestaurantManager()
         {
             RestaurantsDb = new RestaurantsDB();
-            DishesDb = new DishesDB();
-            DeliveryAreasDb = new DeliveryAreasDB();
         }
 
         public void CreateRestaurant(int idArea, string name, string emailAddress, string password)

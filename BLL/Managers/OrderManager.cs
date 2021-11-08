@@ -13,24 +13,21 @@ namespace BLL
     public class OrderManager : IOrderManager
     {
         private OrdersDB OrdersDb { get; }
-        private CustomersDB CustomersDb { get; }
         private CouriersDB CouriersDb { get; }
-        private DeliveryAreasDB DeliveryAreasDb { get; }
         private CompositionDB CompositionDb { get; }
         private DishesDB DishesDb { get; }
 
         public OrderManager()
         {
             OrdersDb = new OrdersDB();
-            CustomersDb = new CustomersDB();
             CouriersDb = new CouriersDB();
-            DeliveryAreasDb = new DeliveryAreasDB();
             CompositionDb = new CompositionDB();
             DishesDb = new DishesDB();
         }
 
         public int CreateNewOrder(int idCustomer, int idArea, DateTime expectedDeliveryTime, string deliveryAddress)
         {
+
             // Finds an available courier in the area
             int idCourier = -1;
             List<Courier> availableCouriers = CouriersDb.GetAllCouriersByArea(idArea);
@@ -66,7 +63,7 @@ namespace BLL
                     //so if it is minValue, then the order has not been delivered
                     if (o.TimeOfDelivery != DateTime.MinValue) continue;
 
-                    
+
                     if (expectedDeliveryTime <= o.ExpectedDeliveryTime)
                     {
                         //checking for the orders later than the one in creation
@@ -81,6 +78,12 @@ namespace BLL
                         if (o.ExpectedDeliveryTime.AddMinutes(15) >= expectedDeliveryTime)
                         {
                             nbOrdersIn30Minutes++;
+                        }
+                        else
+                        {
+                            //orders are ordered from the latest to the earliest expectedDeliveryTime, so past this point, orders
+                            //are more than 15 minutes earlier from the current order
+                            break;
                         }
                     }
                 }

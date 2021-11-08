@@ -12,12 +12,10 @@ namespace BLL
     public class CustomerManager:ICustomerManager
     {
         private CustomersDB CustomersDb { get; }
-        private OrdersDB OrdersDb { get; }
 
         public CustomerManager()
         {
             CustomersDb = new CustomersDB();
-            OrdersDb = new OrdersDB();
         }
 
         public void CreateCustomer(string firstname, string lastname, string emailAddress, string password)

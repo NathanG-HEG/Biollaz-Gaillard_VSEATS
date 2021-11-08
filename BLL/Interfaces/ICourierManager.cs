@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
-    public interface IntICourierManager
+    public interface ICourierManager
     {
         public void AddCourier(int idArea, string firstName, string lastName, string emailAddress, string password);
         public List<Courier> GetAllCouriersByArea(int idArea);

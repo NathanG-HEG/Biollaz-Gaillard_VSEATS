@@ -12,7 +12,7 @@ namespace BLL
     public abstract class Utilities
     {
         public static readonly int MaxQuantity = 999_999_999;
-        public static readonly int MaxOrdersSimultaneously = 5;
+        public static readonly int MaxOrdersSimultaneously = 2;
 
         public static bool IsEmailAddressInDatabase(string emailAddress)
         {
@@ -20,7 +20,6 @@ namespace BLL
             List<Customer> customers = customersDb.GetAllCustomers();
             foreach (var c in customers)
             {
-                Console.WriteLine(c.EmailAddress);
 
                 if (c.EmailAddress.Equals(emailAddress))
                 {

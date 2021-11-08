@@ -12,16 +12,10 @@ namespace BLL
     public class DeliveryAreaManager:IDeliveryAreaManager
     {
         private DeliveryAreasDB DeliveryAreasDb { get; }
-        private CouriersDB CouriersDb { get; }
-        private OrdersDB OrderDb { get; }
-        private RestaurantsDB RestaurantDb { get; }
 
         public DeliveryAreaManager()
         {
             DeliveryAreasDb = new DeliveryAreasDB();
-            CouriersDb = new CouriersDB();
-            OrderDb = new OrdersDB();
-            RestaurantDb = new RestaurantsDB();
         }
 
         public DeliveryArea GetDeliveryAreaByName(string name)
