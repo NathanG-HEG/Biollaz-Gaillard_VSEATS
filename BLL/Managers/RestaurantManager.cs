@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using BLL.BusinessExceptions;
 using BLL.Interfaces;
 using DataAccessLayer.DBAccesses;
+using Microsoft.Extensions.Configuration;
 
 namespace BLL
 {
@@ -15,10 +16,14 @@ namespace BLL
 
     {
         private RestaurantsDB RestaurantsDb { get; }
+        private IConfiguration Configuration { get; }
+        private Utilities Utilities { get; }
 
-        public RestaurantManager()
+        public RestaurantManager(IConfiguration iconfiguration)
         {
-            RestaurantsDb = new RestaurantsDB();
+            Configuration = iconfiguration;
+            Utilities = new Utilities(Configuration);
+            RestaurantsDb = new RestaurantsDB(iconfiguration);
         }
 
         public void CreateRestaurant(int idArea, string name, string emailAddress, string password)

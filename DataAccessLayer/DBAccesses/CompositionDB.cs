@@ -5,11 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer.DBAccesses
 {
     public class CompositionDB : ICompositionDB
     {
+        private IConfiguration Configuration { get; }
+
+        public CompositionDB(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         public int AddComposition(int idDish, int idOrder, int quantity)
         {
             string connectionString = Connection.GetConnectionString();

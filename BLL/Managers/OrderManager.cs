@@ -7,6 +7,7 @@ using BLL.BusinessExceptions;
 using BLL.Interfaces;
 using DataAccessLayer;
 using DataAccessLayer.DBAccesses;
+using Microsoft.Extensions.Configuration;
 
 namespace BLL
 {
@@ -16,13 +17,17 @@ namespace BLL
         private CouriersDB CouriersDb { get; }
         private CompositionDB CompositionDb { get; }
         private DishesDB DishesDb { get; }
+        private IConfiguration Configuration { get; }
+        private Utilities Utilities { get; }
 
-        public OrderManager()
+        public OrderManager(IConfiguration configuration)
         {
-            OrdersDb = new OrdersDB();
-            CouriersDb = new CouriersDB();
-            CompositionDb = new CompositionDB();
-            DishesDb = new DishesDB();
+            Configuration = configuration;
+            Utilities = new Utilities(Configuration);
+            OrdersDb = new OrdersDB(Configuration);
+            CouriersDb = new CouriersDB(Configuration);
+            CompositionDb = new CompositionDB(Configuration);
+            DishesDb = new DishesDB(Configuration);
         }
 
         public int CreateNewOrder(int idCustomer, int idArea, DateTime expectedDeliveryTime, string deliveryAddress)

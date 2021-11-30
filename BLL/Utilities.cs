@@ -6,15 +6,22 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DataAccessLayer.DBAccesses;
+using Microsoft.Extensions.Configuration;
 
 namespace BLL
 {
-    public abstract class Utilities
+    public class Utilities
     {
-        public static readonly int MaxQuantity = 999_999_999;
-        public static readonly int MaxOrdersSimultaneously = 2;
+        public  readonly int MaxQuantity = 999_999_999;
+        public  readonly int MaxOrdersSimultaneously = 2;
 
-        public static bool IsEmailAddressInDatabase(string emailAddress)
+        public IConfiguration Configuration;
+        public Utilities(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public  bool IsEmailAddressInDatabase(string emailAddress)
         {
             CustomersDB customersDb = new CustomersDB();
             List<Customer> customers = customersDb.GetAllCustomers();
@@ -26,7 +33,7 @@ namespace BLL
                     return true;
                 }
             }
-            CouriersDB couriersDb = new CouriersDB();
+            CouriersDB couriersDb = new CouriersDB(Configuration);
             List<Courier> couriers = couriersDb.GetAllCouriers();
             foreach (var c in couriers)
             {
@@ -35,7 +42,8 @@ namespace BLL
                     return true;
                 }
             }
-            RestaurantsDB restaurantsDb = new RestaurantsDB();
+            
+            RestaurantsDB restaurantsDb = new RestaurantsDB(Configuration);
             List<Restaurant> restaurants= restaurantsDb.GetAllRestaurants();
             foreach (var r in restaurants)
             {
@@ -44,12 +52,13 @@ namespace BLL
                     return true;
                 }
             }
+            
 
             return false;
         }
 
 
-        public static bool IsEmailAddressCorrect(string emailAddress)
+        public bool IsEmailAddressCorrect(string emailAddress)
         {
             string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
             Regex rg = new Regex(pattern);
@@ -57,7 +66,7 @@ namespace BLL
             return rg.IsMatch(emailAddress);
         }
 
-        public static bool IsPasswordSyntaxCorrect(string password)
+        public bool IsPasswordSyntaxCorrect(string password)
         {
             var hasNumber = new Regex(@"[0-9]+");
             var hasUpperChar = new Regex(@"[A-Z]+");

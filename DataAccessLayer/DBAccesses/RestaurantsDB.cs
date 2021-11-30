@@ -5,11 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer.DBAccesses
 {
     public class RestaurantsDB : IRestaurantsDB
     {
+
+        public IConfiguration IConfiguration { get; set; }
+        public RestaurantsDB(IConfiguration iConfiguration)
+        {
+            IConfiguration = iConfiguration;
+        }
+
         public int AddRestaurant(int idArea, string name, string emailAddress, string password)
         {
             string connectionString = Connection.GetConnectionString();
@@ -123,7 +131,8 @@ namespace DataAccessLayer.DBAccesses
 
         public List<Restaurant> GetAllRestaurants()
         {
-            string connectionStrings = Connection.GetConnectionString();
+            //string connectionStrings = Connection.GetConnectionString();
+            string connectionStrings = IConfiguration.GetConnectionString("DefaultConnection");
             List<Restaurant> restaurants = null;
 
             try

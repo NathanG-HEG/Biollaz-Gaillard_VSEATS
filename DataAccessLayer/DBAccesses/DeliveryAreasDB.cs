@@ -5,11 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer.DBAccesses
 {
     public class DeliveryAreasDB : IDeliveryAreasDB
     {
+        private IConfiguration Configuration { get; }
+        public DeliveryAreasDB(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         public int AddDeliveryArea(string name, int postcode)
         {
             {
@@ -27,7 +34,6 @@ namespace DataAccessLayer.DBAccesses
                         cn.Open();
 
                         result = cmd.ExecuteNonQuery();
-
                     }
 
                 }

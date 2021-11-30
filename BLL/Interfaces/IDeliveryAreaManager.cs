@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
-    interface IDeliveryAreaManager
+    public interface IDeliveryAreaManager
     {
         public DeliveryArea GetDeliveryAreaByName(string name);
         public DeliveryArea GetDeliveryAreaByPostcode(int postcode);

@@ -7,6 +7,7 @@ using BLL.BusinessExceptions;
 using BLL.Interfaces;
 using DataAccessLayer;
 using DataAccessLayer.DBAccesses;
+using Microsoft.Extensions.Configuration;
 
 namespace BLL
 {
@@ -14,10 +15,13 @@ namespace BLL
 
     {
     private CouriersDB CouriersDb { get; }
+    private Utilities Utilities { get; }
+    private IConfiguration Configuration { get; }
 
-    public CourierManager()
+    public CourierManager(IConfiguration configuration)
     {
-        CouriersDb = new CouriersDB();
+        Configuration = configuration;
+        CouriersDb = new CouriersDB(Configuration);
     }
 
         public void AddCourier(int idArea, string firstName, string lastName, string emailAddress, string password)

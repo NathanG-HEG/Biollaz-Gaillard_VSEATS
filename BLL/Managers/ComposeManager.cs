@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BLL.BusinessExceptions;
 using DataAccessLayer;
 using DataAccessLayer.DBAccesses;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic.CompilerServices;
 
 namespace BLL
@@ -15,12 +16,16 @@ namespace BLL
         private DishesDB DishesDb { get; }
         private OrdersDB OrdersDb { get; }
         private CompositionDB CompositionDb { get; }
+        private IConfiguration Configuration { get;}
+        private Utilities Utilities { get; }
 
-        public ComposeManager()
+        public ComposeManager(IConfiguration configuration)
         {
-            DishesDb = new DishesDB();
-            OrdersDb = new OrdersDB();
-            CompositionDb = new CompositionDB();
+            Configuration = configuration;
+            Utilities = new Utilities(Configuration);
+            DishesDb = new DishesDB(Configuration);
+            OrdersDb = new OrdersDB(Configuration);
+            CompositionDb = new CompositionDB(Configuration);
         }
 
         public void AddComposition(int idDish, int idOrder, int quantity)

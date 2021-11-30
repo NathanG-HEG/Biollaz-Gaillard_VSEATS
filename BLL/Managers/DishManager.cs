@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 using BLL.BusinessExceptions;
 using BLL.Interfaces;
 using DataAccessLayer.DBAccesses;
+using Microsoft.Extensions.Configuration;
 
 namespace BLL
 {
     public class DishManager:IDishManager
     {
         private DishesDB DishesDb { get; }
-
-        public DishManager()
+        private IConfiguration Configuration { get; }
+        public DishManager(IConfiguration configuration)
         {
-            DishesDb = new DishesDB();
+            DishesDb = new DishesDB(configuration);
         }
 
         public void AddDish(int idRestaurant, string name, int price)

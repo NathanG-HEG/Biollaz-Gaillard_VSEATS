@@ -5,11 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer.DBAccesses
 {
     public class OrdersDB : IOrdersDB
     {
+        private IConfiguration Configuration { get; }
+        public OrdersDB(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         public int AddOrder(int idCustomer, int idCourier, int idArea, DateTime expectedDeliveryTime, string deliveryAddress)
         {
             string connectionString = Connection.GetConnectionString();

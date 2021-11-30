@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 using BLL.Interfaces;
 using DataAccessLayer;
 using DataAccessLayer.DBAccesses;
+using Microsoft.Extensions.Configuration;
 
 namespace BLL
 {
     public class DeliveryAreaManager:IDeliveryAreaManager
     {
-        private DeliveryAreasDB DeliveryAreasDb { get; }
-
-        public DeliveryAreaManager()
+        private IConfiguration Configuration { get; }
+        public DeliveryAreaManager(IConfiguration configuration)
         {
-            DeliveryAreasDb = new DeliveryAreasDB();
+            Configuration = configuration;
+            DeliveryAreasDb = new DeliveryAreasDB(Configuration);
         }
+
+        private DeliveryAreasDB DeliveryAreasDb { get; }
 
         public DeliveryArea GetDeliveryAreaByName(string name)
         {

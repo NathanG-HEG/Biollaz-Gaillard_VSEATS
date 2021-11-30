@@ -8,6 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL;
+using BLL.Interfaces;
+using DataAccessLayer;
+using DataAccessLayer.DBAccesses;
+using DataAccessLayer.Interfaces;
 
 namespace WebApp
 {
@@ -23,6 +28,16 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddScoped<IRestaurantManager, RestaurantManager>();
+            services.AddScoped<IRestaurantsDB, RestaurantsDB>();
+
+            services.AddScoped<IOrderManager, OrderManager>();
+            services.AddScoped<IOrdersDB, OrdersDB>();
+
+            services.AddScoped<IDeliveryAreaManager, DeliveryAreaManager>();
+            services.AddScoped<DeliveryAreasDB, DeliveryAreasDB>();
+
             services.AddControllersWithViews();
         }
 

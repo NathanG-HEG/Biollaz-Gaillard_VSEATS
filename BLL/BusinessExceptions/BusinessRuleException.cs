@@ -8,6 +8,7 @@ namespace BLL.BusinessExceptions
 {
     public class BusinessRuleException:Exception
     {
+        override 
         public string Message { get; }
         public BusinessRuleException(string message)
         {

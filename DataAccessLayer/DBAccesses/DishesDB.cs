@@ -12,6 +12,12 @@ namespace DataAccessLayer.DBAccesses
 {
     public class DishesDB : IDishesDB
     {
+        private IConfiguration Configuration { get; }
+        public DishesDB(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         public int AddDish(int idRestaurant, string name, int price)
         {
             string connectionString = Connection.GetConnectionString();

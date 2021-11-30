@@ -27,6 +27,7 @@ namespace ConsoleApp
         static void Main(string[] args)
 
         {
+            
             bool running = true;
 
             Console.WriteLine("Welcome!\nType 'help' for help.");
@@ -107,7 +108,7 @@ namespace ConsoleApp
             Console.Write("\nPassword: ");
             string password = Console.ReadLine();
 
-            CustomerManager cum = new CustomerManager();
+            CustomerManager cum = new CustomerManager(Configuration);
             userCustomer = cum.GetCustomerByLogin(emailAddress, password);
             if (userCustomer != null)
             {
@@ -117,7 +118,7 @@ namespace ConsoleApp
             }
 
 
-            CourierManager com = new CourierManager();
+            CourierManager com = new CourierManager(Configuration);
             userCourier = com.GetCourierByLogin(emailAddress, password);
             if (userCourier != null)
             {
@@ -127,7 +128,7 @@ namespace ConsoleApp
             }
 
 
-            RestaurantManager rem = new RestaurantManager();
+            RestaurantManager rem = new RestaurantManager(Configuration);
             userRestaurant = rem.GetRestaurantByLogin(emailAddress, password);
             if (userRestaurant != null)
             {
@@ -154,7 +155,7 @@ namespace ConsoleApp
         static void NewCourier()
         {
             DeliveryAreaManager dam = new DeliveryAreaManager();
-            CourierManager com = new CourierManager();
+            CourierManager com = new CourierManager(Configuration);
             Console.WriteLine("In what area are you delivering?");
             List<DeliveryArea> areas = dam.GetAllDeliveryAreas();
             foreach (var a in areas)
@@ -203,7 +204,7 @@ namespace ConsoleApp
             Console.Write("In how many hour quarter would you like to be delivered ?");
             int nbQuarter = Convert.ToInt32(Console.ReadLine());
 
-            OrderManager om = new OrderManager();
+            OrderManager om = new OrderManager(Configuration);
             int orderID = -1;
             try
             {
@@ -217,7 +218,7 @@ namespace ConsoleApp
             }
 
             Console.WriteLine("Restaurants available");
-            RestaurantManager rm = new RestaurantManager();
+            RestaurantManager rm = new RestaurantManager(Configuration);
             List<Restaurant> restaurants = rm.GetAllRestaurantsArea(chosenArea);
             foreach (var restaurant in restaurants)
             {
@@ -271,7 +272,7 @@ namespace ConsoleApp
 
             } while (chosenDish != -1);
 
-            ComposeManager composeManager = new ComposeManager();
+            ComposeManager composeManager = new ComposeManager(Configuration);
             foreach (var c in compositions)
             {
                 composeManager.AddComposition(c.ID_Dish, c.ID_order, c.Quantity);

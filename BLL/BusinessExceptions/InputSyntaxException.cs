@@ -8,6 +8,7 @@ namespace BLL.BusinessExceptions
 {
     public class InputSyntaxException : Exception
     {
+        override 
         public string Message { get; }
         public InputSyntaxException(string message)
         {

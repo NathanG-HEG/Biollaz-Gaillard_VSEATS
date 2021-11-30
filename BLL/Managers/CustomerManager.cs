@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 using BLL.BusinessExceptions;
 using BLL.Interfaces;
 using DataAccessLayer.DBAccesses;
+using Microsoft.Extensions.Configuration;
 
 namespace BLL
 {
     public class CustomerManager:ICustomerManager
     {
         private CustomersDB CustomersDb { get; }
+        private IConfiguration Configuration { get; }
+        private Utilities Utilities { get; }
 
-        public CustomerManager()
+        public CustomerManager(IConfiguration configuration)
         {
+            Configuration = configuration;
+            Utilities = new Utilities(Configuration);
             CustomersDb = new CustomersDB();
         }
 
