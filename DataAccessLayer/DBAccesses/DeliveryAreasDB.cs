@@ -165,5 +165,44 @@ namespace DataAccessLayer.DBAccesses
 
             return deliveryAreas;
         }
+
+        public DeliveryArea GetDeliveryAreaById(int id)
+        {
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
+            DeliveryArea deliveryArea = null;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT * FROM Delivery_Areas WHERE ID_AREA = @id;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cn.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            deliveryArea = new DeliveryArea();
+
+                            deliveryArea.IdArea = (int)dr["ID_area"];
+                            deliveryArea.Name = (string)dr["name"];
+                            deliveryArea.Postcode = (int)dr["postcode"];
+                        }
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception occurred while accessing deliveryArea " + id + ": " + e.Message);
+                Console.WriteLine(e.StackTrace);
+            }
+
+            return deliveryArea;
+        }
     }
 }

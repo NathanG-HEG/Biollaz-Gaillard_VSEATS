@@ -35,5 +35,10 @@ namespace BLL
         {
             return DeliveryAreasDb.GetAllDeliveryAreas();
         }
+
+        public DeliveryArea GetDeliveryAreaById(int id)
+        {
+            return DeliveryAreasDb.GetDeliveryAreaById(id);
+        }
     }
 }

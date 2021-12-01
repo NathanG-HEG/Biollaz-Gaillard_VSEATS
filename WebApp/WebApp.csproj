@@ -5,11 +5,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\coarse_dirt.png" />
+    <None Remove="Images\dirt.png" />
+    <None Remove="Images\dirt1.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\dirt1.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\coarse_dirt.png" />
+    <Resource Include="Images\dirt.png" />
   </ItemGroup>
 
 </Project>
