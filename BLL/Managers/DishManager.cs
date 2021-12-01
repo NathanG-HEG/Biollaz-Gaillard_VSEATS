@@ -16,6 +16,7 @@ namespace BLL
         private IConfiguration Configuration { get; }
         public DishManager(IConfiguration configuration)
         {
+            Configuration = configuration;
             DishesDb = new DishesDB(configuration);
         }
 

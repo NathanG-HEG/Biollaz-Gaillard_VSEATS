@@ -20,7 +20,7 @@ namespace DataAccessLayer.DBAccesses
 
         public int AddComposition(int idDish, int idOrder, int quantity)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try
@@ -55,7 +55,7 @@ namespace DataAccessLayer.DBAccesses
 
         public int DeleteCompositionByOrder(int idOrder)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try
@@ -81,12 +81,12 @@ namespace DataAccessLayer.DBAccesses
 
         public List<Composition> GetCompositionsByOrder(int idOrder)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             List<Composition> compositions = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM compose WHERE ID_order=@idOrder;";
                     SqlCommand cmd = new SqlCommand(query, cn);

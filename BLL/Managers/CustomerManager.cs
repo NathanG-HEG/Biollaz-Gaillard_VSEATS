@@ -20,7 +20,7 @@ namespace BLL
         {
             Configuration = configuration;
             Utilities = new Utilities(Configuration);
-            CustomersDb = new CustomersDB();
+            CustomersDb = new CustomersDB(Configuration);
         }
 
         public void CreateCustomer(string firstname, string lastname, string emailAddress, string password)

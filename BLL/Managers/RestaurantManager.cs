@@ -19,11 +19,11 @@ namespace BLL
         private IConfiguration Configuration { get; }
         private Utilities Utilities { get; }
 
-        public RestaurantManager(IConfiguration iconfiguration)
+        public RestaurantManager(IConfiguration configuration)
         {
-            Configuration = iconfiguration;
+            Configuration = configuration;
             Utilities = new Utilities(Configuration);
-            RestaurantsDb = new RestaurantsDB(iconfiguration);
+            RestaurantsDb = new RestaurantsDB(Configuration);
         }
 
         public void CreateRestaurant(int idArea, string name, string emailAddress, string password)

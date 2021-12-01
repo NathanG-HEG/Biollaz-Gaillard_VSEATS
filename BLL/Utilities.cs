@@ -23,7 +23,7 @@ namespace BLL
 
         public  bool IsEmailAddressInDatabase(string emailAddress)
         {
-            CustomersDB customersDb = new CustomersDB();
+            CustomersDB customersDb = new CustomersDB(Configuration);
             List<Customer> customers = customersDb.GetAllCustomers();
             foreach (var c in customers)
             {

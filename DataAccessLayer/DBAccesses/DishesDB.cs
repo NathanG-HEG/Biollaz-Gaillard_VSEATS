@@ -20,7 +20,7 @@ namespace DataAccessLayer.DBAccesses
 
         public int AddDish(int idRestaurant, string name, int price)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try
@@ -50,12 +50,12 @@ namespace DataAccessLayer.DBAccesses
 
         public List<Dish> GetAllDishesByRestaurant(int idRestaurant)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             List<Dish> dishes = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Dishes WHERE ID_Restaurant=@idRestaurant;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -97,12 +97,12 @@ namespace DataAccessLayer.DBAccesses
 
         public Dish GetDishById(int idDish)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             Dish dish = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Dishes WHERE ID_dish=@idDish;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -140,7 +140,7 @@ namespace DataAccessLayer.DBAccesses
 
         public int SetAvailability(int idDish, bool isAvailable)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try
@@ -168,7 +168,7 @@ namespace DataAccessLayer.DBAccesses
 
         public int SetPrice(int idDish, int price)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try

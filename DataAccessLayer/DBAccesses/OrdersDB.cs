@@ -19,7 +19,7 @@ namespace DataAccessLayer.DBAccesses
 
         public int AddOrder(int idCustomer, int idCourier, int idArea, DateTime expectedDeliveryTime, string deliveryAddress)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int idOrder = -1;
             try
             {
@@ -52,12 +52,12 @@ namespace DataAccessLayer.DBAccesses
 
         public Order GetOrderById(int orderID)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             Order order = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Orders WHERE ID_Order=@orderID;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -103,7 +103,7 @@ namespace DataAccessLayer.DBAccesses
 
         public int DeleteOrder(int idOrder)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try
@@ -130,7 +130,7 @@ namespace DataAccessLayer.DBAccesses
 
         public int SetOrderToDelivered(int idOrder)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try
@@ -160,12 +160,12 @@ namespace DataAccessLayer.DBAccesses
 
         public List<Order> GetAllOrdersByCustomer(int idCustomer)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             List<Order> orders = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM ORDERS WHERE ID_customer=@idCustomer;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -215,12 +215,12 @@ namespace DataAccessLayer.DBAccesses
 
         public List<Order> GetAllOrdersByCourier(int idCourier)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             List<Order> orders = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Orders WHERE ID_courrier=@idCourier ORDER BY EXPECTEDDELIVERYTIME DESC;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -273,12 +273,12 @@ namespace DataAccessLayer.DBAccesses
 
         public List<Order> GetAllOrdersByRestaurant(int idRestaurant)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             List<Order> orders = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Orders o " +
                                    "INNER JOIN Compose com ON o.ID_order = com.ID_order " +
@@ -331,7 +331,7 @@ namespace DataAccessLayer.DBAccesses
 
         public int SetTotal(int idOrder, int total)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try

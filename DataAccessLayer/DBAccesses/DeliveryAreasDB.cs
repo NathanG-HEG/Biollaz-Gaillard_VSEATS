@@ -20,7 +20,7 @@ namespace DataAccessLayer.DBAccesses
         public int AddDeliveryArea(string name, int postcode)
         {
             {
-                string connectionString = Connection.GetConnectionString();
+                string connectionString = Configuration.GetConnectionString("DefaultConnection");
                 int result = 0;
 
                 try
@@ -47,12 +47,12 @@ namespace DataAccessLayer.DBAccesses
 
         public DeliveryArea GetDeliveryAreaByName(string name)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             DeliveryArea deliveryArea = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Delivery_Areas WHERE name = @name;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -87,12 +87,12 @@ namespace DataAccessLayer.DBAccesses
 
         public DeliveryArea GetDeliveryAreaByPostcode(int postcode)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             DeliveryArea deliveryArea = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Delivery_Areas WHERE postcode = @postcode;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -127,12 +127,12 @@ namespace DataAccessLayer.DBAccesses
 
         public List<DeliveryArea> GetAllDeliveryAreas()
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             List<DeliveryArea> deliveryAreas = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Delivery_Areas;";
                     SqlCommand cmd = new SqlCommand(query, cn);

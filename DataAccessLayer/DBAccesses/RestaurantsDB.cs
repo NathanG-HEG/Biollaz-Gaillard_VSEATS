@@ -20,7 +20,7 @@ namespace DataAccessLayer.DBAccesses
 
         public int AddRestaurant(int idArea, string name, string emailAddress, string password)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try
@@ -51,12 +51,12 @@ namespace DataAccessLayer.DBAccesses
 
         public Restaurant GetRestaurantByName(string name)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             Restaurant restaurant = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Restaurants WHERE name=@name;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -91,12 +91,12 @@ namespace DataAccessLayer.DBAccesses
 
         public Restaurant GetRestaurantByLogin(string emailAddress, string password)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             Restaurant restaurant = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Restaurants WHERE emailAddress=@emailAddress AND password=@password;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -132,12 +132,12 @@ namespace DataAccessLayer.DBAccesses
         public List<Restaurant> GetAllRestaurants()
         {
             //string connectionStrings = Connection.GetConnectionString();
-            string connectionStrings = IConfiguration.GetConnectionString("DefaultConnection");
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             List<Restaurant> restaurants = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Restaurants;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -175,12 +175,12 @@ namespace DataAccessLayer.DBAccesses
 
         public List<Restaurant> GetAllRestaurantsByArea(int idArea)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             List<Restaurant> restaurants = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Restaurants WHERE @idArea = id_Area;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -219,7 +219,7 @@ namespace DataAccessLayer.DBAccesses
 
         public int UpdateImage(string path, int idRestaurant)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try
@@ -247,7 +247,7 @@ namespace DataAccessLayer.DBAccesses
 
         public int UpdateLogo(string path, int idRestaurant)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try

@@ -16,7 +16,7 @@ namespace DataAccessLayer.DBAccesses
 
         public int AddCourier(int idArea, string firstName, string lastName, string emailAddress, string password)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try
@@ -48,12 +48,12 @@ namespace DataAccessLayer.DBAccesses
 
         public List<Courier> GetAllCouriersByArea(int idArea)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             List<Courier> couriers = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Courriers WHERE ID_area=@idArea;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -93,12 +93,12 @@ namespace DataAccessLayer.DBAccesses
 
         public Courier GetCourierById(int idCourier)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             Courier courier = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Courriers WHERE ID_courrier=@idCourier;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -135,12 +135,12 @@ namespace DataAccessLayer.DBAccesses
 
         public List<Courier> GetAllCouriers()
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             List<Courier> couriers = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Courriers;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -178,12 +178,12 @@ namespace DataAccessLayer.DBAccesses
 
         public Courier GetCourierByLogin(string emailAddress, string password)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             Courier courier = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Courriers WHERE password=@password AND emailAddress = @emailAddress;";
                     SqlCommand cmd = new SqlCommand(query, cn);

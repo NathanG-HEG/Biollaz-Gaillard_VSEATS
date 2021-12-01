@@ -5,14 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer.DBAccesses
 {
     public class CustomersDB : ICustomersDB
     {
+        private IConfiguration Configuration { get; }
+
+        public CustomersDB(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         public int AddCustomer(string firstname, string lastname, string emailAddress, string password)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try
@@ -43,12 +51,12 @@ namespace DataAccessLayer.DBAccesses
 
         public Customer GetCustomerById(int idCustomer)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             Customer customer = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Customers WHERE ID_customer = @idCustomer;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -85,12 +93,12 @@ namespace DataAccessLayer.DBAccesses
 
         public List<Customer> GetAllCustomers()
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             List<Customer> customers = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Customers;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -128,12 +136,12 @@ namespace DataAccessLayer.DBAccesses
 
         public Customer GetCustomerByLogin(string emailAddress, string password)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             Customer customer = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Customers WHERE password=@password AND emailAddress = @emailAddress;";
                     SqlCommand cmd = new SqlCommand(query, cn);

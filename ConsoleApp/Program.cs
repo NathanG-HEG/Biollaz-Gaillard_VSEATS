@@ -154,7 +154,7 @@ namespace ConsoleApp
 
         static void NewCourier()
         {
-            DeliveryAreaManager dam = new DeliveryAreaManager();
+            DeliveryAreaManager dam = new DeliveryAreaManager(Configuration);
             CourierManager com = new CourierManager(Configuration);
             Console.WriteLine("In what area are you delivering?");
             List<DeliveryArea> areas = dam.GetAllDeliveryAreas();
@@ -189,7 +189,7 @@ namespace ConsoleApp
         {
 
             Console.WriteLine("Where would you like to be delivered?");
-            DeliveryAreaManager dm = new DeliveryAreaManager();
+            DeliveryAreaManager dm = new DeliveryAreaManager(Configuration);
             List<DeliveryArea> deliveryAreas = dm.GetAllDeliveryAreas();
             foreach (var d in deliveryAreas)
             {
@@ -228,7 +228,7 @@ namespace ConsoleApp
             int chosenRest = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("Available dishes: ");
-            DishManager dishManager = new DishManager();
+            DishManager dishManager = new DishManager(Configuration);
             List<Dish> dishes = dishManager.GetAllDishesByRestaurant(chosenRest);
             int chosenDish;
             List<int> chosenDishes = new List<int>();
