@@ -21,9 +21,9 @@ namespace WebApp.Controllers
 
         public IActionResult Index()
         {
-            List<Restaurant> restaurants = RestaurantManager.GetAllRestaurants();
-            return View(restaurants);
+            return View();
         }
+
 
     }
 }
