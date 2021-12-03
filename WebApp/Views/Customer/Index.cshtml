@@ -6,20 +6,18 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Restaurant
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AreaName)
+                Area
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IconPath)
+               
             </th>
             <th></th>
         </tr>
@@ -34,6 +32,7 @@
                 @Html.DisplayFor(modelItem => item.AreaName)
             </td>
             <td>
+                #TODO Logo here
                 @Html.DisplayFor(modelItem => item.IconPath)
             </td>
             <td>

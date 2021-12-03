@@ -40,23 +40,29 @@ namespace WebApp.Controllers
             return View(restaurantsVM);
         }
 
+        public IActionResult AddToCart(int id)
+        {
+
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
         public IActionResult Order(int id)
         {
             Restaurant r = RestaurantManager.GetRestaurantById(id);
 
             List<Dish> dishes = DishManager.GetAllDishesByRestaurant(id);
-            List<DishViewModel> dishesVM = new List<DishViewModel>();
+            List<DishViewModel> dishesVm = new List<DishViewModel>();
 
             foreach (var d in dishes)
             {
                 if (d.IsAvailable)
                 { 
-                    dishesVM.Add(new DishViewModel(){IdDish = d.IdDish, Image = d.Image, IdRestaurant = d.IdRestaurant, Name = d.Name, Price = d.Price});
+                    dishesVm.Add(new DishViewModel(){IdDish = d.IdDish, Image = d.Image, IdRestaurant = d.IdRestaurant, Name = d.Name, Price = (double)d.Price/100});
                 }
             }
 
-            String areaName = DeliveryAreaManager.GetDeliveryAreaById(r.IdArea).Name;
-            RestaurantViewModel restaurantVm = new RestaurantViewModel() { IdRestaurant = id, Name = r.Name, AreaName = areaName, Dishes = dishesVM};
+            string areaName = DeliveryAreaManager.GetDeliveryAreaById(r.IdArea).Name;
+            RestaurantViewModel restaurantVm = new RestaurantViewModel() { IdRestaurant = id, Name = r.Name, AreaName = areaName, Dishes = dishesVm};
 
             return View(restaurantVm);
         }
