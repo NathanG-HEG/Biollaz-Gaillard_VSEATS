@@ -272,5 +272,45 @@ namespace DataAccessLayer.DBAccesses
             }
             return result;
         }
+
+        public Restaurant GetRestaurantById(int id)
+        {
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
+            Restaurant restaurant = null;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT * FROM Restaurants WHERE ID_Restaurant=@id;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cn.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            restaurant = new Restaurant();
+
+                            restaurant.IdRestaurant = (int)dr["ID_restaurant"];
+                            restaurant.IdArea = (int)dr["ID_area"];
+                            restaurant.Name = (string)dr["name"];
+                            restaurant.EmailAddress = (string)dr["emailAddress"];
+                            restaurant.Password = (string)dr["password"];
+
+                        }
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception occurred while accessing restaurant " + id + ": " + e.Message);
+            }
+
+            return restaurant;
+        }
     }
 }

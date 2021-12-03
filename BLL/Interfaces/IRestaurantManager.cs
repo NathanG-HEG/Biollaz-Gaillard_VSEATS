@@ -13,6 +13,7 @@ namespace BLL.Interfaces
         public void UpdateLogo(string path, int idRestaurant);
         public Restaurant GetRestaurantByLogin(string email, string password);
         public Restaurant GetRestaurantByName(string name);
+        public Restaurant GetRestaurantById(int id);
         public List<Restaurant> GetAllRestaurantsArea(int idArea);
         public List<Restaurant> GetAllRestaurants();
 

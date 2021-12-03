@@ -11,7 +11,8 @@ namespace WebApp.Models
         public string AreaName { get; set; }
         public string ImagePath { get; set; }
         public string IconPath { get; set; }
-        private List<Dish> Dishes { get; set; }
+        public int IdRestaurant { get; set; }
+        public List<DishViewModel> Dishes { get; set; }
 
     }
 }

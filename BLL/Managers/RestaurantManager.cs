@@ -96,5 +96,10 @@ namespace BLL
         {
             return RestaurantsDb.GetAllRestaurants();
         }
+
+        public Restaurant GetRestaurantById(int id)
+        {
+            return RestaurantsDb.GetRestaurantById(id);
+        }
     }
 }

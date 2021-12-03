@@ -36,7 +36,14 @@ namespace WebApp
             services.AddScoped<IOrdersDB, OrdersDB>();
 
             services.AddScoped<IDeliveryAreaManager, DeliveryAreaManager>();
-            services.AddScoped<DeliveryAreasDB, DeliveryAreasDB>();
+            services.AddScoped<IDeliveryAreasDB, DeliveryAreasDB>();
+
+            services.AddScoped<ICustomerManager, CustomerManager>();
+            services.AddScoped<ICustomersDB, CustomersDB>();
+
+            services.AddScoped<IDishManager, DishManager>();
+            services.AddScoped<IDishesDB, DishesDB>();
+
 
             services.AddControllersWithViews();
         }
@@ -65,7 +72,7 @@ namespace WebApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Customer}/{action=Index}/{id?}");
             });
         }
     }

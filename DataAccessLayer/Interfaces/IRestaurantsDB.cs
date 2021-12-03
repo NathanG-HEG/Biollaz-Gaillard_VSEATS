@@ -12,6 +12,7 @@ namespace DataAccessLayer.Interfaces
     {
         public int AddRestaurant(int idArea, string name, string emailAddress, string password);
         public Restaurant GetRestaurantByName(string name);
+        public Restaurant GetRestaurantById(int id);
         public Restaurant GetRestaurantByLogin(string emailAddress, string password);
         public List<Restaurant> GetAllRestaurants();
         public List<Restaurant> GetAllRestaurantsByArea(int idArea);
