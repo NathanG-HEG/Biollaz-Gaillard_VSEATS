@@ -15,6 +15,7 @@ namespace WebApp.Controllers
         public IOrderManager OrderManager { get; }
         public IDeliveryAreaManager DeliveryAreaManager { get; }
         public IDishManager DishManager { get; }
+        public List<Dish> dishes { get; set; }
 
 
         public CustomerController(ICustomerManager customerManager, IRestaurantManager restaurantManager,
@@ -25,6 +26,7 @@ namespace WebApp.Controllers
             OrderManager = orderManager;
             DeliveryAreaManager = deliveryAreaManager;
             DishManager = dishManager;
+            dishes = new List<Dish>();
         }
        
         public IActionResult Index()
@@ -40,13 +42,8 @@ namespace WebApp.Controllers
             return View(restaurantsVM);
         }
 
-        public IActionResult AddToCart(int id)
-        {
 
-            return Redirect(Request.Headers["Referer"].ToString());
-        }
-
-        public IActionResult Order(int id)
+        public IActionResult Order(int id, int sum)
         {
             Restaurant r = RestaurantManager.GetRestaurantById(id);
 
@@ -65,6 +62,25 @@ namespace WebApp.Controllers
             RestaurantViewModel restaurantVm = new RestaurantViewModel() { IdRestaurant = id, Name = r.Name, AreaName = areaName, Dishes = dishesVm};
 
             return View(restaurantVm);
+        }
+
+      
+        public void AddToCart(int id)
+        {
+            dishes.Add(DishManager.GetDishById(id));
+            int restaurantId = DishManager.GetDishById(id).IdRestaurant;
+            int sum = 0;
+            foreach (var d in dishes)
+            {
+                sum += d.Price;
+            }
+
+        }
+
+        public IActionResult Checkout(DishViewModel[] dishes)
+        {
+
+            return View();
         }
 
     }

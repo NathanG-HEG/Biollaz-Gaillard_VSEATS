@@ -9,7 +9,10 @@
 
 <div>
     <h4>@Html.DisplayFor(model => model.Name)</h4>
-    <hr />
+    <div style="text-align: right; font-size: 140%; margin-right: 180px">
+        @Html.ActionLink("Checkout", "Checkout", new {  })
+    </div>
+    <hr/>
 
     <table class="table">
         <thead>
@@ -18,7 +21,6 @@
                     Plate
                 </th>
                 <th>
-
                 </th>
                 <th>
                     Price
@@ -29,30 +31,31 @@
             </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model.Dishes)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    #TODO IMAGE HERE
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.Price)
-                </td>
-                <td>
-                    <button onclick="addToCart(@I)">Add to cart</button>
-                </td>
-            </tr>
-            I++;
-        }
+            @foreach (var item in Model.Dishes)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        #TODO IMAGE HERE
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Price)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Add To Cart", "AddToCart", new { id = item.IdDish }, new {onclick = "addToCart( "+ I + ");"})
+                    </td>
+                </tr>
+                I++;
+            }
         </tbody>
     </table>
 </div>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
 
 <script>
     class Dish {
@@ -81,6 +84,6 @@
         document.getElementById("total").innerHTML = sum+" CHF";
         console.log(cart);
     }
-    
+
 
 </script>
