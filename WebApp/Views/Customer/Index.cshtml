@@ -9,21 +9,22 @@
 
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                Restaurant
-            </th>
-            <th>
-                Area
-            </th>
-            <th>
-               
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            Restaurant
+        </th>
+        <th>
+            Area
+        </th>
+        <th>
+
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -36,9 +37,9 @@
                 @Html.DisplayFor(modelItem => item.IconPath)
             </td>
             <td>
-                |@Html.ActionLink("Order", "Order", new {  id=item.IdRestaurant, sum=0  })
+                @Html.ActionLink("Order now", "Order", new {id = item.IdRestaurant, sum = 0})
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

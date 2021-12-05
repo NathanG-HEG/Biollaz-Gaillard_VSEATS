@@ -43,7 +43,7 @@ namespace WebApp.Controllers
         }
 
 
-        public IActionResult Order(int id, int sum)
+        public IActionResult Order(int id)
         {
             Restaurant r = RestaurantManager.GetRestaurantById(id);
 
@@ -65,7 +65,7 @@ namespace WebApp.Controllers
         }
 
       
-        public void AddToCart(int id)
+        public IActionResult AddToCart(int id)
         {
             dishes.Add(DishManager.GetDishById(id));
             int restaurantId = DishManager.GetDishById(id).IdRestaurant;
@@ -74,7 +74,7 @@ namespace WebApp.Controllers
             {
                 sum += d.Price;
             }
-
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         public IActionResult Checkout(DishViewModel[] dishes)

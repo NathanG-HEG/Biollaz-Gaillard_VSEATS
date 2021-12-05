@@ -41,7 +41,7 @@
                         #TODO IMAGE HERE
                     </td>
                     <td>
-                        @Html.DisplayFor(model => item.Price)
+                        @Html.DisplayFor(model => item.Price) CHF
                     </td>
                     <td>
                         @Html.ActionLink("Add To Cart", "AddToCart", new { id = item.IdDish }, new {onclick = "addToCart( "+ I + ");"})
