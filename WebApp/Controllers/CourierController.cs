@@ -45,6 +45,7 @@ namespace WebApp.Controllers
 
                 ordersViewModel.Add(new OrderViewModel()
                 {
+                    IdOrder = o.IdOrder,
                     DeliveryAddress = o.DeliveryAddress,
                     CustomerFistName = customerFirstName,
                     CustomerLastName = customerLastName,
@@ -57,9 +58,11 @@ namespace WebApp.Controllers
             return View(ordersViewModel);
         }
 
-        public IActionResult SetToDelivered()
+        [HttpGet]
+        public IActionResult SetToDelivered(int id)
         {
-            return new EmptyResult();
+            OrderManager.SetOrderToDelivered(id);
+            return Redirect(Request.Headers["Referer"].ToString());
         }
     }
 }

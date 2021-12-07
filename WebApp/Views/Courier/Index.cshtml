@@ -46,7 +46,18 @@
                 @Html.DisplayFor(modelItem => item.ExpectedDeliveryTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TimeOfDelivery)
+                @{
+                    string time;
+                    if (item.TimeOfDelivery==DateTime.MinValue)
+                    {
+                        time = "not yet";
+                    }
+                    else
+                    {
+                        time = item.TimeOfDelivery.ToString();
+                    }
+                }
+                @time
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DeliveryAddress)
@@ -67,9 +78,7 @@
                 @Html.DisplayFor(modelItem => item.CustomerLastName)
             </td>
             <td>
-                @Html.ActionLink("Set to delivered", "SetToDelivered", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Set to delivered", "SetToDelivered", new {  id=item.IdOrder  }) 
             </td>
         </tr>
 }

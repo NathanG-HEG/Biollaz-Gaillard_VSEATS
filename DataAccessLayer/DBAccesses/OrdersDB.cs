@@ -83,6 +83,10 @@ namespace DataAccessLayer.DBAccesses
                             {
                                 order.TimeOfDelivery = (DateTime)dr["timeOfDelivery"];
                             }
+                            else
+                            {
+                                order.TimeOfDelivery = DateTime.MinValue;
+                            }
                             order.DeliveryAddress = (string)dr["delivery_address"];
                             if (dr["orderTotal"] != DBNull.Value)
                             {
@@ -144,6 +148,34 @@ namespace DataAccessLayer.DBAccesses
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@idOrder", idOrder);
                     cmd.Parameters.AddWithValue("@timeOfDelivery", DateTime.Now);
+
+                    cn.Open();
+
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception caught while setting order status: " + e.Message);
+            }
+            return result;
+        }
+
+        public int SetOrderToUnDelivered(int idOrder)
+        {
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
+            int result = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    string query = "UPDATE Orders " +
+                                   "SET timeOfDelivery = @timeOfDelivery " +
+                                   "WHERE ID_Order = @idOrder;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@idOrder", idOrder);
+                    cmd.Parameters.AddWithValue("@timeOfDelivery", DBNull.Value);
 
                     cn.Open();
 
@@ -357,5 +389,6 @@ namespace DataAccessLayer.DBAccesses
             }
             return result;
         }
+
     }
 }
