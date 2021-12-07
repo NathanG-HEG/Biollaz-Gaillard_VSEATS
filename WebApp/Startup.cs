@@ -44,6 +44,8 @@ namespace WebApp
             services.AddScoped<IDishManager, DishManager>();
             services.AddScoped<IDishesDB, DishesDB>();
 
+            services.AddScoped<ICourierManager, CourierManager>();
+            services.AddScoped<ICouriersDB, CouriersDB>();
 
             services.AddControllersWithViews();
         }

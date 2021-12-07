@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BLL.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,17 @@ namespace WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        public ICustomerManager CustomerManager { get; }
+        public IRestaurantManager RestaurantManager { get; }
+        public ICourierManager CourierManager { get; }
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ICustomerManager customerManager, IRestaurantManager restaurantManager,
+                                ICourierManager courierManager)
         {
             _logger = logger;
+            CustomerManager = customerManager;
+            RestaurantManager = restaurantManager;
+            CourierManager = courierManager;
         }
 
         public IActionResult Index()
@@ -32,6 +40,35 @@ namespace WebApp.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(UserLoginViewModel userViewModel)
+        {
+            string emailAddress = userViewModel.emailAddress;
+            string password = userViewModel.password;
+            if (CustomerManager.GetCustomerByLogin(emailAddress, password) != null)
+            {
+                return RedirectToAction("Index", "Customer");
+            }
+
+            if (CourierManager.GetCourierByLogin(emailAddress, password) != null)
+            {
+                return RedirectToAction("Index", "Courier");
+            }
+
+            if (RestaurantManager.GetRestaurantByLogin(emailAddress, password) != null)
+            {
+                return RedirectToAction("Index", "Restaurant");
+            }
+
+            //return View("Login");
+            return new EmptyResult();
         }
     }
 }

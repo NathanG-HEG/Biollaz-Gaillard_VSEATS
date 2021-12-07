@@ -5,13 +5,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\coarse_dirt.png" />
-    <None Remove="Images\dirt.png" />
-    <None Remove="Images\dirt1.png" />
+    <None Remove="wwwroot\Images\coarse_dirt.png" />
+    <None Remove="wwwroot\Images\dirt.png" />
+    <None Remove="wwwroot\Images\dirt1.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Images\dirt1.png" />
+    <None Include="wwwroot\Images\granite.png" />
+    <None Include="wwwroot\Images\grass_block_side.png" />
+    <None Include="wwwroot\Images\grass_block_side_overlay.png" />
+    <None Include="wwwroot\Images\grass_block_snow.png" />
+    <None Include="wwwroot\Images\grass_path_side.png" />
+    <None Include="wwwroot\Images\mycelium_side.png" />
+    <None Include="wwwroot\Images\mycelium_top.png" />
+    <None Include="wwwroot\Images\podzol_side.png" />
+    <None Include="wwwroot\Images\podzol_top.png" />
+    <None Include="wwwroot\Images\polished_granite.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,8 +32,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\coarse_dirt.png" />
-    <Resource Include="Images\dirt.png" />
+    <Resource Include="wwwroot\Images\coarse_dirt.png" />
+    <Resource Include="wwwroot\Images\dirt.png" />
   </ItemGroup>
 
 </Project>
