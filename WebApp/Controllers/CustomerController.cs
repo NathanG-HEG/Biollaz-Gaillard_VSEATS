@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL;
 using WebApp.Models;namespace WebApp.Controllers
 {
     public class CustomerController : Controller
@@ -13,7 +14,6 @@ using WebApp.Models;namespace WebApp.Controllers
         public IOrderManager OrderManager { get; }
         public IDeliveryAreaManager DeliveryAreaManager { get; }
         public IDishManager DishManager { get; }
-        public List<Dish> dishes { get; set; }
         public CustomerController(ICustomerManager customerManager, IRestaurantManager restaurantManager,
         IOrderManager orderManager, IDeliveryAreaManager deliveryAreaManager, IDishManager dishManager)
         {
@@ -22,15 +22,18 @@ using WebApp.Models;namespace WebApp.Controllers
             OrderManager = orderManager;
             DeliveryAreaManager = deliveryAreaManager;
             DishManager = dishManager;
-            dishes = new List<Dish>();
         }
         public IActionResult Index()
         {
             List<Restaurant> restaurants = RestaurantManager.GetAllRestaurants();
-            List<RestaurantViewModel> restaurantsVM = new List<RestaurantViewModel>(); foreach (var r in restaurants)
+            List<RestaurantViewModel> restaurantsVM = new List<RestaurantViewModel>(); 
+            foreach (var r in restaurants)
             {
                 string deliveryAreaName = DeliveryAreaManager.GetDeliveryAreaById(r.IdArea).Name;
-                restaurantsVM.Add(new RestaurantViewModel() { IdRestaurant = r.IdRestaurant, AreaName = deliveryAreaName, IconPath = r.Logo, Name = r.Name });
+                restaurantsVM.Add(new RestaurantViewModel()
+                {
+                    IdRestaurant = r.IdRestaurant, AreaName = deliveryAreaName, ImagePath = r.Image, IconPath = r.Logo, Name = r.Name
+                });
             }
             return View(restaurantsVM);
         }
@@ -45,17 +48,20 @@ using WebApp.Models;namespace WebApp.Controllers
                 }
             }
             string areaName = DeliveryAreaManager.GetDeliveryAreaById(r.IdArea).Name;
-            RestaurantViewModel restaurantVm = new RestaurantViewModel() { IdRestaurant = id, Name = r.Name, AreaName = areaName, Dishes = dishesVm }; return View(restaurantVm);
+            RestaurantViewModel restaurantVm = new RestaurantViewModel()
+            {
+                IdRestaurant = id, Name = r.Name, AreaName = areaName, Dishes = dishesVm, ImagePath =r.Image, IconPath = r.Logo
+            };
+            return View(restaurantVm);
         }
         public IActionResult AddToCart(int id)
         {
-            dishes.Add(DishManager.GetDishById(id));
-            int restaurantId = DishManager.GetDishById(id).IdRestaurant;
-            int sum = 0;
-            foreach (var d in dishes)
-            {
-                sum += d.Price;
-            }
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        public IActionResult RemoveToCart(int id)
+        {
+            // Removes 
             return Redirect(Request.Headers["Referer"].ToString());
         }
         public IActionResult Checkout(DishViewModel[] dishes)

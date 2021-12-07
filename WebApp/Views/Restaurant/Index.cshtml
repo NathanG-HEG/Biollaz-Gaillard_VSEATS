@@ -34,7 +34,7 @@
                 @Html.DisplayFor(modelItem => item.AreaName)
             </td>
             <td>
-                <img src="@Url.Content("/Images/dirt1.png")"/>
+                <img src="@Html.DisplayTextFor(modelItem => item.IconPath)"/>
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |

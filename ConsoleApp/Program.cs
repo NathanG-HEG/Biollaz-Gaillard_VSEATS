@@ -25,9 +25,8 @@ namespace ConsoleApp
 
 
         static void Main(string[] args)
-
         {
-            
+
             bool running = true;
 
             Console.WriteLine("Welcome!\nType 'help' for help.");
