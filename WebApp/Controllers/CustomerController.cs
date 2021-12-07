@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL;
+using DTO;
+using Microsoft.AspNetCore.Http;
 using WebApp.Models;namespace WebApp.Controllers
 {
     public class CustomerController : Controller
@@ -26,16 +28,16 @@ using WebApp.Models;namespace WebApp.Controllers
         public IActionResult Index()
         {
             List<Restaurant> restaurants = RestaurantManager.GetAllRestaurants();
-            List<RestaurantViewModel> restaurantsVM = new List<RestaurantViewModel>(); 
+            List<RestaurantViewModel> restaurantsVm = new List<RestaurantViewModel>(); 
             foreach (var r in restaurants)
             {
                 string deliveryAreaName = DeliveryAreaManager.GetDeliveryAreaById(r.IdArea).Name;
-                restaurantsVM.Add(new RestaurantViewModel()
+                restaurantsVm.Add(new RestaurantViewModel()
                 {
                     IdRestaurant = r.IdRestaurant, AreaName = deliveryAreaName, ImagePath = r.Image, IconPath = r.Logo, Name = r.Name
                 });
             }
-            return View(restaurantsVM);
+            return View(restaurantsVm);
         }
         public IActionResult Order(int id)
         {
