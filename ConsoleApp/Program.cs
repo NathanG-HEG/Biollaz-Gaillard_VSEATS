@@ -8,6 +8,7 @@ using DataAccessLayer.DBAccesses;
 using System.Text.RegularExpressions;
 using BLL;
 using BLL.BusinessExceptions;
+using DTO;
 
 namespace ConsoleApp
 {

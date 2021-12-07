@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer;
 using System.Collections.Generic;
+using DTO;
 
 namespace BLL
 {

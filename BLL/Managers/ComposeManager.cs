@@ -8,6 +8,7 @@ using DataAccessLayer;
 using DataAccessLayer.DBAccesses;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic.CompilerServices;
+using DTO;
 
 namespace BLL
 {

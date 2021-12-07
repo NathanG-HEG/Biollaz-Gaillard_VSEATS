@@ -57,7 +57,8 @@ namespace WebApp.Controllers
                 return RedirectToAction("Index", "Customer");
             }
 
-            if (CourierManager.GetCourierByLogin(emailAddress, password) != null)
+            Courier courier = CourierManager.GetCourierByLogin(emailAddress, password);
+            if (courier != null)
             {
                 return RedirectToAction("Index", "Courier");
             }

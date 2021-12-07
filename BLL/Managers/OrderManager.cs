@@ -8,6 +8,7 @@ using BLL.Interfaces;
 using DataAccessLayer;
 using DataAccessLayer.DBAccesses;
 using Microsoft.Extensions.Configuration;
+using DTO;
 
 namespace BLL
 {

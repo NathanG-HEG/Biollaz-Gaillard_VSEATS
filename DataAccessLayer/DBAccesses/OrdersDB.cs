@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer.Interfaces;
 using Microsoft.Extensions.Configuration;
+using DTO;
 
 namespace DataAccessLayer.DBAccesses
 {
