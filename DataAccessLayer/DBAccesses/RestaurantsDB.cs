@@ -158,6 +158,10 @@ namespace DataAccessLayer.DBAccesses
                             restaurant.Name = (string)dr["name"];
                             restaurant.EmailAddress = (string)dr["emailAddress"];
                             restaurant.Password = (string)dr["password"];
+                            if (dr["image"] != DBNull.Value)
+                                restaurant.Image = (string) dr["image"];
+                            if (dr["logo"] != DBNull.Value)
+                                restaurant.Logo = (string) dr["logo"];
 
                             restaurants.Add(restaurant);
                         }
