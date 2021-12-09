@@ -7,7 +7,7 @@ using DTO;
 
 namespace DataAccessLayer.Interfaces
 {
-    interface ICompositionDB
+    public interface ICompositionDB
     {
         public int AddComposition(int idDish, int idOrder, int quantity);
         public List<Composition> GetCompositionsByOrder(int idOrder);

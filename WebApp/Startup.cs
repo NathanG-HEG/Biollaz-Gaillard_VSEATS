@@ -47,6 +47,9 @@ namespace WebApp
             services.AddScoped<ICourierManager, CourierManager>();
             services.AddScoped<ICouriersDB, CouriersDB>();
 
+            services.AddScoped<IComposeManager, ComposeManager>();
+            services.AddScoped<ICompositionDB, CompositionDB>();
+
             services.AddControllersWithViews();
         }
 

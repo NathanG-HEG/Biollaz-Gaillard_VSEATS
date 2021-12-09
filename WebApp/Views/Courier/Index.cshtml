@@ -11,76 +11,67 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ExpectedDeliveryTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TimeOfDelivery)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeliveryAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderTotal)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AreaName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CourierLastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomerFistName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomerLastName)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomerLastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeliveryAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AreaName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ExpectedDeliveryTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeOfDelivery)
+        </th>
+    </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExpectedDeliveryTime)
-            </td>
-            <td>
-                @{
-                    string time;
-                    if (item.TimeOfDelivery==DateTime.MinValue)
-                    {
-                        time = "not yet";
-                    }
-                    else
-                    {
-                        time = item.TimeOfDelivery.ToString();
-                    }
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomerLastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeliveryAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AreaName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExpectedDeliveryTime)
+        </td>
+        <td>
+            @{
+                string time;
+                if (item.TimeOfDelivery != DateTime.MinValue)
+                {
+                    time = item.TimeOfDelivery.ToString();
                 }
-                @time
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeliveryAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderTotal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AreaName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourierLastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerFistName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerLastName)
-            </td>
-            <td>
-                @Html.ActionLink("Set to delivered", "SetToDelivered", new {  id=item.IdOrder  }) 
-            </td>
-        </tr>
+                else
+                {
+                    time = "not yet";
+                }
+            }
+            @time
+        </td>
+        <td>
+            @{
+                if (item.TimeOfDelivery != DateTime.MinValue)
+                {
+                    @Html.ActionLink("Set to undelivered", "SetToDelivered", new {id = item.IdOrder})
+                }
+                else
+                {
+                    @Html.ActionLink("Set to delivered", "SetToDelivered", new {id = item.IdOrder})
+                }
+            }
+            | @Html.ActionLink("Details", "Details", new {id = item.IdOrder})
+        </td>
+    </tr>
 }
     </tbody>
 </table>

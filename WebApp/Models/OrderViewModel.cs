@@ -19,7 +19,7 @@ namespace WebApp.Models
         public string CourierLastName { get; set; }
         public string CustomerFistName { get; set; }
         public string CustomerLastName { get; set; }
-        private List<Composition> OrderCompositions { get; set; }
+        public List<Composition> OrderCompositions { get; set; }
 
     }
 }
