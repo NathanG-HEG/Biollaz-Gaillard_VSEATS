@@ -142,25 +142,29 @@ namespace BLL
         public void SetOrderToDelivered(int idOrder)
         {
 
-            if (GetOrderById(idOrder).TimeOfDelivery == DateTime.MinValue)
+            /*
+             * invert the current order's state
+             * if the order has already been set to delivered, sets it to not delivered
+             * if the order hasn't been delivered, sets it to delivered
+             */
+
+            if (GetOrderById(idOrder).TimeOfDelivery != DateTime.MinValue)
             {
                 //result is the number of rows affected, so if it is 0 then the status was not updated
-                int result = OrdersDb.SetOrderToDelivered(idOrder);
-                if (result == 0)
+                int resultUnDelivered = OrdersDb.SetOrderToUnDelivered(idOrder);
+                if (resultUnDelivered == 0)
                 {
                     throw new DataBaseException("Error occurred, delivery time of order " + idOrder + " has not been set.");
                 }
-
                 return;
             }
 
             //result is the number of rows affected, so if it is 0 then the status was not updated
-            int resultUnDelivered = OrdersDb.SetOrderToUnDelivered(idOrder);
-            if (resultUnDelivered == 0)
+            int result = OrdersDb.SetOrderToDelivered(idOrder);
+            if (result == 0)
             {
                 throw new DataBaseException("Error occurred, delivery time of order " + idOrder + " has not been set.");
             }
-
 
         }
 

@@ -17,15 +17,17 @@ namespace WebApp.Controllers
         public ICustomerManager CustomerManager { get; }
         public IDeliveryAreaManager DeliveryAreaManager { get; }
         public IComposeManager ComposeManager { get; }
+        public IDishManager DishManager { get; }
 
         public CourierController(IOrderManager orderManager, ICourierManager courierManager, ICustomerManager customerManager,
-                                    IDeliveryAreaManager deliveryAreaManager, IComposeManager composeManager)
+                                    IDeliveryAreaManager deliveryAreaManager, IComposeManager composeManager, IDishManager dishManager)
         {
             OrderManager = orderManager;
             CourierManager = courierManager;
             CustomerManager = customerManager;
             DeliveryAreaManager = deliveryAreaManager;
             ComposeManager = composeManager;
+            DishManager = dishManager;
         }
 
         [HttpGet]
@@ -40,10 +42,12 @@ namespace WebApp.Controllers
             List<OrderViewModel> ordersViewModel = new List<OrderViewModel>();
             foreach (var o in orders)
             {
-                string areaName = DeliveryAreaManager.GetDeliveryAreaById(o.IdArea).Name;
+                DeliveryArea deliveryArea = DeliveryAreaManager.GetDeliveryAreaById(o.IdArea);
+                string areaName = deliveryArea.Name;
+                int postcode = deliveryArea.Postcode;
 
                 string customerLastName = CustomerManager.GetCustomerById(o.IdCustomer).LastName;
-                
+
                 ordersViewModel.Add(new OrderViewModel()
                 {
                     IdOrder = o.IdOrder,
@@ -51,7 +55,7 @@ namespace WebApp.Controllers
                     CustomerLastName = customerLastName,
                     ExpectedDeliveryTime = o.ExpectedDeliveryTime,
                     TimeOfDelivery = o.TimeOfDelivery,
-                    AreaName = areaName
+                    AreaName = postcode + " " + areaName
                 });
             }
 
@@ -68,7 +72,9 @@ namespace WebApp.Controllers
         {
             Order o = OrderManager.GetOrderById(id);
 
-            string areaName = DeliveryAreaManager.GetDeliveryAreaById(o.IdArea).Name;
+            DeliveryArea deliveryArea = DeliveryAreaManager.GetDeliveryAreaById(o.IdArea);
+            string areaName = deliveryArea.Name;
+            int postcode = deliveryArea.Postcode;
 
             Customer customer = CustomerManager.GetCustomerById(o.IdCustomer);
             string customerFirstname = customer.FirstName;
@@ -76,13 +82,28 @@ namespace WebApp.Controllers
 
             List<Composition> compositions = ComposeManager.GetCompositionsByOrder(id);
 
+            //list of the ordered dishes
+            //used to display infos about dishes
+            List<Dish> dishes = new List<Dish>();
+            if (compositions != null)
+            {
+                int cpt = 0;
+                foreach (var c in compositions)
+                {
+                    dishes.Add(DishManager.GetDishById(compositions[cpt].ID_Dish));
+                    cpt++;
+                }
+            }
+
             OrderViewModel orderViewModel = new OrderViewModel()
             {
+                IdOrder = o.IdOrder,
                 CustomerFistName = customerFirstname,
                 CustomerLastName = customerLastName,
                 DeliveryAddress = o.DeliveryAddress,
-                AreaName = areaName,
+                AreaName = postcode + " " + areaName,
                 OrderCompositions = compositions,
+                OrderedDishes = dishes,
                 ExpectedDeliveryTime = o.ExpectedDeliveryTime,
                 TimeOfDelivery = o.TimeOfDelivery,
                 OrderTotal = o.OrderTotal
