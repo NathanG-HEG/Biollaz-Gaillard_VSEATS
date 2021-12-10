@@ -11,19 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\Images\granite.png" />
-    <None Include="wwwroot\Images\grass_block_side.png" />
-    <None Include="wwwroot\Images\grass_block_side_overlay.png" />
-    <None Include="wwwroot\Images\grass_block_snow.png" />
-    <None Include="wwwroot\Images\grass_path_side.png" />
-    <None Include="wwwroot\Images\mycelium_side.png" />
-    <None Include="wwwroot\Images\mycelium_top.png" />
-    <None Include="wwwroot\Images\podzol_side.png" />
-    <None Include="wwwroot\Images\podzol_top.png" />
-    <None Include="wwwroot\Images\polished_granite.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
 
