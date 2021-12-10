@@ -41,8 +41,10 @@ using WebApp.Models;namespace WebApp.Controllers
         }
         public IActionResult Order(int id)
         {
-            Restaurant r = RestaurantManager.GetRestaurantById(id); List<Dish> dishes = DishManager.GetAllDishesByRestaurant(id);
-            List<DishViewModel> dishesVm = new List<DishViewModel>(); foreach (var d in dishes)
+            Restaurant r = RestaurantManager.GetRestaurantById(id);
+            List<Dish> dishes = DishManager.GetAllDishesByRestaurant(id);
+            List<DishViewModel> dishesVm = new List<DishViewModel>();
+            foreach (var d in dishes)
             {
                 if (d.IsAvailable)
                 {
