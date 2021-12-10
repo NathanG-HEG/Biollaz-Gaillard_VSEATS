@@ -84,13 +84,15 @@ namespace WebApp.Controllers
 
             //list of the ordered dishes
             //used to display infos about dishes
-            List<Dish> dishes = new List<Dish>();
+            List<DishViewModel> dishes = null;
             if (compositions != null)
             {
+                dishes = new List<DishViewModel>(compositions.Count);
                 int cpt = 0;
                 foreach (var c in compositions)
                 {
-                    dishes.Add(DishManager.GetDishById(compositions[cpt].ID_Dish));
+                    Dish d = DishManager.GetDishById(compositions[cpt].ID_Dish);
+                    dishes.Add(new DishViewModel(){ Image = d.Image, IdRestaurant = d.IdRestaurant, Name = d.Name, Price = (double)d.Price / 100 });
                     cpt++;
                 }
             }

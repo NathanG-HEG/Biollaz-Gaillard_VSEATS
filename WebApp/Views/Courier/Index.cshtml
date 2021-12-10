@@ -4,29 +4,28 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Orders</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CustomerLastName)
+            Customer last name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DeliveryAddress)
+            Delivery address
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AreaName)
+            Postcode
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ExpectedDeliveryTime)
+            Expected delivery time
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TimeOfDelivery)
+            Actual time of delivery
         </th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -59,6 +58,7 @@
             @time
         </td>
         <td>
+            @Html.ActionLink("Details", "Details", new {id = item.IdOrder}) |
             @{
                 if (item.TimeOfDelivery != DateTime.MinValue)
                 {
@@ -69,7 +69,6 @@
                     @Html.ActionLink("Set to delivered", "SetToDelivered", new {id = item.IdOrder})
                 }
             }
-            | @Html.ActionLink("Details", "Details", new {id = item.IdOrder})
         </td>
     </tr>
 }

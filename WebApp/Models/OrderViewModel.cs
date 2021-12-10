@@ -20,7 +20,7 @@ namespace WebApp.Models
         public string CustomerFistName { get; set; }
         public string CustomerLastName { get; set; }
         public List<Composition> OrderCompositions { get; set; }
-        public List<Dish> OrderedDishes { get; set; }
+        public List<DishViewModel> OrderedDishes { get; set; }
 
     }
 }
