@@ -6,24 +6,23 @@
 
 <h1>Login</h1>
 
-<h4>UserViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="emailAddress" class="control-label"></label>
+                <label class="control-label">Email address</label>
                 <input asp-for="emailAddress" class="form-control" />
                 <span asp-validation-for="emailAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="password" class="control-label"></label>
+                <label class="control-label">Password</label>
                 <input asp-for="password" class="form-control" />
                 <span asp-validation-for="password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Log in" class="btn btn-primary" />
             </div>
         </form>
     </div>
