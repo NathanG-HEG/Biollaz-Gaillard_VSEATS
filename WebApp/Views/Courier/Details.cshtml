@@ -5,19 +5,7 @@
 }
 
 
-<div>
-    <a asp-action="Index">Back to List</a> |
-    @{
-        if (Model.TimeOfDelivery != DateTime.MinValue)
-        {
-            @Html.ActionLink("Set to undelivered", "SetToDelivered", new { id = Model.IdOrder })
-        }
-        else
-        {
-            @Html.ActionLink("Set to delivered", "SetToDelivered", new { id = Model.IdOrder })
-        }
-    }
-</div>
+
 <div>
     <hr />
     <dl class="row">
@@ -120,3 +108,17 @@
 
     </table>
 }
+
+<div>
+    <a asp-action="Index">Back to List</a> |
+    @{
+        if (Model.TimeOfDelivery != DateTime.MinValue)
+        {
+            @Html.ActionLink("Set to undelivered", "SetToDelivered", new { id = Model.IdOrder })
+        }
+        else
+        {
+            @Html.ActionLink("Set to delivered", "SetToDelivered", new { id = Model.IdOrder })
+        }
+    }
+</div>

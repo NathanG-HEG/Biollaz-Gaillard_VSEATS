@@ -68,8 +68,7 @@ namespace WebApp.Controllers
                 return RedirectToAction("Index", "Restaurant");
             }
 
-            //return View("Login");
-            return new EmptyResult();
+            return View("Login");
         }
     }
 }

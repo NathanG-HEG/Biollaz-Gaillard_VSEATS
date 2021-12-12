@@ -16,11 +16,14 @@
                 <input asp-for="emailAddress" class="form-control" />
                 <span asp-validation-for="emailAddress" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label class="control-label">Password</label>
-                <input asp-for="password" class="form-control" />
-                <span asp-validation-for="password" class="text-danger"></span>
+                <br />
+                <input asp-for="password" type="password" id="pwd" class="form-control">
+                Show Password <input type="checkbox" onclick="showPassword()">
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Log in" class="btn btn-primary" />
             </div>
@@ -29,9 +32,20 @@
 </div>
 
 <div>
-    <a asp-action="Index">Login later</a>
+    <a asp-controller="Customer" asp-action="Index">Login later</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script>
+    function showPassword() {
+        var x = document.getElementById("pwd");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>
