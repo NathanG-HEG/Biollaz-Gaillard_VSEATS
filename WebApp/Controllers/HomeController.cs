@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using WebApp.Models;
 
 namespace WebApp.Controllers
@@ -55,17 +56,20 @@ namespace WebApp.Controllers
             string password = userViewModel.password;
             if (CustomerManager.GetCustomerByLogin(emailAddress, password) != null)
             {
+                HttpContext.Session.SetInt32("IdMember", CustomerManager.GetCustomerByLogin(emailAddress, password).IdCustomer);
                 return RedirectToAction("Index", "Customer");
             }
 
             Courier courier = CourierManager.GetCourierByLogin(emailAddress, password);
             if (courier != null)
             {
+                HttpContext.Session.SetInt32("IdCourier", CourierManager.GetCourierByLogin(emailAddress, password).IdCourier);
                 return RedirectToAction("Index", "Courier");
             }
 
             if (RestaurantManager.GetRestaurantByLogin(emailAddress, password) != null)
             {
+                HttpContext.Session.SetInt32("IdRestaurant", RestaurantManager.GetRestaurantByLogin(emailAddress, password).IdRestaurant);
                 return RedirectToAction("Index", "Restaurant");
             }
             ModelState.AddModelError("", "Email or password is incorrect. Try again.");
