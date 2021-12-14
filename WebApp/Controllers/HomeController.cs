@@ -50,6 +50,7 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Login(UserLoginViewModel userViewModel)
         {
+            if (!ModelState.IsValid) return View("Login");
             string emailAddress = userViewModel.emailAddress;
             string password = userViewModel.password;
             if (CustomerManager.GetCustomerByLogin(emailAddress, password) != null)
@@ -67,7 +68,7 @@ namespace WebApp.Controllers
             {
                 return RedirectToAction("Index", "Restaurant");
             }
-
+            ModelState.AddModelError("", "Email or password is incorrect. Try again.");
             return View("Login");
         }
     }
