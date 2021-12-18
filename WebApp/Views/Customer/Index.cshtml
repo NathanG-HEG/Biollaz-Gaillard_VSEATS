@@ -4,15 +4,21 @@
 
 @{
     ViewData["Title"] = "Restaurants";
+    var firstName = Context.Session.GetString("UserFirstName");
 }
+
 
 @{
-    var firstName = Context.Session.GetString("UserFirstName")+',';
-}
+    if (firstName != null)
+    {
+        <h1>Hi @firstName, looking for a restaurant? </h1>
+    }
+    else
+    {
+        <h1>Hi, looking for a restaurant? </h1>
+    }
 
-<h1>
-    Hi @firstName looking for a restaurant?
-</h1>
+}
 
 
 <table class="table">
