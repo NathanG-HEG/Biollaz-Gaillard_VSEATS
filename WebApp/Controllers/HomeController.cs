@@ -49,6 +49,22 @@ namespace WebApp.Controllers
             return RedirectToAction("Index", "Customer");
         }
 
+        public IActionResult CustomerSignUp()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CustomerSignUp(CustomerSignUpViewModel customerViewModel)
+        {
+            return View("Index", "Customer");
+        }
+
+        public IActionResult CourierSignUp()
+        {
+            return View();
+        }
+
         public IActionResult Login()
         {
             return View();
