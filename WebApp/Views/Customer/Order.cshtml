@@ -51,7 +51,9 @@
                         @Html.DisplayFor(model => item.Price) CHF
                     </td>
                     <td>
-                        @Html.ActionLink("Add To Cart", "AddToCart", new { id = item.IdDish })
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" name="quantity" min="0" max="999999999" style="width: 50px"/>
+                        @Html.ActionLink("Add To Cart", "AddToCart", new {id = item.IdDish})
                     </td>
                 </tr>
             }
