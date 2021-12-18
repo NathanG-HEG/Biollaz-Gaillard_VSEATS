@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BLL;
 using DTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.VisualBasic.CompilerServices;
 using WebApp.Models;namespace WebApp.Controllers
 {
     public class CustomerController : Controller
@@ -39,6 +40,11 @@ using WebApp.Models;namespace WebApp.Controllers
                 return RedirectToAction("Login", "Home");
             }
 
+            //clearing cookies from potential previous orders
+            //HttpContext.Response.Cookies.Append("DishesId", "");
+            HttpContext.Response.Cookies.Delete("DishesId");
+            HttpContext.Response.Cookies.Append("TotalOrder", "0");
+
             List<Restaurant> restaurants = RestaurantManager.GetAllRestaurants();
             List<RestaurantViewModel> restaurantsVm = new List<RestaurantViewModel>(); 
             foreach (var r in restaurants)
@@ -57,6 +63,7 @@ using WebApp.Models;namespace WebApp.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+
             Restaurant r = RestaurantManager.GetRestaurantById(id);
             List<Dish> dishes = DishManager.GetAllDishesByRestaurant(id);
             List<DishViewModel> dishesVm = new List<DishViewModel>();
@@ -80,6 +87,14 @@ using WebApp.Models;namespace WebApp.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+
+            string dishesId = HttpContext.Request.Cookies["DishesId"]; 
+            HttpContext.Response.Cookies.Append("DishesId", dishesId + id + "_");
+
+            int totalOrder = Int32.Parse(HttpContext.Request.Cookies["TotalOrder"]);
+            int price = DishManager.GetDishById(id).Price;
+            HttpContext.Response.Cookies.Append("TotalOrder", (price + totalOrder).ToString());
+
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
