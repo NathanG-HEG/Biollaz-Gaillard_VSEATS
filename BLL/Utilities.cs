@@ -5,12 +5,13 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using BLL.Interfaces;
 using DataAccessLayer.DBAccesses;
 using Microsoft.Extensions.Configuration;
 
 namespace BLL
 {
-    public class Utilities
+    public class Utilities:IUtilities
     {
         public  readonly int MaxQuantity = 999_999_999;
         public  readonly int MaxOrdersSimultaneously = 2;

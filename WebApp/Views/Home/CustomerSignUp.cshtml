@@ -4,26 +4,28 @@
     ViewData["Title"] = "CustomerSignUp";
 }
 
-<h1>CustomerSignUp</h1>
+<h1>Ready to jump in?</h1>
 
-<h4>CustomerSignUpViewModel</h4>
+
+   
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CustomerSignUp">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
+                <label class="control-label">First name</label>
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
+                <label class="control-label">Last name</label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EmailAddress" class="control-label"></label>
+                <label class="control-label">Email address</label>
                 <input asp-for="EmailAddress" class="form-control" />
                 <span asp-validation-for="EmailAddress" class="text-danger"></span>
             </div>
@@ -33,7 +35,7 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PasswordConfirmation" class="control-label"></label>
+                <label class="control-label">Confirm password</label>
                 <input asp-for="PasswordConfirmation" class="form-control" />
                 <span asp-validation-for="PasswordConfirmation" class="text-danger"></span>
             </div>
@@ -45,6 +47,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Sign up later</a>
+    <h5>Looking to be a delivery man? <a asp-action="CourierSignUp">Sign up here</a></h5>
 </div>
 

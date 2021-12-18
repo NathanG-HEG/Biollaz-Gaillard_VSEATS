@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL;
 using Microsoft.AspNetCore.Http;
 using WebApp.Models;
 
@@ -17,14 +18,16 @@ namespace WebApp.Controllers
         public ICustomerManager CustomerManager { get; }
         public IRestaurantManager RestaurantManager { get; }
         public ICourierManager CourierManager { get; }
+        public IUtilities Utilities { get; }
 
         public HomeController(ILogger<HomeController> logger, ICustomerManager customerManager, IRestaurantManager restaurantManager,
-                                ICourierManager courierManager)
+                                ICourierManager courierManager, IUtilities utilities)
         {
             _logger = logger;
             CustomerManager = customerManager;
             RestaurantManager = restaurantManager;
             CourierManager = courierManager;
+            Utilities = utilities;
         }
 
         public IActionResult Index()
@@ -57,7 +60,27 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult CustomerSignUp(CustomerSignUpViewModel customerViewModel)
         {
-            return View("Index", "Customer");
+            if (!ModelState.IsValid) return View("CustomerSignUp");
+            if (Utilities.IsEmailAddressInDatabase(customerViewModel.EmailAddress))
+            {
+                ModelState.AddModelError("","An account with this email address already exists");
+                return View("CustomerSignUp");
+            }
+            if (!customerViewModel.Password.Equals(customerViewModel.PasswordConfirmation))
+            {
+                ModelState.AddModelError("","Passwords do not match");
+                return View("CustomerSignUp");
+            }
+
+            if (!Utilities.IsPasswordSyntaxCorrect(customerViewModel.Password))
+            {
+                ModelState.AddModelError("","Password must have at least 1 digit, 1 capital character, and be 8 characters long");
+                return View("CustomerSignUp");
+            }
+
+            CustomerManager.CreateCustomer(customerViewModel.FirstName, customerViewModel.LastName, customerViewModel.EmailAddress, customerViewModel.Password);
+
+            return View("Login");
         }
 
         public IActionResult CourierSignUp()

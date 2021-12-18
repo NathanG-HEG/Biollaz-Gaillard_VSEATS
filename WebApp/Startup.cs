@@ -51,6 +51,8 @@ namespace WebApp
             services.AddScoped<IComposeManager, ComposeManager>();
             services.AddScoped<ICompositionDB, CompositionDB>();
 
+            services.AddScoped<IUtilities, Utilities>();
+
             services.AddControllersWithViews();
         }
 
