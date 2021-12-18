@@ -8,6 +8,8 @@ using BLL.Interfaces;
 using DataAccessLayer;
 using WebApp.Models;
 using DTO;
+using Microsoft.AspNetCore.Http;
+
 namespace WebApp.Controllers
 {
     public class CourierController : Controller
@@ -31,32 +33,39 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int Id)
+        public IActionResult Index()
         {
-            Id = 4;
-            List<Order> orders = OrderManager.GetAllOrdersByCourier(Id);
 
-            Courier courier = CourierManager.GetCourierById(orders[0].IdCourier);
-            string courierLastName = courier.LastName;
-
-            List<OrderViewModel> ordersViewModel = new List<OrderViewModel>();
-            foreach (var o in orders)
+            if (HttpContext.Session.GetString("TypeOfUser") != "Courier")
             {
-                DeliveryArea deliveryArea = DeliveryAreaManager.GetDeliveryAreaById(o.IdArea);
-                string areaName = deliveryArea.Name;
-                int postcode = deliveryArea.Postcode;
+                return RedirectToAction("Login", "Home");
+            }
 
-                string customerLastName = CustomerManager.GetCustomerById(o.IdCustomer).LastName;
+            int id = (int)HttpContext.Session.GetInt32("IdMember");
 
-                ordersViewModel.Add(new OrderViewModel()
+            List<Order> orders = OrderManager.GetAllOrdersByCourier(id);
+            List<OrderViewModel> ordersViewModel = null;
+            if (orders != null)
+            {
+                ordersViewModel = new List<OrderViewModel>();
+                foreach (var o in orders)
                 {
-                    IdOrder = o.IdOrder,
-                    DeliveryAddress = o.DeliveryAddress,
-                    CustomerLastName = customerLastName,
-                    ExpectedDeliveryTime = o.ExpectedDeliveryTime,
-                    TimeOfDelivery = o.TimeOfDelivery,
-                    AreaName = postcode + " " + areaName
-                });
+                    DeliveryArea deliveryArea = DeliveryAreaManager.GetDeliveryAreaById(o.IdArea);
+                    string areaName = deliveryArea.Name;
+                    int postcode = deliveryArea.Postcode;
+
+                    string customerLastName = CustomerManager.GetCustomerById(o.IdCustomer).LastName;
+
+                    ordersViewModel.Add(new OrderViewModel()
+                    {
+                        IdOrder = o.IdOrder,
+                        DeliveryAddress = o.DeliveryAddress,
+                        CustomerLastName = customerLastName,
+                        ExpectedDeliveryTime = o.ExpectedDeliveryTime,
+                        TimeOfDelivery = o.TimeOfDelivery,
+                        AreaName = postcode + " " + areaName
+                    });
+                }
             }
 
             return View(ordersViewModel);
@@ -92,7 +101,7 @@ namespace WebApp.Controllers
                 foreach (var c in compositions)
                 {
                     Dish d = DishManager.GetDishById(compositions[cpt].ID_Dish);
-                    dishes.Add(new DishViewModel(){ Image = d.Image, IdRestaurant = d.IdRestaurant, Name = d.Name, Price = (double)d.Price / 100 });
+                    dishes.Add(new DishViewModel() { Image = d.Image, IdRestaurant = d.IdRestaurant, Name = d.Name, Price = (double)d.Price / 100 });
                     cpt++;
                 }
             }

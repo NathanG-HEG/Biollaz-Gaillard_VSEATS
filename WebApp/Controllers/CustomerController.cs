@@ -27,6 +27,18 @@ using WebApp.Models;namespace WebApp.Controllers
         }
         public IActionResult Index()
         {
+            //if you are not connected you are considered as a client
+            if (HttpContext.Session.GetInt32("IdMember") == null)
+            {
+                HttpContext.Session.SetString("TypeOfUser", "Customer");
+            }
+
+            //only client (authenticated or not) can view the list of restaurants
+            if (HttpContext.Session.GetString("TypeOfUser") != "Customer")
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
             List<Restaurant> restaurants = RestaurantManager.GetAllRestaurants();
             List<RestaurantViewModel> restaurantsVm = new List<RestaurantViewModel>(); 
             foreach (var r in restaurants)
@@ -41,6 +53,10 @@ using WebApp.Models;namespace WebApp.Controllers
         }
         public IActionResult Order(int id)
         {
+            if (HttpContext.Session.GetString("TypeOfUser") != "Customer")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             Restaurant r = RestaurantManager.GetRestaurantById(id);
             List<Dish> dishes = DishManager.GetAllDishesByRestaurant(id);
             List<DishViewModel> dishesVm = new List<DishViewModel>();
@@ -60,6 +76,10 @@ using WebApp.Models;namespace WebApp.Controllers
         }
         public IActionResult AddToCart(int id)
         {
+            if (HttpContext.Session.GetString("TypeOfUser") != "Customer")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
@@ -70,6 +90,10 @@ using WebApp.Models;namespace WebApp.Controllers
         }
         public IActionResult Checkout(DishViewModel[] dishes)
         {
+            if (HttpContext.Session.GetString("TypeOfUser") != "Customer")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View();
         }
     }

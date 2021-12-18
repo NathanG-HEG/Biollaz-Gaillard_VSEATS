@@ -12,6 +12,7 @@ namespace WebApp.Models
         public string ImagePath { get; set; }
         public string IconPath { get; set; }
         public int IdRestaurant { get; set; }
+        public string ConnectedCustomer { get; set; }
         public List<DishViewModel> Dishes { get; set; }
 
     }

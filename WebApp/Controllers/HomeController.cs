@@ -54,22 +54,31 @@ namespace WebApp.Controllers
             if (!ModelState.IsValid) return View("Login");
             string emailAddress = userViewModel.emailAddress;
             string password = userViewModel.password;
-            if (CustomerManager.GetCustomerByLogin(emailAddress, password) != null)
+
+            Customer customer = CustomerManager.GetCustomerByLogin(emailAddress, password);
+            if (customer != null)
             {
-                HttpContext.Session.SetInt32("IdMember", CustomerManager.GetCustomerByLogin(emailAddress, password).IdCustomer);
+                HttpContext.Session.SetInt32("IdMember", customer.IdCustomer);
+                HttpContext.Session.SetString("TypeOfUser", "Customer");
+                HttpContext.Session.SetString("UserFirstName", customer.FirstName);
                 return RedirectToAction("Index", "Customer");
             }
 
             Courier courier = CourierManager.GetCourierByLogin(emailAddress, password);
             if (courier != null)
             {
-                HttpContext.Session.SetInt32("IdCourier", CourierManager.GetCourierByLogin(emailAddress, password).IdCourier);
+                HttpContext.Session.SetInt32("IdMember", courier.IdCourier);
+                HttpContext.Session.SetString("TypeOfUser", "Courier");
+                HttpContext.Session.SetString("UserFirstName", courier.FirstName);
                 return RedirectToAction("Index", "Courier");
             }
 
+            Restaurant restaurant = RestaurantManager.GetRestaurantByLogin(emailAddress, password);
             if (RestaurantManager.GetRestaurantByLogin(emailAddress, password) != null)
             {
-                HttpContext.Session.SetInt32("IdRestaurant", RestaurantManager.GetRestaurantByLogin(emailAddress, password).IdRestaurant);
+                HttpContext.Session.SetInt32("IdMember", restaurant.IdRestaurant);
+                HttpContext.Session.SetString("TypeOfUser", "Restaurant");
+                HttpContext.Session.SetString("RestaurantName", restaurant.Name);
                 return RedirectToAction("Index", "Restaurant");
             }
             ModelState.AddModelError("", "Email or password is incorrect. Try again.");

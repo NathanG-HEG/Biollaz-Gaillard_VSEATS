@@ -1,48 +1,55 @@
 ﻿@using Microsoft.AspNetCore.Http
+@using System.Net
 @model IEnumerable<WebApp.Models.RestaurantViewModel>
 
 @{
     ViewData["Title"] = "Restaurants";
 }
 
-<h1>Looking for a restaurant?</h1>
+@{
+    var firstName = " " + Context.Session.GetString("UserFirstName");
+}
+
+<h1>
+    Hi,@firstName looking for a restaurant?
+</h1>
 
 
 <table class="table">
     <thead>
-    <tr>
-        <th>
-            Restaurant
-        </th>
-        <th>
-            Area
-        </th>
-        <th>
+        <tr>
+            <th>
+                Restaurant
+            </th>
+            <th>
+                Area
+            </th>
+            <th>
 
-        </th>
-        <th></th>
-    </tr>
+            </th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AreaName)
-            </td>
-            <td>
-                @{
-                    var iconPath = item.IconPath;
-                }
-                <img src="@iconPath" width="32" height="32"/>
-            </td>
-            <td>
-                @Html.ActionLink("Order now", "Order", new {id = item.IdRestaurant, sum = 0})
-            </td>
-        </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AreaName)
+                </td>
+                <td>
+                    @{
+                        var iconPath = item.IconPath;
+                    }
+                    <img src="@iconPath" width="32" height="32" />
+                </td>
+                <td>
+                    @Html.ActionLink("Order now", "Order", new { id = item.IdRestaurant, sum = 0 })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
