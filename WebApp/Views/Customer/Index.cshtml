@@ -7,11 +7,11 @@
 }
 
 @{
-    var firstName = " " + Context.Session.GetString("UserFirstName");
+    var firstName = Context.Session.GetString("UserFirstName")+',';
 }
 
 <h1>
-    Hi,@firstName looking for a restaurant?
+    Hi @firstName looking for a restaurant?
 </h1>
 
 
