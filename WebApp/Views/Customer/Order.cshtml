@@ -1,7 +1,6 @@
 ﻿@model WebApp.Models.RestaurantViewModel
 
 @{
-    var I = 0;
     ViewData["Title"] = "Order";
     var imagePath = Model.ImagePath;
 }
@@ -31,7 +30,10 @@
                     Price
                 </th>
                 <td id="total">
-                    0 CHF
+                    @{
+                        var Price = (double) Int32.Parse(Context.Request.Cookies["TotalOrder"]) / 100;
+                    }
+                    CHF @Price
                 </td>
             </tr>
         </thead>
@@ -49,10 +51,9 @@
                         @Html.DisplayFor(model => item.Price) CHF
                     </td>
                     <td>
-                        @Html.ActionLink("Add To Cart", "AddToCart", new { id = item.IdDish }, new { onclick = "addToCart( " + I + ");" })
+                        @Html.ActionLink("Add To Cart", "AddToCart", new { id = item.IdDish })
                     </td>
                 </tr>
-                I++;
             }
         </tbody>
     </table>
@@ -62,33 +63,4 @@
 </div>
 
 
-<script>
-    class Dish {
-        constructor(id, price) {
-            this.id = id;
-            this.price = price;
-        }
-    }
 
-    var cart = [];
-    var availableItems = [];
-
-    @foreach (var d in Model.Dishes)
-    {
-        <text>
-            availableItems.push(new Dish(@d.IdDish, @d.Price));
-        </text>
-    }
-
-    function addToCart(id) {
-        cart.push(availableItems[id]);
-        var sum = 0;
-        for (var i = 0; i < cart.length; i++) {
-            sum = sum + cart[i].price;
-        }
-        document.getElementById("total").innerHTML = sum+" CHF";
-        console.log(cart);
-    }
-
-
-</script>
