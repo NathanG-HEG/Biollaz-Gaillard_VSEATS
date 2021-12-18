@@ -41,7 +41,6 @@ using WebApp.Models;namespace WebApp.Controllers
             }
 
             //clearing cookies from potential previous orders
-            //HttpContext.Response.Cookies.Append("DishesId", "");
             HttpContext.Response.Cookies.Delete("DishesId");
             HttpContext.Response.Cookies.Append("TotalOrder", "0");
 
