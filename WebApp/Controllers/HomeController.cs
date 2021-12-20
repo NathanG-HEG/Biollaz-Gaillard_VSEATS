@@ -19,15 +19,17 @@ namespace WebApp.Controllers
         public IRestaurantManager RestaurantManager { get; }
         public ICourierManager CourierManager { get; }
         public IUtilities Utilities { get; }
+        public IDeliveryAreaManager DeliveryAreaManager { get; set; }
 
         public HomeController(ILogger<HomeController> logger, ICustomerManager customerManager, IRestaurantManager restaurantManager,
-                                ICourierManager courierManager, IUtilities utilities)
+                                ICourierManager courierManager, IUtilities utilities, IDeliveryAreaManager deliveryAreaManager)
         {
             _logger = logger;
             CustomerManager = customerManager;
             RestaurantManager = restaurantManager;
             CourierManager = courierManager;
             Utilities = utilities;
+            DeliveryAreaManager = deliveryAreaManager;
         }
 
         public IActionResult Index()
@@ -86,6 +88,37 @@ namespace WebApp.Controllers
         public IActionResult CourierSignUp()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult CourierSignUp(CourierSignUpViewModel courierViewModel)
+        {
+            if (!ModelState.IsValid) return View("CourierSignUp");
+            if (Utilities.IsEmailAddressInDatabase(courierViewModel.EmailAddress))
+            {
+                ModelState.AddModelError("", "An account with this email address already exists");
+                return View("CourierSignUp");
+            }
+            if (!courierViewModel.Password.Equals(courierViewModel.PasswordConfirmation))
+            {
+                ModelState.AddModelError("", "Passwords do not match");
+                return View("CourierSignUp");
+            }
+            if (!Utilities.IsPasswordSyntaxCorrect(courierViewModel.Password))
+            {
+                ModelState.AddModelError("", "Password must have at least 1 digit, 1 capital character, and be 8 characters long");
+                return View("CourierSignUp");
+            }
+
+            DeliveryArea deliveryArea = DeliveryAreaManager.GetDeliveryAreaByPostcode(courierViewModel.PostCode);
+            if (deliveryArea == null)
+            {
+                ModelState.AddModelError("", "No delivery area with this postcode could be found!");
+                return View("CourierSignUp");
+            }
+            CourierManager.AddCourier(deliveryArea.IdArea, courierViewModel.FirstName, courierViewModel.LastName, courierViewModel.EmailAddress, courierViewModel.Password);
+
+            return View("Login");
         }
 
         public IActionResult Login()
