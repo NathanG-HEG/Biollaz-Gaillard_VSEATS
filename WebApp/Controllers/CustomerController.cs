@@ -80,19 +80,23 @@ using WebApp.Models;namespace WebApp.Controllers
             };
             return View(restaurantVm);
         }
-        public IActionResult AddToCart(int id)
+        [HttpPost]
+        public IActionResult AddToCart(CompositionViewModel compositionViewModel)
         {
             if (HttpContext.Session.GetString("TypeOfUser") != "Customer")
             {
                 return RedirectToAction("Login", "Home");
             }
-
+            /*
             string dishesId = HttpContext.Request.Cookies["DishesId"]; 
             HttpContext.Response.Cookies.Append("DishesId", dishesId + id + "_");
 
             int totalOrder = Int32.Parse(HttpContext.Request.Cookies["TotalOrder"]);
             int price = DishManager.GetDishById(id).Price;
             HttpContext.Response.Cookies.Append("TotalOrder", (price + totalOrder).ToString());
+            */
+
+
 
             return Redirect(Request.Headers["Referer"].ToString());
         }
