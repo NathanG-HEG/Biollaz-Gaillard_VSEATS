@@ -61,18 +61,18 @@ using WebApp.Models;namespace WebApp.Controllers
 
             Restaurant r = RestaurantManager.GetRestaurantById(id);
             List<Dish> dishes = DishManager.GetAllDishesByRestaurant(id);
-            List<DishViewModel> dishesVm = new List<DishViewModel>();
+            List<CompositionViewModel> compositionVm= new List<CompositionViewModel>();
             foreach (var d in dishes)
             {
                 if (d.IsAvailable)
                 {
-                    dishesVm.Add(new DishViewModel() { IdDish = d.IdDish, Image = d.Image, IdRestaurant = d.IdRestaurant, Name = d.Name, Price = (double)d.Price / 100 });
+                    compositionVm.Add(new CompositionViewModel() { dishImagePath = d.Image, dishName = d.Name, dishPrice = (double) d.Price / 100 });
                 }
             }
             string areaName = DeliveryAreaManager.GetDeliveryAreaById(r.IdArea).Name;
             OrderViewModel orderViewModel = new OrderViewModel()
             {
-                RestaurantName = r.Name, AreaName = areaName, AvailableDishes = dishesVm, ImagePath =r.Image, IconPath = r.Logo
+                RestaurantName = r.Name, AreaName = areaName, AvailableCompositions = compositionVm, ImagePath =r.Image, IconPath = r.Logo
             };
             return View(orderViewModel);
         }

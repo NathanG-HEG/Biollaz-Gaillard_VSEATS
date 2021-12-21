@@ -89,16 +89,16 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(dish => Model.AvailableDishes[cpt].Name)
+                        @Html.DisplayFor(dish => Model.Dishes[cpt].Name)
                     </td>
                     <td>
-                        @Html.DisplayFor(Dish => Model.AvailableDishes[cpt].Price)
+                        @Html.DisplayFor(Dish => Model.Dishes[cpt].Price)
                     </td>
                     <td>
                         @Html.DisplayFor(compItem => comp.Quantity)
                     </td>
                     <td>
-                        <img src=@Model.AvailableDishes[cpt].Image width="60" height="60" />
+                        <img src=@Model.Dishes[cpt].Image width="60" height="60" />
                     </td>
                 </tr>
                 cpt++;

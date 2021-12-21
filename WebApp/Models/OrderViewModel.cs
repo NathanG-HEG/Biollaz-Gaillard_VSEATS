@@ -23,7 +23,8 @@ namespace WebApp.Models
         public string IconPath { get; set; }
         public string RestaurantName { get; set; }
         public List<Composition> OrderCompositions { get; set; }
-        public List<DishViewModel> AvailableDishes { get; set; }
+        public List<CompositionViewModel> AvailableCompositions { get; set; }
+        public List<DishViewModel> Dishes { get; set; } 
 
     }
 }
