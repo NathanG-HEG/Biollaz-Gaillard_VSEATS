@@ -114,7 +114,7 @@ namespace WebApp.Controllers
                 DeliveryAddress = o.DeliveryAddress,
                 AreaName = postcode + " " + areaName,
                 OrderCompositions = compositions,
-                OrderedDishes = dishes,
+                AvailableDishes = dishes,
                 ExpectedDeliveryTime = o.ExpectedDeliveryTime,
                 TimeOfDelivery = o.TimeOfDelivery,
                 OrderTotal = o.OrderTotal

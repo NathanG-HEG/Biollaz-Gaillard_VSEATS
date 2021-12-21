@@ -1,4 +1,4 @@
-﻿@model WebApp.Models.RestaurantViewModel
+﻿@model WebApp.Models.OrderViewModel
 
 @{
     ViewData["Title"] = "Order";
@@ -10,7 +10,7 @@
     <div class="topImageL" style="background-image: url('@Model.ImagePath');">
     </div>
     <div class="topImageTitle">
-        <h1>@Html.DisplayFor(model => model.Name)</h1>
+        <h1>@Html.DisplayFor(model => model.RestaurantName)</h1>
     </div>
 
     <div style="text-align: right; font-size: 140%; margin-right: 180px">
@@ -38,7 +38,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Dishes)
+            @foreach (var item in Model.AvailableDishes)
             {
                 <tr>
                     <td>
@@ -52,8 +52,7 @@
                     </td>
                     <td>
                         <label for="quantity">Quantity</label>
-                        <input type="number" id="quantity" name="quantity" min="0" max="999999999" style="width: 50px"/>
-                        @Html.ActionLink("Add To Cart", "AddToCart", new {id = item.IdDish})
+                        <input type="number" value="0" id="quantity" name="quantity" min="0" max="999999999" style="width: 50px"/>
                     </td>
                 </tr>
             }

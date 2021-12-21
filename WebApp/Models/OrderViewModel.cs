@@ -19,8 +19,11 @@ namespace WebApp.Models
         public string CourierLastName { get; set; }
         public string CustomerFistName { get; set; }
         public string CustomerLastName { get; set; }
+        public string ImagePath { get; set; }
+        public string IconPath { get; set; }
+        public string RestaurantName { get; set; }
         public List<Composition> OrderCompositions { get; set; }
-        public List<DishViewModel> OrderedDishes { get; set; }
+        public List<DishViewModel> AvailableDishes { get; set; }
 
     }
 }
