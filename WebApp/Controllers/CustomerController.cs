@@ -66,7 +66,10 @@ using WebApp.Models;namespace WebApp.Controllers
             {
                 if (d.IsAvailable)
                 {
-                    compositionVm.Add(new CompositionViewModel() { dishImagePath = d.Image, dishName = d.Name, dishPrice = (double) d.Price / 100 });
+                    compositionVm.Add(new CompositionViewModel()
+                    {
+                        dishImagePath = d.Image, dishName = d.Name, dishPrice = (double) d.Price / 100, quantity = 0, idDish = d.IdDish
+                    });
                 }
             }
             string areaName = DeliveryAreaManager.GetDeliveryAreaById(r.IdArea).Name;
@@ -77,32 +80,13 @@ using WebApp.Models;namespace WebApp.Controllers
             return View(orderViewModel);
         }
         [HttpPost]
-        public IActionResult AddToCart(CompositionViewModel compositionViewModel)
+        public IActionResult Order(OrderViewModel orderViewModel)
         {
-            if (HttpContext.Session.GetString("TypeOfUser") != "Customer")
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            /*
-            string dishesId = HttpContext.Request.Cookies["DishesId"]; 
-            HttpContext.Response.Cookies.Append("DishesId", dishesId + id + "_");
-
-            int totalOrder = Int32.Parse(HttpContext.Request.Cookies["TotalOrder"]);
-            int price = DishManager.GetDishById(id).Price;
-            HttpContext.Response.Cookies.Append("TotalOrder", (price + totalOrder).ToString());
-            */
-
-
-
-            return Redirect(Request.Headers["Referer"].ToString());
+           
+            return RedirectToAction("Checkout", orderViewModel);
         }
 
-        public IActionResult RemoveToCart(int id)
-        {
-            // Removes 
-            return Redirect(Request.Headers["Referer"].ToString());
-        }
-        public IActionResult Checkout(DishViewModel[] dishes)
+        public IActionResult Checkout(OrderViewModel orderViewModel)
         {
             if (HttpContext.Session.GetString("TypeOfUser") != "Customer")
             {

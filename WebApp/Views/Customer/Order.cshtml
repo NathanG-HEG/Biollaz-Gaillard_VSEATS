@@ -6,57 +6,59 @@
 }
 
 
-<div>
-    <div class="topImageL" style="background-image: url('@Model.ImagePath');">
-    </div>
-    <div class="topImageTitle">
-        <h1>@Html.DisplayFor(model => model.RestaurantName)</h1>
-    </div>
+    <div>
+        <div class="topImageL" style="background-image: url('@Model.ImagePath');">
+        </div>
+        <div class="topImageTitle">
+            <h1>@Html.DisplayFor(model => model.RestaurantName)</h1>
+        </div>
+        <form asp-action="Checkout">
+            <div style="text-align: right; font-size: 140%; margin-right: 180px">
+                <input type="submit" value="Check Out" class="btn btn-primary" />
+            </div>
+            <hr />
 
-    <div style="text-align: right; font-size: 140%; margin-right: 180px">
-        @Html.ActionLink("Checkout", "Checkout", new { })
-    </div>
-    <hr />
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Plate
-                </th>
-                <th>
-                </th>
-                <th>
-                    Price
-                </th>
-                <td id="total">
-                    CHF 0
-                </td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.AvailableCompositions)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.dishName)
-                    </td>
-                    <td>
-                        <img src="@item.dishImagePath" height="64" width="64" />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => item.dishPrice) CHF
-                    </td>
-                    <td>
-                        <label for="quantity">Quantity</label>
-                        <input type="number" id="@i" value="0" name="quantity" min="0" max="999999999" onclick="refreshTotal()"style="width: 50px"/>
-                    </td>
-                </tr>
-                i++;
-            }
-        </tbody>
-    </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Plate
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <td id="total">
+                            CHF 0
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AvailableCompositions)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.dishName)
+                            </td>
+                            <td>
+                                <img src="@item.dishImagePath" height="64" width="64" />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.dishPrice) CHF
+                            </td>
+                            <td>
+                                <label for="quantity">Quantity</label>
+                                <input asp-for="AvailableCompositions[i].quantity" type="number" id="@i" value="0" name="quantity" min="0" max="999999999" onclick="refreshTotal()" style="width: 50px" />
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </form>
 </div>
+
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
@@ -85,8 +87,12 @@
         }
         document.getElementById("total").innerHTML = "CHF " + sum;
     }
-
 </script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
 
 
 
