@@ -1,5 +1,4 @@
 ﻿@using Microsoft.AspNetCore.Http
-@using System.Net
 @model IEnumerable<WebApp.Models.RestaurantViewModel>
 
 @{
@@ -53,7 +52,7 @@
                     <img src="@iconPath" width="32" height="32" />
                 </td>
                 <td>
-                    @Html.ActionLink("Order now", "Order", new { id = item.IdRestaurant, sum = 0 })
+                    @Html.ActionLink("Order now", "Order", new { id = item.IdRestaurant})
                 </td>
             </tr>
         }

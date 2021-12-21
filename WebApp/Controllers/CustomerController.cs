@@ -58,7 +58,7 @@ using WebApp.Models;namespace WebApp.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-
+            
             Restaurant r = RestaurantManager.GetRestaurantById(id);
             List<Dish> dishes = DishManager.GetAllDishesByRestaurant(id);
             List<CompositionViewModel> compositionVm= new List<CompositionViewModel>();
@@ -75,7 +75,7 @@ using WebApp.Models;namespace WebApp.Controllers
             string areaName = DeliveryAreaManager.GetDeliveryAreaById(r.IdArea).Name;
             OrderViewModel orderViewModel = new OrderViewModel()
             {
-                RestaurantName = r.Name, AreaName = areaName, AvailableCompositions = compositionVm, ImagePath =r.Image, IconPath = r.Logo
+                IdRestaurant = r.IdRestaurant, RestaurantName = r.Name, AreaName = areaName, AvailableCompositions = compositionVm, ImagePath =r.Image, IconPath = r.Logo
             };
             return View(orderViewModel);
         }

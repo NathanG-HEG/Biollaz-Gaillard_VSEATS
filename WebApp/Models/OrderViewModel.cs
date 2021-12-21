@@ -8,7 +8,7 @@ namespace WebApp.Models
 {
     public class OrderViewModel
     {
-
+        public int IdRestaurant { get; set; }
         public int IdOrder { get; set; }
         public DateTime ExpectedDeliveryTime { get; set; }
         public DateTime TimeOfDelivery { get; set; }
