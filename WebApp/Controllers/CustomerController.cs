@@ -40,10 +40,6 @@ using WebApp.Models;namespace WebApp.Controllers
                 return RedirectToAction("Login", "Home");
             }
 
-            //clearing cookies from potential previous orders
-            HttpContext.Response.Cookies.Delete("DishesId");
-            HttpContext.Response.Cookies.Append("TotalOrder", "0");
-
             List<Restaurant> restaurants = RestaurantManager.GetAllRestaurants();
             List<RestaurantViewModel> restaurantsVm = new List<RestaurantViewModel>(); 
             foreach (var r in restaurants)
@@ -74,11 +70,11 @@ using WebApp.Models;namespace WebApp.Controllers
                 }
             }
             string areaName = DeliveryAreaManager.GetDeliveryAreaById(r.IdArea).Name;
-            RestaurantViewModel restaurantVm = new RestaurantViewModel()
+            OrderViewModel orderViewModel = new OrderViewModel()
             {
-                IdRestaurant = id, Name = r.Name, AreaName = areaName, Dishes = dishesVm, ImagePath =r.Image, IconPath = r.Logo
+                RestaurantName = r.Name, AreaName = areaName, AvailableDishes = dishesVm, ImagePath =r.Image, IconPath = r.Logo
             };
-            return View(restaurantVm);
+            return View(orderViewModel);
         }
         [HttpPost]
         public IActionResult AddToCart(CompositionViewModel compositionViewModel)
