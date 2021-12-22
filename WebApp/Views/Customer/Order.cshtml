@@ -51,7 +51,8 @@
                         </td>
                         <td>
                             <label for="quantity">Quantity</label>
-                            <input class="form-group" asp-for="AvailableCompositions[i].quantity" type="number" id="@i" value="0" name="quantity" min="0" max="999999999" onclick="refreshTotal()" style="width: 50px" />
+                            <input class="form-group" asp-for="AvailableCompositions[@i].quantity" type="number" id="@i"
+                                   value="0" name="quantity" min="0" max="999999999" onclick="refreshTotal()" style="width: 50px" />
                         </td>
                     </tr>
                     i++;
