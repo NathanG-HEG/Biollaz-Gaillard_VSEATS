@@ -12,7 +12,7 @@ namespace WebApp.Models
         public DateTime ExpectedDeliveryTime { get; set; }
         public DateTime TimeOfDelivery { get; set; }
         public string DeliveryAddress { get; set; }
-        public int OrderTotal { get; set; }
+        public double OrderTotal { get; set; }
         public string AreaName { get; set; }
         public string CustomerFistName { get; set; }
         public string CustomerLastName { get; set; }

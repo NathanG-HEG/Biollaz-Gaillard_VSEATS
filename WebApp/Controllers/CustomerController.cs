@@ -26,6 +26,7 @@ using WebApp.Models;namespace WebApp.Controllers
             DeliveryAreaManager = deliveryAreaManager;
             DishManager = dishManager;
         }
+
         public IActionResult Index()
         {
             //if you are not connected you are considered as a client
@@ -52,6 +53,7 @@ using WebApp.Models;namespace WebApp.Controllers
             }
             return View(restaurantsVm);
         }
+
         public IActionResult Order(int id)
         {
             if (HttpContext.Session.GetString("TypeOfUser") != "Customer")
@@ -93,7 +95,13 @@ using WebApp.Models;namespace WebApp.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            return View();
+
+            orderViewModel.OrderTotal = 0;
+            foreach (var c in orderViewModel.AvailableCompositions)
+            {
+                orderViewModel.OrderTotal += c.quantity * c.dishPrice;
+            }
+            return View(orderViewModel);
         }
     }
 }
