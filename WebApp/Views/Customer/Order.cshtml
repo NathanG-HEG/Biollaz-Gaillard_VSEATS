@@ -4,7 +4,6 @@
 @{
     ViewData["Title"] = "Order";
     var i = 0;
-    Context.Session.SetInt32("CurrentRestaurantId", Model.IdRestaurant);
 }
 
 
@@ -14,8 +13,8 @@
     <div class="topImageTitle">
         <h1>@Html.DisplayFor(model => model.RestaurantName)</h1>
     </div>
-    <form asp-action="Checkout">
-        <div style="text-align: right; font-size: 140%; margin-right: 180px">
+    <form asp-action="Order">
+        <div style="text-align: right; font-size: 140%; margin-right: 180px" class="form-group">
             <input type="submit" value="Check Out" class="btn btn-primary" />
         </div>
         <hr />
@@ -50,8 +49,13 @@
                             @Html.DisplayFor(model => item.dishPrice) CHF
                         </td>
                         <td>
-                            <label for="quantity">Quantity</label>
-                            <input class="form-group" asp-for="AvailableCompositions[i].quantity" type="number" id="@i" value="0" name="quantity" min="0" max="999999999" onclick="refreshTotal()" style="width: 50px" />
+                        <!--    <label for="quantity">Quantity</label>
+                        <input class="form-group" asp-for="AvailableCompositions[i].quantity" type="number" id="@i" value="0"
+                               name="quantity" min="0" max="999999999" onclick="refreshTotal()" style="width: 50px" />-->
+                            <div class="form-group">
+                                <label class="control-label">Quantity</label>
+                                <input asp-for="AvailableCompositions[i].quantity" class="form-control" />
+                            </div>
                         </td>
                     </tr>
                     i++;

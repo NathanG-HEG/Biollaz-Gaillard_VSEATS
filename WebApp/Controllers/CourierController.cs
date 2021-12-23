@@ -97,12 +97,10 @@ namespace WebApp.Controllers
             if (compositions != null)
             {
                 dishes = new List<DishViewModel>(compositions.Count);
-                int cpt = 0;
                 foreach (var c in compositions)
                 {
-                    Dish d = DishManager.GetDishById(compositions[cpt].ID_Dish);
+                    Dish d = DishManager.GetDishById(c.ID_Dish);
                     dishes.Add(new DishViewModel() { Image = d.Image, IdRestaurant = d.IdRestaurant, Name = d.Name, Price = (double)d.Price / 100 });
-                    cpt++;
                 }
             }
 
