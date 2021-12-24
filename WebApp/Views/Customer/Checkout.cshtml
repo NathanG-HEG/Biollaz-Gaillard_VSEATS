@@ -7,98 +7,118 @@
 }
 
 <h1>Checkout</h1>
+<form asp-action="Confirmation">
+    <div style="text-align: right; font-size: 140%; margin-right: 180px" class="form-group">
+        <input type="submit" value="Check Out" class="btn btn-primary" />
+    </div>
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                First Name
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CustomerFirstName)
+            </dd>
+            <dt class="col-sm-2">
+                Last Name
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CustomerLastName)
+            </dd>
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CustomerFirstName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CustomerFirstName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CustomerLastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CustomerLastName)
-        </dd>
+            <dt class="col-sm-2">
+                Delivery Time
+            </dt>
+            <dd class="col-sm-10">
+                <select name="ExpectedDeliveryTime" size="4" asp-for="ExpectedDeliveryTime">
+                    @{
+                        DateTime dateTime = DateTime.Now;
+                        DateTime dateTimeRoundToQuarter = new DateTime(dateTime.Year, dateTime.Month,
+                            dateTime.Day, dateTime.Hour, (dateTime.Minute / 15) * 15, 0);
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ExpectedDeliveryTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ExpectedDeliveryTime)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryAddress)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryAddress)
-        </dd>
+                        //customer can order up to one day before the delivery (24 quarter)
+                        for (int i = 1; i <= 24 * 4; i++)
+                        {
+                            DateTime dateTemp = dateTimeRoundToQuarter.AddMinutes(15 * i);
+                            var minute = dateTemp.Minute.ToString();
+                            if (minute.Equals("0")) minute = "00";
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AreaName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AreaName)
-        </dd>
+                            <option value="@dateTemp">
+                                @dateTemp.DayOfWeek, @dateTemp.Hour:@minute
+                            </option>
+                        }
+                    }
+                </select>
+            </dd>
+            <dt class="col-sm-2">
+                Delivery Address
+            </dt>
+            <dd class="col-sm-10">
+                <input asp-for="DeliveryAddress" class="form-control" />
+            </dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RestaurantName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RestaurantName)
-        </dd>
+            <dt class="col-sm-2">
+                Postcode
+            </dt>
+            <dd class="col-sm-10">
+                <input asp-for="PostCode" class="form-control" />
+            </dd>
+            <dt class="col-sm-2">
+                Restaurant
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.RestaurantName)
+            </dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.OrderTotal)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.OrderTotal)
-        </dd>
-    </dl>
-</div>
+            <dt class="col-sm-2">
+                Order Total
+            </dt>
+            <dd class="col-sm-10">
+                CHF @Html.DisplayFor(model => model.OrderTotal)
+            </dd>
+        </dl>
+    </div>
 
-<table class="table">
-    <thead>
-    <td>
-        Plate
-    </td>
-    <td>
-        Price
-    </td>
-    <td>
-        Quantity
-    </td>
-    <td></td>
-    </thead>
-    <tbody>
-    @{
-        foreach (var comp in Model.OrderCompositions)
-        {
-            if (comp.Quantity > 0)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(dish => comp.DishName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(Dish => comp.DishPrice)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(compItem => comp.Quantity)
-                    </td>
-                    <td>
-                        <img src=@comp.DishImagePath width="60" height="60"/>
-                    </td>
-                </tr>
+    <table class="table">
+        <thead>
+        <td>
+            Plate
+        </td>
+        <td>
+            Price
+        </td>
+        <td>
+            Quantity
+        </td>
+        <td></td>
+        </thead>
+        <tbody>
+            @{
+                foreach (var comp in Model.OrderCompositions)
+                {
+                    if (comp.Quantity > 0)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(dish => comp.DishName)
+                            </td>
+                            <td>
+                                CHF @Html.DisplayFor(Dish => comp.DishPrice)
+                            </td>
+                            <td>
+                                <label asp-for="@comp.Quantity">@comp.Quantity</label>
+                            </td>
+                            <td>
+                                <img src=@comp.DishImagePath width="60" height="60" />
+                            </td>
+                        </tr>
+                    }
+                }
             }
-        }
-    }
-    </tbody>
-</table>
-
+        </tbody>
+    </table>
+</form>
 <div>
     <a asp-action="Order/@currentRestaurantId">Back to order</a>
 </div>

@@ -14,6 +14,7 @@ namespace WebApp.Models
         public string DeliveryAddress { get; set; }
         public double OrderTotal { get; set; }
         public string AreaName { get; set; }
+        public int PostCode { get; set; }
         public string CustomerFirstName { get; set; }
         public string CustomerLastName { get; set; }
         public string ImagePath { get; set; }
