@@ -4,8 +4,11 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-	  <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
   </PropertyGroup>
+
+	<PropertyGroup>
+		<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+	</PropertyGroup>
 
   <ItemGroup>
     <None Remove="wwwroot\Images\coarse_dirt.png" />
