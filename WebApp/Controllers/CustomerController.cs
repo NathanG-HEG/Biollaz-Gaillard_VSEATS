@@ -60,7 +60,8 @@ using WebApp.Models;namespace WebApp.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            
+
+            HttpContext.Session.SetInt32("CurrentRestaurantId", id);
             Restaurant r = RestaurantManager.GetRestaurantById(id);
             List<Dish> dishes = DishManager.GetAllDishesByRestaurant(id);
             List<CompositionViewModel> compositionVm= new List<CompositionViewModel>();
@@ -77,14 +78,14 @@ using WebApp.Models;namespace WebApp.Controllers
             string areaName = DeliveryAreaManager.GetDeliveryAreaById(r.IdArea).Name;
             OrderViewModel orderViewModel = new OrderViewModel()
             {
-                IdRestaurant = r.IdRestaurant, RestaurantName = r.Name, AreaName = areaName, AvailableCompositions = compositionVm, ImagePath =r.Image, IconPath = r.Logo
+                RestaurantName = r.Name, AreaName = areaName, AvailableCompositions = compositionVm, ImagePath =r.Image
             };
             return View(orderViewModel);
         }
         [HttpPost]
         public IActionResult Order(OrderViewModel orderViewModel)
         {
-           
+         
             return RedirectToAction("Checkout", orderViewModel);
         }
 

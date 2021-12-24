@@ -8,19 +8,15 @@ namespace WebApp.Models
 {
     public class OrderViewModel
     {
-        public int IdRestaurant { get; set; }
         public int IdOrder { get; set; }
         public DateTime ExpectedDeliveryTime { get; set; }
         public DateTime TimeOfDelivery { get; set; }
         public string DeliveryAddress { get; set; }
         public double OrderTotal { get; set; }
         public string AreaName { get; set; }
-        public string CourierFistName { get; set; }
-        public string CourierLastName { get; set; }
         public string CustomerFistName { get; set; }
         public string CustomerLastName { get; set; }
         public string ImagePath { get; set; }
-        public string IconPath { get; set; }
         public string RestaurantName { get; set; }
         public List<Composition> OrderCompositions { get; set; }
         public List<CompositionViewModel> AvailableCompositions { get; set; }
