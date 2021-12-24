@@ -107,11 +107,11 @@ namespace WebApp.Controllers
             OrderViewModel orderViewModel = new OrderViewModel()
             {
                 IdOrder = o.IdOrder,
-                CustomerFistName = customerFirstname,
+                CustomerFirstName = customerFirstname,
                 CustomerLastName = customerLastName,
                 DeliveryAddress = o.DeliveryAddress,
                 AreaName = postcode + " " + areaName,
-                OrderCompositions = compositions,
+                //OrderCompositions = compositions,
                 Dishes = dishes,
                 ExpectedDeliveryTime = o.ExpectedDeliveryTime,
                 TimeOfDelivery = o.TimeOfDelivery,

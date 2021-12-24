@@ -9,50 +9,13 @@
 <h1>Checkout</h1>
 
 <div>
-    <h4>Check Out</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IdOrder)
+            @Html.DisplayNameFor(model => model.CustomerFirstName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IdOrder)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ExpectedDeliveryTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ExpectedDeliveryTime)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TimeOfDelivery)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TimeOfDelivery)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryAddress)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryAddress)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.OrderTotal)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.OrderTotal)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AreaName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AreaName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CustomerFistName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CustomerFistName)
+            @Html.DisplayFor(model => model.CustomerFirstName)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CustomerLastName)
@@ -60,20 +23,82 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CustomerLastName)
         </dd>
+
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImagePath)
+            @Html.DisplayNameFor(model => model.ExpectedDeliveryTime)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImagePath)
+            @Html.DisplayFor(model => model.ExpectedDeliveryTime)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DeliveryAddress)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DeliveryAddress)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AreaName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AreaName)
+        </dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.RestaurantName)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.RestaurantName)
         </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderTotal)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderTotal)
+        </dd>
     </dl>
 </div>
+
+<table class="table">
+    <thead>
+    <td>
+        Plate
+    </td>
+    <td>
+        Price
+    </td>
+    <td>
+        Quantity
+    </td>
+    <td></td>
+    </thead>
+    <tbody>
+    @{
+        foreach (var comp in Model.OrderCompositions)
+        {
+            if (comp.Quantity > 0)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(dish => comp.DishName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(Dish => comp.DishPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(compItem => comp.Quantity)
+                    </td>
+                    <td>
+                        <img src=@comp.DishImagePath width="60" height="60"/>
+                    </td>
+                </tr>
+            }
+        }
+    }
+    </tbody>
+</table>
+
 <div>
     <a asp-action="Order/@currentRestaurantId">Back to order</a>
 </div>

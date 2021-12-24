@@ -8,7 +8,8 @@ using BLL;
 using DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualBasic.CompilerServices;
-using WebApp.Models;namespace WebApp.Controllers
+using WebApp.Models;
+namespace WebApp.Controllers
 {
     public class CustomerController : Controller
     {
@@ -42,13 +43,17 @@ using WebApp.Models;namespace WebApp.Controllers
             }
 
             List<Restaurant> restaurants = RestaurantManager.GetAllRestaurants();
-            List<RestaurantViewModel> restaurantsVm = new List<RestaurantViewModel>(); 
+            List<RestaurantViewModel> restaurantsVm = new List<RestaurantViewModel>();
             foreach (var r in restaurants)
             {
                 string deliveryAreaName = DeliveryAreaManager.GetDeliveryAreaById(r.IdArea).Name;
                 restaurantsVm.Add(new RestaurantViewModel()
                 {
-                    IdRestaurant = r.IdRestaurant, AreaName = deliveryAreaName, ImagePath = r.Image, IconPath = r.Logo, Name = r.Name
+                    IdRestaurant = r.IdRestaurant,
+                    AreaName = deliveryAreaName,
+                    ImagePath = r.Image,
+                    IconPath = r.Logo,
+                    Name = r.Name
                 });
             }
             return View(restaurantsVm);
@@ -64,43 +69,77 @@ using WebApp.Models;namespace WebApp.Controllers
             HttpContext.Session.SetInt32("CurrentRestaurantId", id);
             Restaurant r = RestaurantManager.GetRestaurantById(id);
             List<Dish> dishes = DishManager.GetAllDishesByRestaurant(id);
-            List<CompositionViewModel> compositionVm= new List<CompositionViewModel>();
+            List<CompositionViewModel> compositionVm = new List<CompositionViewModel>();
             foreach (var d in dishes)
             {
                 if (d.IsAvailable)
                 {
                     compositionVm.Add(new CompositionViewModel()
                     {
-                        dishImagePath = d.Image, dishName = d.Name, dishPrice = (double) d.Price / 100, quantity = 0, idDish = d.IdDish
+                        DishImagePath = d.Image,
+                        DishName = d.Name,
+                        DishPrice = (double)d.Price / 100,
+                        Quantity = 0,
+                        IdDish = d.IdDish
                     });
                 }
             }
             string areaName = DeliveryAreaManager.GetDeliveryAreaById(r.IdArea).Name;
             OrderViewModel orderViewModel = new OrderViewModel()
             {
-                RestaurantName = r.Name, AreaName = areaName, AvailableCompositions = compositionVm, ImagePath =r.Image
+                RestaurantName = r.Name,
+                AreaName = areaName,
+                AvailableCompositions = compositionVm,
+                ImagePath = r.Image
             };
             return View(orderViewModel);
         }
         [HttpPost]
         public IActionResult Order(OrderViewModel orderViewModel)
         {
-         
+
             return RedirectToAction("Checkout", orderViewModel);
         }
 
+        [HttpPost]
         public IActionResult Checkout(OrderViewModel orderViewModel)
         {
-            if (HttpContext.Session.GetString("TypeOfUser") != "Customer")
+            if (HttpContext.Session.GetString("TypeOfUser") != "Customer" || HttpContext.Session.GetInt32("IdMember") == null)
             {
                 return RedirectToAction("Login", "Home");
             }
 
+            //initializing orderViewModel null variables
+            orderViewModel.OrderCompositions = new List<CompositionViewModel>();
             orderViewModel.OrderTotal = 0;
-            foreach (var c in orderViewModel.AvailableCompositions)
+
+            foreach (var d in DishManager.GetAllDishesByRestaurant((int)HttpContext.Session.GetInt32("CurrentRestaurantId")))
             {
-                orderViewModel.OrderTotal += c.quantity * c.dishPrice;
+                if (d.IsAvailable)
+                {
+                    orderViewModel.OrderCompositions.Add(new CompositionViewModel()
+                    {
+                        DishImagePath = d.Image, DishName = d.Name, DishPrice = d.Price, IdDish = d.IdDish
+                    });
+                }
             }
+            for (int i = 0; i < orderViewModel.AvailableCompositions.Count; i++)
+            {
+                CompositionViewModel cTemp = orderViewModel.AvailableCompositions[i];
+                if (cTemp.Quantity > 0)
+                {
+                    orderViewModel.OrderCompositions[i].Quantity = cTemp.Quantity;
+                    orderViewModel.OrderTotal += cTemp.Quantity * orderViewModel.OrderCompositions[i].DishPrice;
+                    orderViewModel.OrderCompositions[i].DishPrice /= 100;
+                }
+            }
+
+            Customer c = CustomerManager.GetCustomerById((int)HttpContext.Session.GetInt32("IdMember"));
+            orderViewModel.CustomerLastName = c.LastName;
+            orderViewModel.CustomerFirstName = c.FirstName;
+            orderViewModel.RestaurantName = RestaurantManager.GetRestaurantById((int)HttpContext.Session.GetInt32("CurrentRestaurantId")).Name;
+            orderViewModel.OrderTotal = (double) orderViewModel.OrderTotal / 100;
+
             return View(orderViewModel);
         }
     }

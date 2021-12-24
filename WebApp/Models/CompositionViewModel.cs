@@ -9,11 +9,11 @@ namespace WebApp.Models
 {
     public class CompositionViewModel
     {
-        public int idDish { get; set; }
-        public int quantity { get; set; }
-        public string dishImagePath { get; set; }
-        public double dishPrice { get; set; }
-        public string dishName { get; set; }
+        public int IdDish { get; set; }
+        public int Quantity { get; set; }
+        public string DishImagePath { get; set; }
+        public double DishPrice { get; set; }
+        public string DishName { get; set; }
        
     }
 }
