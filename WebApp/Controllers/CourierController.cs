@@ -91,16 +91,26 @@ namespace WebApp.Controllers
 
             List<Composition> compositions = ComposeManager.GetCompositionsByOrder(id);
 
-            //list of the ordered dishes
-            //used to display infos about dishes
-            List<DishViewModel> dishes = null;
+            //list of the ordered compositions
+            List<CompositionViewModel> orderCompositions = null;
             if (compositions != null)
             {
-                dishes = new List<DishViewModel>(compositions.Count);
+                orderCompositions = new List<CompositionViewModel>(compositions.Count);
                 foreach (var c in compositions)
                 {
+                    //retrieving corresponding dish
                     Dish d = DishManager.GetDishById(c.ID_Dish);
-                    dishes.Add(new DishViewModel() { Image = d.Image, IdRestaurant = d.IdRestaurant, Name = d.Name, Price = (double)d.Price / 100 });
+
+                    //mapping compositions and dish infos to compostitionViewModel
+                    orderCompositions.Add(new CompositionViewModel()
+                    {
+                        DishImagePath = d.Image,
+                        DishName = d.Name,
+                        DishPrice = (double) d.Price / 100,
+                        IdDish = d.IdDish,
+                        Quantity = c.Quantity
+                    });
+
                 }
             }
 
@@ -111,8 +121,7 @@ namespace WebApp.Controllers
                 CustomerLastName = customerLastName,
                 DeliveryAddress = o.DeliveryAddress,
                 AreaName = postcode + " " + areaName,
-                //OrderCompositions = compositions,
-                Dishes = dishes,
+                OrderCompositions = orderCompositions,
                 ExpectedDeliveryTime = o.ExpectedDeliveryTime,
                 TimeOfDelivery = o.TimeOfDelivery,
                 OrderTotal = o.OrderTotal

@@ -84,24 +84,22 @@
         </thead>
         <tbody>
         @{
-            int cpt = 0;
             foreach (var comp in Model.OrderCompositions)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(dish => Model.Dishes[cpt].Name)
+                        @Html.DisplayFor(compItem =>comp.DishName)
                     </td>
                     <td>
-                        @Html.DisplayFor(Dish => Model.Dishes[cpt].Price)
+                        @Html.DisplayFor(compItem => comp.DishPrice)
                     </td>
                     <td>
                         @Html.DisplayFor(compItem => comp.Quantity)
                     </td>
                     <td>
-                        <img src=@Model.Dishes[cpt].Image width="60" height="60" />
+                        <img src=@comp.DishImagePath width="60" height="60" />
                     </td>
                 </tr>
-                cpt++;
             }
         }
         </tbody>
