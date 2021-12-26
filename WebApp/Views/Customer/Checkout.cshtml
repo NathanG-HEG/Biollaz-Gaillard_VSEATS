@@ -12,6 +12,7 @@
         <input type="submit" value="Check Out" class="btn btn-primary" />
     </div>
     <div>
+        <div asp-validation-summary="All" class="text-danger"></div>
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
@@ -38,9 +39,9 @@
                             dateTime.Day, dateTime.Hour, (dateTime.Minute / 15) * 15, 0);
 
                         //customer can order up to one day before the delivery (24 quarter)
-                        for (int i = 1; i <= 24 * 4; i++)
+                        for (int i1 = 1; i1 <= 24 * 4; i1++)
                         {
-                            DateTime dateTemp = dateTimeRoundToQuarter.AddMinutes(15 * i);
+                            DateTime dateTemp = dateTimeRoundToQuarter.AddMinutes(15 * i1);
                             var minute = dateTemp.Minute.ToString();
                             if (minute.Equals("0")) minute = "00";
 
@@ -63,7 +64,6 @@
             </dt>
             <dd class="col-sm-10">
                 <input asp-for="PostCode" class="form-control" />
-                <span asp-validation-for="PostCode"></span>
             </dd>
             <dt class="col-sm-2">
                 Restaurant
@@ -77,7 +77,7 @@
             </dt>
             <dd class="col-sm-10">
                 CHF <label asp-for="OrderTotal">@Html.DisplayFor(model => model.OrderTotal)</label>
-                <input asp-for="OrderTotal" type="hidden" value="@Model.OrderTotal"/>
+                <input type="hidden" value="@Model.OrderTotal"/>
             </dd>
         </dl>
     </div>
@@ -109,7 +109,8 @@
                             CHF @Html.DisplayFor(Dish => comp.DishPrice)
                         </td>
                         <td>
-                            <label asp-for="@Model.OrderCompositions[i].Quantity">@comp.Quantity</label>
+                            @comp.Quantity
+                            <input type="hidden" value="@comp.Quantity" asp-for="@Model.OrderCompositions[i].Quantity"/>
                         </td>
                         <td>
                             <img src=@comp.DishImagePath width="60" height="60" />

@@ -169,11 +169,23 @@ namespace WebApp.Controllers
             orderViewModel.CustomerFirstName = c.FirstName;
             orderViewModel.RestaurantName = RestaurantManager.GetRestaurantById((int)HttpContext.Session.GetInt32("CurrentRestaurantId")).Name;
             DeliveryArea delA = DeliveryAreaManager.GetDeliveryAreaByPostcode(orderViewModel.PostCode);
+            // Model validation
             if (delA == null)
             {
                 ModelState.AddModelError("", "Can't deliver in this area. Try a different postcode.");
-                return View("Checkout");
+                return Redirect(Request.Headers["Referer"].ToString());
             }
+            if (orderViewModel.ExpectedDeliveryTime.Equals(DateTime.MinValue))
+            {
+                ModelState.AddModelError("","Choose a delivery time.");
+                return Redirect(Request.Headers["Referer"].ToString());
+            }
+            if (orderViewModel.DeliveryAddress == null)
+            {
+                ModelState.AddModelError("","Specify the delivery address");
+                return Redirect(Request.Headers["Referer"].ToString());
+            }
+
             orderViewModel.AreaName = delA.Name;
             return View(orderViewModel);
         }
