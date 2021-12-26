@@ -21,7 +21,5 @@ namespace WebApp.Models
         public string RestaurantName { get; set; }
         public List<CompositionViewModel> OrderCompositions { get; set; }
         public List<CompositionViewModel> AvailableCompositions { get; set; }
-        public List<DishViewModel> Dishes { get; set; } 
-
     }
 }

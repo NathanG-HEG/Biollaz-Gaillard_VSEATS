@@ -63,6 +63,7 @@
             </dt>
             <dd class="col-sm-10">
                 <input asp-for="PostCode" class="form-control" />
+                <span asp-validation-for="PostCode"></span>
             </dd>
             <dt class="col-sm-2">
                 Restaurant
@@ -75,7 +76,8 @@
                 Order Total
             </dt>
             <dd class="col-sm-10">
-                CHF @Html.DisplayFor(model => model.OrderTotal)
+                CHF <label asp-for="OrderTotal">@Html.DisplayFor(model => model.OrderTotal)</label>
+                <input asp-for="OrderTotal" type="hidden" value="@Model.OrderTotal"/>
             </dd>
         </dl>
     </div>
@@ -94,26 +96,26 @@
         <td></td>
         </thead>
         <tbody>
-            @{
+        @{
+            var i = 0;
                 foreach (var comp in Model.OrderCompositions)
                 {
-                    if (comp.Quantity > 0)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(dish => comp.DishName)
-                            </td>
-                            <td>
-                                CHF @Html.DisplayFor(Dish => comp.DishPrice)
-                            </td>
-                            <td>
-                                <label asp-for="@comp.Quantity">@comp.Quantity</label>
-                            </td>
-                            <td>
-                                <img src=@comp.DishImagePath width="60" height="60" />
-                            </td>
-                        </tr>
-                    }
+                    <tr>
+                        <input asp-for="@Model.OrderCompositions[i].IdDish" type="hidden" value="@comp.IdDish" />
+                        <td>
+                            @Html.DisplayFor(dish => comp.DishName)
+                        </td>
+                        <td>
+                            CHF @Html.DisplayFor(Dish => comp.DishPrice)
+                        </td>
+                        <td>
+                            <label asp-for="@Model.OrderCompositions[i].Quantity">@comp.Quantity</label>
+                        </td>
+                        <td>
+                            <img src=@comp.DishImagePath width="60" height="60" />
+                        </td>
+                    </tr>
+                    i++;
                 }
             }
         </tbody>
@@ -122,3 +124,8 @@
 <div>
     <a asp-action="Order/@currentRestaurantId">Back to order</a>
 </div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

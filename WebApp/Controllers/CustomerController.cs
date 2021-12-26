@@ -94,12 +94,6 @@ namespace WebApp.Controllers
             };
             return View(orderViewModel);
         }
-        [HttpPost]
-        public IActionResult Order(OrderViewModel orderViewModel)
-        {
-
-            return RedirectToAction("Checkout", orderViewModel);
-        }
 
         [HttpPost]
         public IActionResult Checkout(OrderViewModel orderViewModel)
@@ -114,14 +108,16 @@ namespace WebApp.Controllers
             orderViewModel.OrderTotal = 0;
 
             // Recreate the dishes available
+            int cpt = 0;
             foreach (var d in DishManager.GetAllDishesByRestaurant((int)HttpContext.Session.GetInt32("CurrentRestaurantId")))
             {
                 if (d.IsAvailable)
                 {
-                    orderViewModel.OrderCompositions.Add(new CompositionViewModel()
-                    {
-                        DishImagePath = d.Image, DishName = d.Name, DishPrice = d.Price, IdDish = d.IdDish
-                    });
+                    orderViewModel.AvailableCompositions[cpt].DishImagePath = d.Image;
+                    orderViewModel.AvailableCompositions[cpt].DishName = d.Name;
+                    orderViewModel.AvailableCompositions[cpt].DishPrice = d.Price;
+                    orderViewModel.AvailableCompositions[cpt].IdDish = d.IdDish;
+                    cpt++;
                 }
             }
             // Adds the quantity to available dishes
@@ -130,8 +126,15 @@ namespace WebApp.Controllers
                 CompositionViewModel cTemp = orderViewModel.AvailableCompositions[i];
                 if (cTemp.Quantity > 0)
                 {
-                    orderViewModel.OrderCompositions[i].Quantity = cTemp.Quantity;
-                    orderViewModel.OrderTotal += cTemp.Quantity * orderViewModel.OrderCompositions[i].DishPrice;
+                    orderViewModel.OrderCompositions.Add(new CompositionViewModel()
+                    {
+                        IdDish = cTemp.IdDish,
+                        Quantity = cTemp.Quantity,
+                        DishPrice = cTemp.DishPrice,
+                        DishName = cTemp.DishName,
+                        DishImagePath = cTemp.DishImagePath
+                    });
+                    orderViewModel.OrderTotal += cTemp.Quantity * cTemp.DishPrice;
                     orderViewModel.OrderCompositions[i].DishPrice /= 100;
                 }
             }
@@ -140,7 +143,7 @@ namespace WebApp.Controllers
             orderViewModel.CustomerLastName = c.LastName;
             orderViewModel.CustomerFirstName = c.FirstName;
             orderViewModel.RestaurantName = RestaurantManager.GetRestaurantById((int)HttpContext.Session.GetInt32("CurrentRestaurantId")).Name;
-            orderViewModel.OrderTotal = (double) orderViewModel.OrderTotal / 100;
+            orderViewModel.OrderTotal = (double)orderViewModel.OrderTotal / 100;
 
             return View(orderViewModel);
         }
@@ -153,51 +156,25 @@ namespace WebApp.Controllers
                 return RedirectToAction("Login", "Home");
             }
 
-            //initializing orderViewModel null variables
-            orderViewModel.OrderCompositions = new List<CompositionViewModel>();
-            orderViewModel.OrderTotal = 0;
-
-            // Recreate the dishes available
-            foreach (var d in DishManager.GetAllDishesByRestaurant((int)HttpContext.Session.GetInt32("CurrentRestaurantId")))
+            foreach (CompositionViewModel comp in orderViewModel.OrderCompositions)
             {
-                if (d.IsAvailable)
-                {
-                    orderViewModel.OrderCompositions.Add(new CompositionViewModel()
-                    {
-                        DishImagePath = d.Image,
-                        DishName = d.Name,
-                        DishPrice = d.Price,
-                        IdDish = d.IdDish
-                    });
-                }
-            }
-
-            /*
-             *
-             * hidden field for id dish
-             * get rid of available composition --> only use ordercomposition
-             *
-             */
-
-
-            // Adds the quantity to available dishes
-            for (int i = 0; i < orderViewModel.AvailableCompositions.Count; i++)
-            {
-                CompositionViewModel cTemp = orderViewModel.AvailableCompositions[i];
-                if (cTemp.Quantity > 0)
-                {
-                    orderViewModel.OrderCompositions[i].Quantity = cTemp.Quantity;
-                    orderViewModel.OrderTotal += cTemp.Quantity * orderViewModel.OrderCompositions[i].DishPrice;
-                    orderViewModel.OrderCompositions[i].DishPrice /= 100;
-                }
+                Dish d = DishManager.GetDishById(comp.IdDish);
+                comp.DishPrice = d.Price;
+                comp.DishName = d.Name;
+                comp.DishImagePath = d.Image;
             }
 
             Customer c = CustomerManager.GetCustomerById((int)HttpContext.Session.GetInt32("IdMember"));
             orderViewModel.CustomerLastName = c.LastName;
             orderViewModel.CustomerFirstName = c.FirstName;
             orderViewModel.RestaurantName = RestaurantManager.GetRestaurantById((int)HttpContext.Session.GetInt32("CurrentRestaurantId")).Name;
-            orderViewModel.OrderTotal = (double)orderViewModel.OrderTotal / 100;
-            orderViewModel.AreaName = DeliveryAreaManager.GetDeliveryAreaByPostcode(orderViewModel.PostCode).Name;
+            DeliveryArea delA = DeliveryAreaManager.GetDeliveryAreaByPostcode(orderViewModel.PostCode);
+            if (delA == null)
+            {
+                ModelState.AddModelError("", "Can't deliver in this area. Try a different postcode.");
+                return View("Checkout");
+            }
+            orderViewModel.AreaName = delA.Name;
             return View(orderViewModel);
         }
     }
