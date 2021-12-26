@@ -18,14 +18,16 @@ namespace WebApp.Controllers
         public IOrderManager OrderManager { get; }
         public IDeliveryAreaManager DeliveryAreaManager { get; }
         public IDishManager DishManager { get; }
+        public IComposeManager ComposeManager { get; }
         public CustomerController(ICustomerManager customerManager, IRestaurantManager restaurantManager,
-        IOrderManager orderManager, IDeliveryAreaManager deliveryAreaManager, IDishManager dishManager)
+        IOrderManager orderManager, IDeliveryAreaManager deliveryAreaManager, IDishManager dishManager, IComposeManager composeManager)
         {
             CustomerManager = customerManager;
             RestaurantManager = restaurantManager;
             OrderManager = orderManager;
             DeliveryAreaManager = deliveryAreaManager;
             DishManager = dishManager;
+            ComposeManager = composeManager;
         }
 
         public IActionResult Index()
@@ -121,6 +123,7 @@ namespace WebApp.Controllers
                 }
             }
             // Adds the quantity to available dishes
+            int j = 0;
             for (int i = 0; i < orderViewModel.AvailableCompositions.Count; i++)
             {
                 CompositionViewModel cTemp = orderViewModel.AvailableCompositions[i];
@@ -135,8 +138,19 @@ namespace WebApp.Controllers
                         DishImagePath = cTemp.DishImagePath
                     });
                     orderViewModel.OrderTotal += cTemp.Quantity * cTemp.DishPrice;
-                    orderViewModel.OrderCompositions[i].DishPrice /= 100;
+                    orderViewModel.OrderCompositions[j].DishPrice /= 100;
+                    ++j;
                 }
+            }
+
+            //Empty orders can't placed
+            if (orderViewModel.OrderCompositions.Count == 0)
+            {
+                ModelState.AddModelError("", "Please first choose something to eat");
+                return RedirectToAction("Order", new
+                {
+                    id = (int)HttpContext.Session.GetInt32("CurrentRestaurantId")
+                });
             }
 
             Customer c = CustomerManager.GetCustomerById((int)HttpContext.Session.GetInt32("IdMember"));
@@ -159,7 +173,7 @@ namespace WebApp.Controllers
             foreach (CompositionViewModel comp in orderViewModel.OrderCompositions)
             {
                 Dish d = DishManager.GetDishById(comp.IdDish);
-                comp.DishPrice = d.Price;
+                comp.DishPrice = (double)d.Price / 100;
                 comp.DishName = d.Name;
                 comp.DishImagePath = d.Image;
             }
@@ -168,25 +182,34 @@ namespace WebApp.Controllers
             orderViewModel.CustomerLastName = c.LastName;
             orderViewModel.CustomerFirstName = c.FirstName;
             orderViewModel.RestaurantName = RestaurantManager.GetRestaurantById((int)HttpContext.Session.GetInt32("CurrentRestaurantId")).Name;
-            DeliveryArea delA = DeliveryAreaManager.GetDeliveryAreaByPostcode(orderViewModel.PostCode);
+
             // Model validation
+            DeliveryArea delA = DeliveryAreaManager.GetDeliveryAreaByPostcode(orderViewModel.PostCode);
             if (delA == null)
             {
                 ModelState.AddModelError("", "Can't deliver in this area. Try a different postcode.");
-                return Redirect(Request.Headers["Referer"].ToString());
+                return View("Checkout", orderViewModel);
             }
             if (orderViewModel.ExpectedDeliveryTime.Equals(DateTime.MinValue))
             {
-                ModelState.AddModelError("","Choose a delivery time.");
-                return Redirect(Request.Headers["Referer"].ToString());
+                ModelState.AddModelError("", "Choose a delivery time.");
+                return View("Checkout", orderViewModel); ;
             }
             if (orderViewModel.DeliveryAddress == null)
             {
-                ModelState.AddModelError("","Specify the delivery address");
-                return Redirect(Request.Headers["Referer"].ToString());
+                ModelState.AddModelError("", "Specify the delivery address");
+                return View("Checkout", orderViewModel);
             }
-
             orderViewModel.AreaName = delA.Name;
+            // Inserts the compositions in the DB and creates the order
+            int idOrder = OrderManager.CreateNewOrder((int) HttpContext.Session.GetInt32("IdMember"), delA.IdArea,
+                orderViewModel.ExpectedDeliveryTime, orderViewModel.DeliveryAddress);
+            foreach (var comp in orderViewModel.OrderCompositions)
+            {
+                ComposeManager.AddComposition(comp.IdDish, idOrder, comp.Quantity);
+            }
+            OrderManager.SetTotal(idOrder);
+
             return View(orderViewModel);
         }
     }

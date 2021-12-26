@@ -135,7 +135,7 @@ namespace BLL
             }
 
             //compositions related to the order must be deleted first to respect referential integrity 
-            CompositionDb.DeleteCompositionByOrder(idOrder);
+            CompositionDb.DeleteCompositionsByOrder(idOrder);
             OrdersDb.DeleteOrder(idOrder);
         }
 

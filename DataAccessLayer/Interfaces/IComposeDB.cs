@@ -11,7 +11,6 @@ namespace DataAccessLayer.Interfaces
     {
         public int AddComposition(int idDish, int idOrder, int quantity);
         public List<Composition> GetCompositionsByOrder(int idOrder);
-        public int DeleteComposition(int idComposition);
-        public int DeleteCompositionByOrder(int idOrder);
+        public int DeleteCompositionsByOrder(int idOrder);
     }
 }

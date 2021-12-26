@@ -56,14 +56,5 @@ namespace BLL
             return CompositionDb.GetCompositionsByOrder(idOrder);
         }
 
-        public void DeleteComposition(int idComposition)
-        {
-            if (CompositionDb.DeleteComposition(idComposition) == 0)
-            {
-                // DeleteComposition == 0 means no row were affected
-                throw new DataBaseException("Composition " + idComposition + " could not be deleted");
-            }
-        
-        }
     }
 }

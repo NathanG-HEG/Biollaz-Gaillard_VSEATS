@@ -49,16 +49,11 @@ namespace DataAccessLayer.DBAccesses
             return result;
         }
 
-        public int DeleteComposition(int idComposition)
-        {
-            throw new NotImplementedException();
-        }
 
-        public int DeleteCompositionByOrder(int idOrder)
+        public int DeleteCompositionsByOrder(int idOrder)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
-
             try
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))

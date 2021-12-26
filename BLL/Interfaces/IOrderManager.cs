@@ -17,6 +17,7 @@ namespace BLL.Interfaces
         public List<Order> GetAllOrdersByRestaurant(int idRestaurant);
         public void SetTotal(int idOrder);
         public Order GetOrderById(int idOrder);
+        public void DeleteOrder(int idOrder);
 
     }
 }
