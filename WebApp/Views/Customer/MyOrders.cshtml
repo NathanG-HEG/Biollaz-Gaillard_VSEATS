@@ -1,0 +1,70 @@
+﻿@model IEnumerable<WebApp.Models.OrderViewModel>
+
+@{
+    ViewData["Title"] = "MyOrders";
+}
+
+<h1>My Orders</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Order
+            </th>
+            <th>
+                Restaurant
+            </th>
+            <th>
+                Address
+            </th>
+            <th>
+                City
+            </th>
+            <th>
+                Order Total
+            </th>
+            <th>
+                Status
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RestaurantName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveryAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaName)
+            </td>
+            <td>
+                CHF @Html.DisplayFor(modelItem => item.OrderTotal)
+            </td>
+            <td>
+                @{
+                    if (item.TimeOfDelivery != DateTime.MinValue)
+                    {
+                        @Html.DisplayFor(modelItem => item.TimeOfDelivery)
+                    }
+                    else
+                    {
+                        <text>Not delivered</text>
+                    }
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new {  id=item.IdOrder})
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

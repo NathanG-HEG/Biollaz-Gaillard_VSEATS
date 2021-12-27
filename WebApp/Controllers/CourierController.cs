@@ -90,7 +90,6 @@ namespace WebApp.Controllers
             string customerLastName = customer.LastName;
 
             List<Composition> compositions = ComposeManager.GetCompositionsByOrder(id);
-
             //list of the ordered compositions
             List<CompositionViewModel> orderCompositions = null;
             if (compositions != null)

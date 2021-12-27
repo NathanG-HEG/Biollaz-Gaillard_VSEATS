@@ -16,6 +16,7 @@ namespace BLL.Interfaces
         public Restaurant GetRestaurantById(int id);
         public List<Restaurant> GetAllRestaurantsArea(int idArea);
         public List<Restaurant> GetAllRestaurants();
+        public Restaurant GetRestaurantByOrder(int idOrder);
 
     }
 }

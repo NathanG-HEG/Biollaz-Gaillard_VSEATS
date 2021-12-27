@@ -52,7 +52,6 @@ namespace BLL
             {
                 throw new DataBaseException("Order " + idOrder + " does not exist");
             }
-
             return CompositionDb.GetCompositionsByOrder(idOrder);
         }
 

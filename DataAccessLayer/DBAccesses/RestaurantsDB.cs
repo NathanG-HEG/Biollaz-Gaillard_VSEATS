@@ -332,5 +332,53 @@ namespace DataAccessLayer.DBAccesses
 
             return restaurant;
         }
+
+        public Restaurant GetRestaurantByOrder(int idOrder)
+        {
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
+            Restaurant restaurant = null;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    string query =
+                        "SELECT DISTINCT(r.ID_RESTAURANT), r.EMAILADDRESS, r.ID_AREA,  r.IMAGE, r.LOGO, r.NAME, r.PASSWORD FROM Restaurants r " +
+                        "INNER JOIN Dishes d ON d.ID_Restaurant = r.ID_Restaurant " +
+                        "INNER JOIN Compose c ON c.ID_Dish = d.ID_Dish " +
+                        "INNER JOIN Orders o ON c.ID_Order = o.ID_Order " +
+                        "WHERE o.ID_Order = @idOrder;";
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@idOrder", idOrder);
+
+                    cn.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            restaurant = new Restaurant();
+
+                            restaurant.IdRestaurant = (int)dr["ID_restaurant"];
+                            restaurant.IdArea = (int)dr["ID_area"];
+                            restaurant.Name = (string)dr["name"];
+                            restaurant.EmailAddress = (string)dr["emailAddress"];
+                            restaurant.Password = (string)dr["password"];
+                            if (dr["image"] != DBNull.Value)
+                                restaurant.Image = (string)dr["image"];
+                            if (dr["logo"] != DBNull.Value)
+                                restaurant.Logo = (string)dr["logo"];
+
+                        }
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception occurred while accessing restaurant using order " + idOrder + ": " + e.Message);
+            }
+            return restaurant;
+        }
     }
 }

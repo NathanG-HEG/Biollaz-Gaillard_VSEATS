@@ -26,6 +26,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Index">Restaurants</a>
                                 </li>
+                                if (Context.Session.GetInt32("IdMember") != null)
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="MyOrders">My Orders</a>
+                                    </li>
+                                }
                             }
                             else
                             {

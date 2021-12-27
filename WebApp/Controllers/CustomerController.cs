@@ -202,7 +202,7 @@ namespace WebApp.Controllers
             }
             orderViewModel.AreaName = delA.Name;
             // Inserts the compositions in the DB and creates the order
-            int idOrder = OrderManager.CreateNewOrder((int) HttpContext.Session.GetInt32("IdMember"), delA.IdArea,
+            int idOrder = OrderManager.CreateNewOrder((int)HttpContext.Session.GetInt32("IdMember"), delA.IdArea,
                 orderViewModel.ExpectedDeliveryTime, orderViewModel.DeliveryAddress);
             foreach (var comp in orderViewModel.OrderCompositions)
             {
@@ -211,6 +211,76 @@ namespace WebApp.Controllers
             OrderManager.SetTotal(idOrder);
 
             return View(orderViewModel);
+        }
+
+        public IActionResult MyOrders()
+        {
+            int? idCustomer = HttpContext.Session.GetInt32("IdMember");
+            if (HttpContext.Session.GetString("TypeOfUser") != "Customer" || idCustomer == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            List<Order> orders = OrderManager.GetAllOrdersByCustomer(((int)idCustomer));
+            List<OrderViewModel> ordersVm = new List<OrderViewModel>(orders.Count);
+            foreach (var o in orders)
+            {
+                ordersVm.Add(new OrderViewModel()
+                {
+                    AreaName = DeliveryAreaManager.GetDeliveryAreaById(o.IdArea).Name,
+                    OrderTotal = (double)o.OrderTotal / 100,
+                    RestaurantName = RestaurantManager.GetRestaurantByOrder(o.IdOrder).Name,
+                    DeliveryAddress = o.DeliveryAddress,
+                    IdOrder = o.IdOrder,
+                    TimeOfDelivery = o.TimeOfDelivery
+                });
+            }
+            return View(ordersVm);
+        }
+
+        public IActionResult Details(int id)
+        {
+            int? idCustomer = HttpContext.Session.GetInt32("IdMember");
+            if (HttpContext.Session.GetString("TypeOfUser") != "Customer" || idCustomer == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            List<Composition> compositions = ComposeManager.GetCompositionsByOrder(id);
+            List<CompositionViewModel> orderCompositions = new List<CompositionViewModel>(compositions.Count);
+            foreach (var c in compositions)
+            {
+                //retrieving corresponding dish
+                Dish d = DishManager.GetDishById(c.ID_Dish);
+
+                //mapping compositions and dish infos to compostitionViewModel
+                orderCompositions.Add(new CompositionViewModel()
+                {
+                    DishImagePath = d.Image,
+                    DishName = d.Name,
+                    DishPrice = (double)d.Price / 100,
+                    IdDish = d.IdDish,
+                    Quantity = c.Quantity
+                });
+
+            }
+
+            Order o = OrderManager.GetOrderById(id);
+            Customer cus = CustomerManager.GetCustomerById(o.IdCustomer);
+            OrderViewModel orderVm = new OrderViewModel()
+            {
+                AreaName = DeliveryAreaManager.GetDeliveryAreaById(o.IdArea).Name,
+                OrderTotal = (double)o.OrderTotal / 100,
+                RestaurantName = RestaurantManager.GetRestaurantByOrder(o.IdOrder).Name,
+                DeliveryAddress = o.DeliveryAddress,
+                IdOrder = o.IdOrder,
+                TimeOfDelivery = o.TimeOfDelivery,
+                OrderCompositions = orderCompositions,
+                CustomerLastName = cus.LastName,
+                CustomerFirstName = cus.FirstName
+            };
+
+            return View(orderVm);
         }
     }
 }

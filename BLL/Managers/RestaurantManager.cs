@@ -101,5 +101,10 @@ namespace BLL
         {
             return RestaurantsDb.GetRestaurantById(id);
         }
+
+        public Restaurant GetRestaurantByOrder(int idOrder)
+        {
+            return RestaurantsDb.GetRestaurantByOrder(idOrder);
+        }
     }
 }
