@@ -32,39 +32,108 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdOrder)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RestaurantName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeliveryAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AreaName)
-            </td>
-            <td>
-                CHF @Html.DisplayFor(modelItem => item.OrderTotal)
-            </td>
-            <td>
-                @{
-                    if (item.TimeOfDelivery != DateTime.MinValue)
+        @{
+            if (Model != null)
+            {
+                <tr>
+                    <th>Current orders</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                foreach (var item in Model)
+                {
+                    if (item.TimeOfDelivery == DateTime.MinValue)
                     {
-                        @Html.DisplayFor(modelItem => item.TimeOfDelivery)
-                    }
-                    else
-                    {
-                        <text>Not delivered</text>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdOrder)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RestaurantName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DeliveryAddress)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AreaName)
+                            </td>
+                            <td>
+                                CHF @Html.DisplayFor(modelItem => item.OrderTotal)
+                            </td>
+                            <td>
+                                @{
+                                    if (item.TimeOfDelivery != DateTime.MinValue)
+                                    {
+                                        @Html.DisplayFor(modelItem => item.TimeOfDelivery)
+                                    }
+                                    else
+                                    {
+                                        <text>Not delivered</text>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", new {id = item.IdOrder})
+                            </td>
+                        </tr>
                     }
                 }
-            </td>
-            <td>
-                @Html.ActionLink("Details", "Details", new {  id=item.IdOrder})
-            </td>
-        </tr>
-}
+                <tr>
+                    <th>All orders</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                foreach (var item in Model)
+                {
+                    <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdOrder)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RestaurantName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DeliveryAddress)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AreaName)
+                            </td>
+                            <td>
+                                CHF @Html.DisplayFor(modelItem => item.OrderTotal)
+                            </td>
+                            <td>
+                                @{
+                                    if (item.TimeOfDelivery != DateTime.MinValue)
+                                    {
+                                        @Html.DisplayFor(modelItem => item.TimeOfDelivery)
+                                    }
+                                    else
+                                    {
+                                        <text>Not delivered</text>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", new {id = item.IdOrder})
+                            </td>
+                        </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        No orders yet
+                    </td>
+                </tr>
+            }
+        }
+
     </tbody>
 </table>
