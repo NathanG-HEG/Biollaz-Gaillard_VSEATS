@@ -14,5 +14,6 @@
 <h3>Authors and Contributors</h3>
 <hr/>
 <h3>Languages</h3>
+<p>C# ASP.net 5.0, CSS, HTML, JavaScript, Microsoft SQL, TypeScript</p>
 <hr/>
 <h3>License</h3>
