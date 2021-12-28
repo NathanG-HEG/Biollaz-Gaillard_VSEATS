@@ -14,7 +14,7 @@ namespace BLL
     public class Utilities:IUtilities
     {
         public  readonly int MaxQuantity = 999_999_999;
-        public  readonly int MaxOrdersSimultaneously = 2;
+        public  readonly int MaxOrdersSimultaneously = 5;
 
         public IConfiguration Configuration;
         public Utilities(IConfiguration configuration)

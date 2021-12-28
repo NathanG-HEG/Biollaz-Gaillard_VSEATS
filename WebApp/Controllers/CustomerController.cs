@@ -203,8 +203,18 @@ namespace WebApp.Controllers
             }
             orderViewModel.AreaName = delA.Name;
             // Inserts the compositions in the DB and creates the order
-            int idOrder = OrderManager.CreateNewOrder((int)HttpContext.Session.GetInt32("IdMember"), delA.IdArea,
-                orderViewModel.ExpectedDeliveryTime, orderViewModel.DeliveryAddress);
+            int idOrder=-1;
+            try
+            {
+                idOrder = OrderManager.CreateNewOrder((int)HttpContext.Session.GetInt32("IdMember"), delA.IdArea,
+                    orderViewModel.ExpectedDeliveryTime, orderViewModel.DeliveryAddress);
+            }
+            catch (BusinessRuleException e)
+            {
+                ModelState.AddModelError("", "No courier available at this area.");
+                return View("Checkout", orderViewModel);
+            }
+
             foreach (var comp in orderViewModel.OrderCompositions)
             {
                 ComposeManager.AddComposition(comp.IdDish, idOrder, comp.Quantity);
@@ -293,14 +303,14 @@ namespace WebApp.Controllers
             }
             catch (BusinessRuleException bre)
             {
-                ModelState.AddModelError("","Hello");
+                ModelState.AddModelError("", "Hello");
                 int thisId = id;
                 return RedirectToAction("Details", new
                 {
                     id = thisId
                 });
             }
-            
+
             return RedirectToAction("MyOrders");
         }
     }

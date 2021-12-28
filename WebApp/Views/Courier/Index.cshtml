@@ -33,7 +33,7 @@
         @if (Model != null)
         {
             <tr>
-                <th>Today's Orders</th>
+                <th>Orders to deliver</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -42,7 +42,7 @@
             </tr>
             @foreach (var item in Model)
             {
-                if (item.ExpectedDeliveryTime.AddHours(25) > DateTime.Now)
+                if (item.TimeOfDelivery == DateTime.MinValue)
                 {
                     <tr>
                         <td>
@@ -88,7 +88,7 @@
                 }
             }
             <tr>
-                <th>All orders</th>
+                <th>Delivered orders</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -97,47 +97,52 @@
             </tr>
             foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CustomerLastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DeliveryAddress)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AreaName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ExpectedDeliveryTime)
-                    </td>
-                    <td>
-                        @{
-                            string time;
-                            if (item.TimeOfDelivery != DateTime.MinValue)
-                            {
-                                time = item.TimeOfDelivery.ToString();
+                if (item.TimeOfDelivery != DateTime.MinValue)
+                {
+
+
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CustomerLastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DeliveryAddress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AreaName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ExpectedDeliveryTime)
+                        </td>
+                        <td>
+                            @{
+                                string time;
+                                if (item.TimeOfDelivery != DateTime.MinValue)
+                                {
+                                    time = item.TimeOfDelivery.ToString();
+                                }
+                                else
+                                {
+                                    time = "not yet";
+                                }
                             }
-                            else
-                            {
-                                time = "not yet";
+                            @time
+                        </td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", new {id = item.IdOrder}) |
+                            @{
+                                if (item.TimeOfDelivery != DateTime.MinValue)
+                                {
+                                    @Html.ActionLink("Set to undelivered", "SetToDelivered", new {id = item.IdOrder})
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Set to delivered", "SetToDelivered", new {id = item.IdOrder})
+                                }
                             }
-                        }
-                        @time
-                    </td>
-                    <td>
-                        @Html.ActionLink("Details", "Details", new { id = item.IdOrder }) |
-                        @{
-                            if (item.TimeOfDelivery != DateTime.MinValue)
-                            {
-                                @Html.ActionLink("Set to undelivered", "SetToDelivered", new { id = item.IdOrder })
-                            }
-                            else
-                            {
-                                @Html.ActionLink("Set to delivered", "SetToDelivered", new { id = item.IdOrder })
-                            }
-                        }
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                }
             }
         }
         else
