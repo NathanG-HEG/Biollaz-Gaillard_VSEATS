@@ -14,6 +14,8 @@ namespace WebApp.Models
         public int IdRestaurant { get; set; }
         public string ConnectedCustomer { get; set; }
         public List<DishViewModel> Dishes { get; set; }
+        public float Revenue { get; set; }
+        public int Sales { get; set; }
 
     }
 }

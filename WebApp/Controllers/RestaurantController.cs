@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL.Interfaces;
+using DTO;
+using Microsoft.AspNetCore.Http;
 using WebApp.Models;
 
 namespace WebApp.Controllers
@@ -22,15 +24,28 @@ namespace WebApp.Controllers
 
         public IActionResult Index()
         {
-            List<Restaurant> restaurants = RestaurantManager.GetAllRestaurants();
-            List<RestaurantViewModel> restaurantsVM = new List<RestaurantViewModel>();
-
-            foreach (var r  in restaurants)
+            if (!HttpContext.Session.GetString("TypeOfUser").Equals("Restaurant"))
             {
-               string deliveryAreaName = DeliveryAreaManager.GetDeliveryAreaById(r.IdArea).Name;
-                restaurantsVM.Add(new RestaurantViewModel(){AreaName = deliveryAreaName,IconPath = r.Logo, Name = r.Name});
+                return RedirectToAction("Login", "Home");
             }
-            return View(restaurantsVM);
+
+            Restaurant r = RestaurantManager.GetRestaurantById((int) HttpContext.Session.GetInt32("IdMember"));
+            RestaurantViewModel rvm = new RestaurantViewModel()
+            {
+                AreaName = DeliveryAreaManager.GetDeliveryAreaById(r.IdArea).Name,
+                IconPath = r.Logo,
+                Name = r.Name
+            };
+            List<Order> orders = OrderManager.GetAllOrdersByRestaurant((int) HttpContext.Session.GetInt32("IdMember"));
+            foreach (var o in orders)
+            {
+                rvm.Revenue += o.OrderTotal;
+            }
+
+            rvm.Revenue /= 100;
+            rvm.Sales = orders.Count;
+
+            return View(rvm);
         }
 
 
