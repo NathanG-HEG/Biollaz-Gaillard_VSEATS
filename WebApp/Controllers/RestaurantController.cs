@@ -37,13 +37,21 @@ namespace WebApp.Controllers
                 Name = r.Name
             };
             List<Order> orders = OrderManager.GetAllOrdersByRestaurant((int) HttpContext.Session.GetInt32("IdMember"));
-            foreach (var o in orders)
+            if (orders != null)
             {
-                rvm.Revenue += o.OrderTotal;
-            }
+                foreach (var o in orders)
+                {
+                    rvm.Revenue += o.OrderTotal;
+                }
 
-            rvm.Revenue /= 100;
-            rvm.Sales = orders.Count;
+                rvm.Revenue /= 100;
+                rvm.Sales = orders.Count;
+            }
+            else
+            {
+                rvm.Revenue = 0;
+                rvm.Sales = 0;
+            }
 
             return View(rvm);
         }
