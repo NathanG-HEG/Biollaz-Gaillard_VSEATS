@@ -39,7 +39,7 @@
                             dateTime.Day, dateTime.Hour, (dateTime.Minute / 15) * 15, 0);
 
                         //customer can order up to one day before the delivery (24 quarter)
-                        for (int i1 = 1; i1 <= 24 * 4; i1++)
+                        for (int i1 = 4; i1 < 24 * 4+4; i1++)
                         {
                             DateTime dateTemp = dateTimeRoundToQuarter.AddMinutes(15 * i1);
                             var minute = dateTemp.Minute.ToString();

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL;
+using BLL.BusinessExceptions;
 using DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualBasic.CompilerServices;
@@ -277,10 +278,30 @@ namespace WebApp.Controllers
                 TimeOfDelivery = o.TimeOfDelivery,
                 OrderCompositions = orderCompositions,
                 CustomerLastName = cus.LastName,
-                CustomerFirstName = cus.FirstName
+                CustomerFirstName = cus.FirstName,
+                ExpectedDeliveryTime = o.ExpectedDeliveryTime
             };
 
             return View(orderVm);
+        }
+
+        public IActionResult Cancel(int id)
+        {
+            try
+            {
+                OrderManager.DeleteOrder(id);
+            }
+            catch (BusinessRuleException bre)
+            {
+                ModelState.AddModelError("","Hello");
+                int thisId = id;
+                return RedirectToAction("Details", new
+                {
+                    id = thisId
+                });
+            }
+            
+            return RedirectToAction("MyOrders");
         }
     }
 }

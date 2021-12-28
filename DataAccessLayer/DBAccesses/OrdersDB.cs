@@ -200,7 +200,7 @@ namespace DataAccessLayer.DBAccesses
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT * FROM ORDERS WHERE ID_customer=@idCustomer;";
+                    string query = "SELECT * FROM ORDERS WHERE ID_customer=@idCustomer ORDER BY EXPECTEDDELIVERYTIME DESC;";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@idCustomer", idCustomer);
 

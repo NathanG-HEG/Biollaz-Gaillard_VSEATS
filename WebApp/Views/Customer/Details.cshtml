@@ -5,7 +5,7 @@
 }
 
 <h1>Details</h1>
-
+<div asp-validation-summary="All" class="text-danger"></div>
 <div>
     <hr />
     <dl class="row">
@@ -50,6 +50,12 @@
         </dt>
         <dd class="col-sm-10">
             CHF @Html.DisplayFor(model => model.OrderTotal)
+        </dd>
+        <dt class="col-sm-2">
+            Expected Time of Delivery
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExpectedDeliveryTime)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TimeOfDelivery)
@@ -110,6 +116,12 @@
 }
 
 <div>
-    @Html.ActionLink("Delete", "Delete", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="MyOrders">Back to List</a>
+    @{
+        if (Model.TimeOfDelivery == DateTime.MinValue && DateTime.Now.AddHours(3) < Model.ExpectedDeliveryTime)
+        {
+            <text> | </text>
+            <a asp-action = "Cancel" asp-route-id = "@Model.IdOrder"> Cancel order </a>
+        }
+    }
 </div>
