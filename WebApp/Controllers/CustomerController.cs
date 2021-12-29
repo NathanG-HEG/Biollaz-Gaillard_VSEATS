@@ -211,7 +211,7 @@ namespace WebApp.Controllers
             }
             catch (BusinessRuleException e)
             {
-                ModelState.AddModelError("", "No courier available at this area.");
+                ModelState.AddModelError("", "No courier available in this area.");
                 return View("Checkout", orderViewModel);
             }
 
