@@ -22,7 +22,8 @@ namespace BLL
     {
         Configuration = configuration;
         CouriersDb = new CouriersDB(Configuration);
-    }
+        Utilities = new Utilities(Configuration);
+        }
 
         public void AddCourier(int idArea, string firstName, string lastName, string emailAddress, string password)
         {
