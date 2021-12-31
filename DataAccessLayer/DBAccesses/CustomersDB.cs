@@ -146,7 +146,7 @@ namespace DataAccessLayer.DBAccesses
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT * FROM Customers WHERE pwdHash=@pwdHashAND emailAddress = @emailAddress;";
+                    string query = "SELECT * FROM Customers WHERE pwdHash=@pwdHash AND emailAddress = @emailAddress;";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@emailAddress", emailAddress);
                     cmd.Parameters.AddWithValue("@pwdHash", pwdHash);
