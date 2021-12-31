@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using BLL.BusinessExceptions;
 using BLL.Interfaces;
 using DataAccessLayer.DBAccesses;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Configuration;
 
 namespace BLL
@@ -39,7 +41,22 @@ namespace BLL
             if (Utilities.IsEmailAddressInDatabase(emailAddress))
                 throw new BusinessRuleException("An account using this email address already exists");
 
-            int result = RestaurantsDb.AddRestaurant(idArea, name, emailAddress, password);
+            var saltBytes = new byte[128 / 8];
+            using (var rngCsp = new RNGCryptoServiceProvider())
+            {
+                rngCsp.GetNonZeroBytes(saltBytes);
+            }
+
+            string pwdHash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: saltBytes,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+
+            string salt = Convert.ToBase64String(saltBytes);
+            
+            int result = RestaurantsDb.AddRestaurant(idArea, name, emailAddress, pwdHash, salt);
             if (result == 0)
             {
                 throw new DataBaseException("Error occurred, restaurant " + name + " was not created.");
@@ -79,7 +96,27 @@ namespace BLL
 
         public Restaurant GetRestaurantByLogin(string email, string password)
         {
-            return RestaurantsDb.GetRestaurantByLogin(email, password);
+            List<Restaurant> restaurants = RestaurantsDb.GetAllRestaurants();
+
+            foreach (var r in restaurants)
+            {
+                if (!email.Equals(r.EmailAddress)) continue;
+
+                byte[] saltBytes = Convert.FromBase64String(r.Salt);
+                string pwdHash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                    password: password,
+                    salt: saltBytes,
+                    prf: KeyDerivationPrf.HMACSHA256,
+                    iterationCount: 10000,
+                    numBytesRequested: 256 / 8));
+                Restaurant restaurant = RestaurantsDb.GetRestaurantByLogin(r.EmailAddress, pwdHash);
+                if (restaurant != null)
+                {
+                    return restaurant;
+                }
+            }
+
+            return null;
         }
 
         public Restaurant GetRestaurantByName(string name)

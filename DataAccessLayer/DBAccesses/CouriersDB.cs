@@ -77,7 +77,7 @@ namespace DataAccessLayer.DBAccesses
                             courier.FirstName = (string)dr["firstName"];
                             courier.LastName = (string)dr["lastName"];
                             courier.EmailAddress = (string)dr["emailAddress"];
-                            courier.PwdHash = (string)dr["password"];
+                            courier.PwdHash = (string)dr["pwdHash"];
 
                             couriers.Add(courier);
                         }
@@ -163,10 +163,8 @@ namespace DataAccessLayer.DBAccesses
                             courier.FirstName = (string)dr["firstName"];
                             courier.LastName = (string)dr["lastName"];
                             courier.EmailAddress = (string)dr["emailAddress"];
-                            if(dr["pwdHash"]!=DBNull.Value)
-                                courier.PwdHash = (string)dr["pwdHash"];
-                            if (dr["salt"] != DBNull.Value)
-                                courier.Salt = (string)dr["salt"];
+                            courier.PwdHash = (string)dr["pwdHash"];
+                            courier.Salt = (string)dr["salt"];
 
                             couriers.Add(courier);
                         }

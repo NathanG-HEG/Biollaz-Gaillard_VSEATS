@@ -10,7 +10,7 @@ namespace DataAccessLayer.Interfaces
 {
     public interface IRestaurantsDB
     {
-        public int AddRestaurant(int idArea, string name, string emailAddress, string password);
+        public int AddRestaurant(int idArea, string name, string emailAddress, string pwdHash, string salt);
         public Restaurant GetRestaurantByName(string name);
         public Restaurant GetRestaurantById(int id);
         public Restaurant GetRestaurantByLogin(string emailAddress, string password);

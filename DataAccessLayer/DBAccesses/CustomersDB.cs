@@ -18,7 +18,7 @@ namespace DataAccessLayer.DBAccesses
             Configuration = configuration;
         }
 
-        public int AddCustomer(string firstname, string lastname, string emailAddress, string password)
+        public int AddCustomer(string firstname, string lastname, string emailAddress, string pwdHash, string salt)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
@@ -27,12 +27,14 @@ namespace DataAccessLayer.DBAccesses
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
                 {
-                    string query = "INSERT INTO Customers (firstName, lastName, emailAddress, password) VALUES (@firstName, @lastName, @emailAddress, @password)";
+                    string query = "INSERT INTO Customers (firstName, lastName, emailAddress, pwdHash, salt)" +
+                                   " VALUES (@firstName, @lastName, @emailAddress, @pwdHash, @salt)";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@firstName", firstname);
                     cmd.Parameters.AddWithValue("@lastName", lastname);
                     cmd.Parameters.AddWithValue("@emailAddress", emailAddress);
-                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@pwdHash", pwdHash);
+                    cmd.Parameters.AddWithValue("@salt", salt);
 
                     cn.Open();
 
@@ -75,7 +77,7 @@ namespace DataAccessLayer.DBAccesses
                             customer.FirstName = (string)dr["firstName"];
                             customer.LastName = (string)dr["lastName"];
                             customer.EmailAddress = (string)dr["emailAddress"];
-                            customer.Password = (string)dr["password"];
+                            customer.PwdHash = (string)dr["pwdHash"];
 
                         }
                     }
@@ -118,7 +120,8 @@ namespace DataAccessLayer.DBAccesses
                             customer.FirstName = (string)dr["firstname"];
                             customer.LastName = (string)dr["lastname"];
                             customer.EmailAddress = (string)dr["emailAddress"];
-                            customer.Password = (string)dr["password"];
+                            customer.PwdHash = (string)dr["pwdHash"];
+                            customer.Salt = (string) dr["salt"];
 
                             customers.Add(customer);
                         }
@@ -134,7 +137,7 @@ namespace DataAccessLayer.DBAccesses
             return customers;
         }
 
-        public Customer GetCustomerByLogin(string emailAddress, string password)
+        public Customer GetCustomerByLogin(string emailAddress, string pwdHash)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             Customer customer = null;
@@ -143,10 +146,10 @@ namespace DataAccessLayer.DBAccesses
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT * FROM Customers WHERE password=@password AND emailAddress = @emailAddress;";
+                    string query = "SELECT * FROM Customers WHERE pwdHash=@pwdHashAND emailAddress = @emailAddress;";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@emailAddress", emailAddress);
-                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@pwdHash", pwdHash);
 
                     cn.Open();
 
@@ -161,7 +164,7 @@ namespace DataAccessLayer.DBAccesses
                             customer.FirstName = (string)dr["firstName"];
                             customer.LastName = (string)dr["lastName"];
                             customer.EmailAddress = (string)dr["emailAddress"];
-                            customer.Password = (string)dr["password"];
+                            customer.PwdHash = (string)dr["pwdHash"];
                         }
                     }
                 }

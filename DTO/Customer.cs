@@ -11,15 +11,7 @@ public class Customer
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string EmailAddress { get; set; }
-    public string Password { get; set; }
-
-    public override string ToString()
-    {
-        return "\nIdCustomer: " + IdCustomer +
-               "\nfirstName: " + FirstName +
-               "\nlastName: " + LastName +
-               "\nemailAddress: " + EmailAddress +
-               "\npassword: " + Password;
-    }
+    public string PwdHash { get; set; }
+    public string Salt { get; set; }
 
 }

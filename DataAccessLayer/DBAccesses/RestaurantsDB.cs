@@ -18,7 +18,7 @@ namespace DataAccessLayer.DBAccesses
             IConfiguration = iConfiguration;
         }
 
-        public int AddRestaurant(int idArea, string name, string emailAddress, string password)
+        public int AddRestaurant(int idArea, string name, string emailAddress, string pwdHash, string salt)
         {
             string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             int result = 0;
@@ -27,12 +27,14 @@ namespace DataAccessLayer.DBAccesses
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
                 {
-                    string query = "INSERT INTO Restaurants (ID_area, name, emailAddress, password) VALUES (@idArea, @name, @emailAddress, @password)";
+                    string query = "INSERT INTO Restaurants (ID_area, name, emailAddress, pwdHash, salt)" +
+                                   " VALUES (@idArea, @name, @emailAddress, @pwdHahs, @salt)";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@idArea", idArea);
                     cmd.Parameters.AddWithValue("@name", name);
                     cmd.Parameters.AddWithValue("@emailAddress", emailAddress);
-                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@pwdHash", pwdHash);
+                    cmd.Parameters.AddWithValue("@salt", salt);
 
                     cn.Open();
 
@@ -74,7 +76,7 @@ namespace DataAccessLayer.DBAccesses
                             restaurant.IdArea = (int)dr["ID_area"];
                             restaurant.Name = (string)dr["name"];
                             restaurant.EmailAddress = (string)dr["emailAddress"];
-                            restaurant.Password = (string)dr["password"];
+                            restaurant.PwdHash = (string)dr["pwdHash"];
                             if (dr["image"] != DBNull.Value)
                                 restaurant.Image = (string)dr["image"];
                             if (dr["logo"] != DBNull.Value)
@@ -93,7 +95,7 @@ namespace DataAccessLayer.DBAccesses
             return restaurant;
         }
 
-        public Restaurant GetRestaurantByLogin(string emailAddress, string password)
+        public Restaurant GetRestaurantByLogin(string emailAddress, string pwdHash)
         {
             string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             Restaurant restaurant = null;
@@ -102,10 +104,10 @@ namespace DataAccessLayer.DBAccesses
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT * FROM Restaurants WHERE emailAddress=@emailAddress AND password=@password;";
+                    string query = "SELECT * FROM Restaurants WHERE emailAddress=@emailAddress AND pwdHsah=@pwdHash;";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@emailAddress", emailAddress);
-                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@pwdHash", pwdHash);
 
                     cn.Open();
 
@@ -119,7 +121,7 @@ namespace DataAccessLayer.DBAccesses
                             restaurant.IdArea = (int)dr["ID_area"];
                             restaurant.Name = (string)dr["name"];
                             restaurant.EmailAddress = (string)dr["emailAddress"];
-                            restaurant.Password = (string)dr["password"];
+                            restaurant.PwdHash = (string)dr["password"];
                             if (dr["image"] != DBNull.Value)
                                 restaurant.Image = (string)dr["image"];
                             if (dr["logo"] != DBNull.Value)
@@ -165,7 +167,8 @@ namespace DataAccessLayer.DBAccesses
                             restaurant.IdArea = (int)dr["ID_area"];
                             restaurant.Name = (string)dr["name"];
                             restaurant.EmailAddress = (string)dr["emailAddress"];
-                            restaurant.Password = (string)dr["password"];
+                            restaurant.PwdHash = (string)dr["password"];
+                            restaurant.Salt = (string) dr["salt"];
                             if (dr["image"] != DBNull.Value)
                                 restaurant.Image = (string) dr["image"];
                             if (dr["logo"] != DBNull.Value)
@@ -213,7 +216,7 @@ namespace DataAccessLayer.DBAccesses
                             restaurant.IdArea = (int)dr["ID_area"];
                             restaurant.Name = (string)dr["name"];
                             restaurant.EmailAddress = (string)dr["emailAddress"];
-                            restaurant.Password = (string)dr["password"];
+                            restaurant.PwdHash = (string)dr["password"];
                             if (dr["image"] != DBNull.Value)
                                 restaurant.Image = (string)dr["image"];
                             if (dr["logo"] != DBNull.Value)
@@ -314,7 +317,7 @@ namespace DataAccessLayer.DBAccesses
                             restaurant.IdArea = (int)dr["ID_area"];
                             restaurant.Name = (string)dr["name"];
                             restaurant.EmailAddress = (string)dr["emailAddress"];
-                            restaurant.Password = (string)dr["password"];
+                            restaurant.PwdHash = (string)dr["password"];
                             if (dr["image"] != DBNull.Value)
                                 restaurant.Image = (string)dr["image"];
                             if (dr["logo"] != DBNull.Value)
@@ -363,7 +366,7 @@ namespace DataAccessLayer.DBAccesses
                             restaurant.IdArea = (int)dr["ID_area"];
                             restaurant.Name = (string)dr["name"];
                             restaurant.EmailAddress = (string)dr["emailAddress"];
-                            restaurant.Password = (string)dr["password"];
+                            restaurant.PwdHash = (string)dr["password"];
                             if (dr["image"] != DBNull.Value)
                                 restaurant.Image = (string)dr["image"];
                             if (dr["logo"] != DBNull.Value)
