@@ -14,7 +14,7 @@ namespace DataAccessLayer.DBAccesses
             Configuration = configuration;
         }
 
-        public int AddCourier(int idArea, string firstName, string lastName, string emailAddress, string password)
+        public int AddCourier(int idArea, string firstName, string lastName, string emailAddress, string pwdHash, string salt)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
@@ -23,13 +23,15 @@ namespace DataAccessLayer.DBAccesses
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
                 {
-                    string query = "INSERT INTO Courriers (ID_area, firstName, lastName, emailAddress, password) VALUES (@idArea, @firstName, @lastName, @emailAddress, @password)";
+                    string query = "INSERT INTO Courriers (ID_area, firstName, lastName, emailAddress, pwdHash, salt)" +
+                                   " VALUES (@idArea, @firstName, @lastName, @emailAddress, @pwdHash, @salt)";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@idArea", idArea);
                     cmd.Parameters.AddWithValue("@firstName", firstName);
                     cmd.Parameters.AddWithValue("@lastName", lastName);
                     cmd.Parameters.AddWithValue("@emailAddress", emailAddress);
-                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@pwdHash", pwdHash);
+                    cmd.Parameters.AddWithValue("@salt", salt);
 
                     cn.Open();
 
@@ -75,7 +77,7 @@ namespace DataAccessLayer.DBAccesses
                             courier.FirstName = (string)dr["firstName"];
                             courier.LastName = (string)dr["lastName"];
                             courier.EmailAddress = (string)dr["emailAddress"];
-                            courier.Password = (string)dr["password"];
+                            courier.PwdHash = (string)dr["password"];
 
                             couriers.Add(courier);
                         }
@@ -118,7 +120,7 @@ namespace DataAccessLayer.DBAccesses
                             courier.FirstName = (string)dr["firstName"];
                             courier.LastName = (string)dr["lastName"];
                             courier.EmailAddress = (string)dr["emailAddress"];
-                            courier.Password = (string)dr["password"];
+                            courier.PwdHash = (string)dr["pwdHash"];
 
                         }
                     }
@@ -161,7 +163,10 @@ namespace DataAccessLayer.DBAccesses
                             courier.FirstName = (string)dr["firstName"];
                             courier.LastName = (string)dr["lastName"];
                             courier.EmailAddress = (string)dr["emailAddress"];
-                            courier.Password = (string)dr["password"];
+                            if(dr["pwdHash"]!=DBNull.Value)
+                                courier.PwdHash = (string)dr["pwdHash"];
+                            if (dr["salt"] != DBNull.Value)
+                                courier.Salt = (string)dr["salt"];
 
                             couriers.Add(courier);
                         }
@@ -176,7 +181,7 @@ namespace DataAccessLayer.DBAccesses
             return couriers;
         }
 
-        public Courier GetCourierByLogin(string emailAddress, string password)
+        public Courier GetCourierByLogin(string emailAddress, string pwdHash)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             Courier courier = null;
@@ -185,10 +190,10 @@ namespace DataAccessLayer.DBAccesses
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT * FROM Courriers WHERE password=@password AND emailAddress = @emailAddress;";
+                    string query = "SELECT * FROM Courriers WHERE pwdHash=@pwdHash AND emailAddress = @emailAddress;";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@emailAddress", emailAddress);
-                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@pwdHash", pwdHash);
 
                     cn.Open();
 
@@ -204,7 +209,7 @@ namespace DataAccessLayer.DBAccesses
                             courier.FirstName = (string)dr["firstName"];
                             courier.LastName = (string)dr["lastName"];
                             courier.EmailAddress = (string)dr["emailAddress"];
-                            courier.Password = (string)dr["password"];
+                            courier.PwdHash = (string)dr["pwdHash"];
 
                         }
                     }

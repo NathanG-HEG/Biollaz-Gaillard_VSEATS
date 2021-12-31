@@ -12,23 +12,12 @@ public class Courier
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string EmailAddress { get; set; }
-    public string Password { get; set; }
-
-    public int numberOfCurrentOrders { get; set; }
+    public string PwdHash { get; set; }
+    public string Salt { get; set; }
 
     public Courier()
     {
-        numberOfCurrentOrders = 0;
+    
     }
 
-
-    public override string ToString()
-    {
-        return "\nidCourier: " + IdCourier +
-               "\nidArea: " + IdArea +
-               "\nfirstName: " + FirstName +
-               "\nlastName: " + LastName +
-               "\nemailAddress: " + EmailAddress +
-               "\npassword: " + Password;
-    }
 }

@@ -203,7 +203,7 @@ namespace WebApp.Controllers
             }
             orderViewModel.AreaName = delA.Name;
             // Inserts the compositions in the DB and creates the order
-            int idOrder=-1;
+            int idOrder = -1;
             try
             {
                 idOrder = OrderManager.CreateNewOrder((int)HttpContext.Session.GetInt32("IdMember"), delA.IdArea,
@@ -233,19 +233,23 @@ namespace WebApp.Controllers
             }
 
             List<Order> orders = OrderManager.GetAllOrdersByCustomer(((int)idCustomer));
-            List<OrderViewModel> ordersVm = new List<OrderViewModel>(orders.Count);
-            foreach (var o in orders)
+            List<OrderViewModel> ordersVm = new List<OrderViewModel>();
+            if (orders != null)
             {
-                ordersVm.Add(new OrderViewModel()
+                foreach (var o in orders)
                 {
-                    AreaName = DeliveryAreaManager.GetDeliveryAreaById(o.IdArea).Name,
-                    OrderTotal = (double)o.OrderTotal / 100,
-                    RestaurantName = RestaurantManager.GetRestaurantByOrder(o.IdOrder).Name,
-                    DeliveryAddress = o.DeliveryAddress,
-                    IdOrder = o.IdOrder,
-                    TimeOfDelivery = o.TimeOfDelivery
-                });
+                    ordersVm.Add(new OrderViewModel()
+                    {
+                        AreaName = DeliveryAreaManager.GetDeliveryAreaById(o.IdArea).Name,
+                        OrderTotal = (double)o.OrderTotal / 100,
+                        RestaurantName = RestaurantManager.GetRestaurantByOrder(o.IdOrder).Name,
+                        DeliveryAddress = o.DeliveryAddress,
+                        IdOrder = o.IdOrder,
+                        TimeOfDelivery = o.TimeOfDelivery
+                    });
+                }
             }
+
             return View(ordersVm);
         }
 
