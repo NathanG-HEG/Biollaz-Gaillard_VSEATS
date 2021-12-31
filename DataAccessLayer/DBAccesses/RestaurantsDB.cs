@@ -141,7 +141,6 @@ namespace DataAccessLayer.DBAccesses
 
         public List<Restaurant> GetAllRestaurants()
         {
-            //string connectionStrings = Connection.GetConnectionString();
             string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             List<Restaurant> restaurants = null;
 

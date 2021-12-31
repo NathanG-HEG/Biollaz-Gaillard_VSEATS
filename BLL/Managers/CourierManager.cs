@@ -43,6 +43,7 @@ namespace BLL
             {
                 rngCsp.GetNonZeroBytes(saltBytes);
             }
+            
 
             string pwdHash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: password,
