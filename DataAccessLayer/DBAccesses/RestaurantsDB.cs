@@ -122,6 +122,7 @@ namespace DataAccessLayer.DBAccesses
                             restaurant.Name = (string)dr["name"];
                             restaurant.EmailAddress = (string)dr["emailAddress"];
                             restaurant.PwdHash = (string)dr["pwdHash"];
+                            restaurant.Salt = (string) dr["salt"];
                             if (dr["image"] != DBNull.Value)
                                 restaurant.Image = (string)dr["image"];
                             if (dr["logo"] != DBNull.Value)
