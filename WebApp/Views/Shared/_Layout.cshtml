@@ -41,6 +41,13 @@
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Courier" asp-action="Index">Orders</a>
                                     </li>
                                 }
+
+                                if (typeOfUserConnected.Equals("Restaurant"))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Restaurant" asp-action="Index">Statistics</a>
+                                    </li>
+                                }
                             }
                         }
 
