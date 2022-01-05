@@ -17,8 +17,6 @@ namespace DataAccessLayer.Interfaces
         public Restaurant GetRestaurantByOrder(int idOrder);
         public List<Restaurant> GetAllRestaurants();
         public List<Restaurant> GetAllRestaurantsByArea(int idArea);
-        public int UpdateImage(string path, int idRestaurant);
-        public int UpdateLogo(string path, int idRestaurant);
 
     }
 }

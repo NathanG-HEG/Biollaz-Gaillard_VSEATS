@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataAccessLayer.Interfaces;
 using Microsoft.Extensions.Configuration;
 using DTO;
 
 namespace DataAccessLayer.DBAccesses
 {
+    /// <summary>
+    /// OrderDB is used to manage the sql operations related to the orders.
+    /// </summary>
     public class OrdersDB : IOrdersDB
     {
         private IConfiguration Configuration { get; }
@@ -18,6 +18,15 @@ namespace DataAccessLayer.DBAccesses
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Adds an order into Orders table.
+        /// </summary>
+        /// <param name="idCustomer">Customer's primary key</param>
+        /// <param name="idCourier">Courier's primary key</param>
+        /// <param name="idArea">Delivery area's primary key</param>
+        /// <param name="expectedDeliveryTime">Customer's expected delivery time</param>
+        /// <param name="deliveryAddress">The street address specified by the customer</param>
+        /// <returns>The order's primary key</returns>
         public int AddOrder(int idCustomer, int idCourier, int idArea, DateTime expectedDeliveryTime, string deliveryAddress)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -51,6 +60,11 @@ namespace DataAccessLayer.DBAccesses
             return idOrder;
         }
 
+        /// <summary>
+        /// Gets an order with the given id.
+        /// </summary>
+        /// <param name="orderID">Order's id</param>
+        /// <returns>An order object</returns>
         public Order GetOrderById(int orderID)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -106,6 +120,11 @@ namespace DataAccessLayer.DBAccesses
             return order;
         }
 
+        /// <summary>
+        /// Deletes an order with the given id.
+        /// </summary>
+        /// <param name="idOrder">Order's primary key</param>
+        /// <returns>The number of rows affected</returns>
         public int DeleteOrder(int idOrder)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -133,6 +152,11 @@ namespace DataAccessLayer.DBAccesses
 
         }
 
+        /// <summary>
+        /// Sets the order delivery time at the current system time. If the delivery time is null, the order has not been delivered.
+        /// </summary>
+        /// <param name="idOrder">The order's primary key</param>
+        /// <returns>The number of rows affected</returns>
         public int SetOrderToDelivered(int idOrder)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -161,6 +185,11 @@ namespace DataAccessLayer.DBAccesses
             return result;
         }
 
+        /// <summary>
+        /// Sets the time of delivery to null, which means the order has not been delivered.
+        /// </summary>
+        /// <param name="idOrder">Order's primary key</param>
+        /// <returns>The number of rows affected</returns>
         public int SetOrderToUnDelivered(int idOrder)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -190,7 +219,11 @@ namespace DataAccessLayer.DBAccesses
         }
 
 
-
+        /// <summary>
+        /// Gets all orders related to a customer's id.
+        /// </summary>
+        /// <param name="idCustomer">Customer's primary key</param>
+        /// <returns>A list of orders</returns>
         public List<Order> GetAllOrdersByCustomer(int idCustomer)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -246,6 +279,11 @@ namespace DataAccessLayer.DBAccesses
             return orders;
         }
 
+        /// <summary>
+        /// Gets all orders related to a courier's id.
+        /// </summary>
+        /// <param name="idCourier">Courier's primary key</param>
+        /// <returns>A list of order object</returns>
         public List<Order> GetAllOrdersByCourier(int idCourier)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -304,6 +342,11 @@ namespace DataAccessLayer.DBAccesses
             return orders;
         }
 
+        /// <summary>
+        /// Gets all orders related to a restaurant's id.
+        /// </summary>
+        /// <param name="idRestaurant">Restaurant's primary key</param>
+        /// <returns>A list of restaurant object</returns>
         public List<Order> GetAllOrdersByRestaurant(int idRestaurant)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -362,6 +405,12 @@ namespace DataAccessLayer.DBAccesses
             return orders;
         }
 
+        /// <summary>
+        /// Sets the total price of an order. Be careful, the price is stored in cents.
+        /// </summary>
+        /// <param name="idOrder">The order's primary key</param>
+        /// <param name="total">The order's total price in cents</param>
+        /// <returns>The number of rows affected</returns>
         public int SetTotal(int idOrder, int total)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");

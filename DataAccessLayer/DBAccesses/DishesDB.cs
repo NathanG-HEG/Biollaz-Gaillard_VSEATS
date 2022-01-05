@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataAccessLayer.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer.DBAccesses
 {
+    /// <summary>
+    /// DishesDB is used to manage the sql operations related to the dishes.
+    /// </summary>
     public class DishesDB : IDishesDB
     {
         private IConfiguration Configuration { get; }
@@ -18,6 +17,13 @@ namespace DataAccessLayer.DBAccesses
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Adds a new dish in Dishes table.
+        /// </summary>
+        /// <param name="idRestaurant">Restaurant's primary key</param>
+        /// <param name="name">Dish name</param>
+        /// <param name="price">Dish price</param>
+        /// <returns>The numbers of rows affected</returns>
         public int AddDish(int idRestaurant, string name, int price)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -48,6 +54,11 @@ namespace DataAccessLayer.DBAccesses
             return result;
         }
 
+        /// <summary>
+        /// Gets all dishes related to a specified restaurant.
+        /// </summary>
+        /// <param name="idRestaurant">Restaurant's primary key</param>
+        /// <returns>A list of dish object</returns>
         public List<Dish> GetAllDishesByRestaurant(int idRestaurant)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -95,6 +106,11 @@ namespace DataAccessLayer.DBAccesses
             return dishes;
         }
 
+        /// <summary>
+        /// Gets a dish with a specified id.
+        /// </summary>
+        /// <param name="idDish">Dish id</param>
+        /// <returns>A dish object</returns>
         public Dish GetDishById(int idDish)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -138,6 +154,12 @@ namespace DataAccessLayer.DBAccesses
             return dish;
         }
 
+        /// <summary>
+        /// Sets a dish availability (true of false).
+        /// </summary>
+        /// <param name="idDish">Dish id</param>
+        /// <param name="isAvailable">Dish availability (true of false)</param>
+        /// <returns>The number of row affected</returns>
         public int SetAvailability(int idDish, bool isAvailable)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -166,6 +188,12 @@ namespace DataAccessLayer.DBAccesses
             return result;
         }
 
+        /// <summary>
+        /// Sets the price of a dish. Be careful, prices are stored in cents.
+        /// </summary>
+        /// <param name="idDish">Dish id</param>
+        /// <param name="price">Dish price in cents</param>
+        /// <returns></returns>
         public int SetPrice(int idDish, int price)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
