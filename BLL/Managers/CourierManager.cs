@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using BLL.BusinessExceptions;
 using BLL.Interfaces;
-using DataAccessLayer;
 using DataAccessLayer.DBAccesses;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace BLL
 {
+    /// <summary>
+    /// The manager used to create and get courier from the database
+    /// </summary>
     public class CourierManager : ICourierManager
 
     {
@@ -20,13 +19,24 @@ namespace BLL
         private Utilities Utilities { get; }
         private IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// Manager constructor
+        /// </summary>
+        /// <param name="configuration">The configuration used to inject the manager</param>
         public CourierManager(IConfiguration configuration)
         {
             Configuration = configuration;
             CouriersDb = new CouriersDB(Configuration);
             Utilities = new Utilities(Configuration);
         }
-
+        /// <summary>
+        /// Method to add a courier
+        /// </summary>
+        /// <param name="idArea">The id area in which the courier will work</param>
+        /// <param name="firstName">The first name of the courier</param>
+        /// <param name="lastName">The last name of the courier</param>
+        /// <param name="emailAddress">The email address of the courier</param>
+        /// <param name="password">The password of the courier</param>
         public void AddCourier(int idArea, string firstName, string lastName, string emailAddress, string password)
         {
             //Checks if email and passwords syntax are correct
@@ -38,13 +48,14 @@ namespace BLL
             if (Utilities.IsEmailAddressInDatabase(emailAddress))
                 throw new BusinessRuleException("An account using this email address already exists");
 
+            // Creates a 16bytes random salt
             var saltBytes = new byte[128 / 8];
             using (var rngCsp = new RNGCryptoServiceProvider())
             {
                 rngCsp.GetNonZeroBytes(saltBytes);
             }
             
-
+            //Creates a password hash using the given password and the salt created
             string pwdHash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: password,
                 salt: saltBytes,
@@ -61,6 +72,11 @@ namespace BLL
             }
         }
 
+        /// <summary>
+        /// Method to get all courier in an area
+        /// </summary>
+        /// <param name="idArea">The id of the area in which the courier should be found</param>
+        /// <returns>Returns a list of Courier</returns>
         public List<Courier> GetAllCouriersByArea(int idArea)
         {
             var res = CouriersDb.GetAllCouriersByArea(idArea);
@@ -70,6 +86,12 @@ namespace BLL
             return res;
         }
 
+        /// <summary>
+        /// Method to get a courier using his login
+        /// </summary>
+        /// <param name="emailAddress">The email address used to log in</param>
+        /// <param name="password">The password used to log in</param>
+        /// <returns>Returns a Courier object if the login is correct. Returns null if incorrect</returns>
         public Courier GetCourierByLogin(string emailAddress, string password)
         {
             List<Courier> couriers = CouriersDb.GetAllCouriers();
@@ -77,7 +99,7 @@ namespace BLL
             foreach (var c in couriers)
             {
                 if (!emailAddress.Equals(c.EmailAddress)) continue;
-
+                //Try to match the given password + salt hashed to the hash stored in the database
                 byte[] saltBytes = Convert.FromBase64String(c.Salt);
                 string pwdHash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                     password: password,
@@ -95,6 +117,11 @@ namespace BLL
             return null;
         }
 
+        /// <summary>
+        /// Method to get a courier using his database id
+        /// </summary>
+        /// <param name="idCourier">The id used to get the courier</param>
+        /// <returns>Returns a courier if it exists. Return null if no courier with this id exists.</returns>
         public Courier GetCourierById(int idCourier)
         {
             return CouriersDb.GetCourierById(idCourier);

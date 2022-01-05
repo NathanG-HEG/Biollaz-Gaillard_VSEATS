@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using BLL.BusinessExceptions;
-using DataAccessLayer;
 using DataAccessLayer.DBAccesses;
 using Microsoft.Extensions.Configuration;
-using Microsoft.VisualBasic.CompilerServices;
 using DTO;
 
 namespace BLL
 {
+    /// <summary>
+    /// The manager used to create, delete and get the compositions
+    /// </summary>
     public class ComposeManager : IComposeManager
     {
         private DishesDB DishesDb { get; }
@@ -20,6 +17,10 @@ namespace BLL
         private IConfiguration Configuration { get;}
         private Utilities Utilities { get; }
 
+        /// <summary>
+        /// Manager constructor
+        /// </summary>
+        /// <param name="configuration">The configuration used to inject the manager</param>
         public ComposeManager(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,6 +30,12 @@ namespace BLL
             CompositionDb = new CompositionDB(Configuration);
         }
 
+        /// <summary>
+        /// Method to add a composition in the database
+        /// </summary>
+        /// <param name="idDish">The id of the dish</param>
+        /// <param name="idOrder">The id of the related order</param>
+        /// <param name="quantity">The quantity of dish in the composition</param>
         public void AddComposition(int idDish, int idOrder, int quantity)
         {
             // input checks
@@ -46,6 +53,11 @@ namespace BLL
             }
         }
 
+        /// <summary>
+        /// Method to get all compositions of an order
+        /// </summary>
+        /// <param name="idOrder">The id of the selected order</param>
+        /// <returns>A list of Composition that refers to the order in parameter</returns>
         public List<Composition> GetCompositionsByOrder(int idOrder)
         {
             if (OrdersDb.GetOrderById(idOrder) == null)

@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BLL.BusinessExceptions;
 using BLL.Interfaces;
-using DataAccessLayer;
 using DataAccessLayer.DBAccesses;
 using Microsoft.Extensions.Configuration;
 using DTO;
 
 namespace BLL
 {
+    /// <summary>
+    /// Manager to create, get, change and delete orders
+    /// </summary>
     public class OrderManager : IOrderManager
     {
         private OrdersDB OrdersDb { get; }
@@ -21,6 +20,10 @@ namespace BLL
         private IConfiguration Configuration { get; }
         private Utilities Utilities { get; }
 
+        /// <summary>
+        /// Manager constructor
+        /// </summary>
+        /// <param name="configuration">The configuration used to inject the manager</param>
         public OrderManager(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,6 +34,14 @@ namespace BLL
             DishesDb = new DishesDB(Configuration);
         }
 
+        /// <summary>
+        /// Method to create a new order
+        /// </summary>
+        /// <param name="idCustomer">The primary key of the customer who place the order</param>
+        /// <param name="idArea">The primary key of the area the customer is delivered</param>
+        /// <param name="expectedDeliveryTime">The expected delivery time</param>
+        /// <param name="deliveryAddress">The delivery address</param>
+        /// <returns>Returns the primary key of the newly created order</returns>
         public int CreateNewOrder(int idCustomer, int idArea, DateTime expectedDeliveryTime, string deliveryAddress)
         {
 
@@ -117,6 +128,10 @@ namespace BLL
             return idOrder;
         }
 
+        /// <summary>
+        /// Method to delete an order. 
+        /// </summary>
+        /// <param name="idOrder">The primary key of the order to be deleted</param>
         public void DeleteOrder(int idOrder)
         {
             Order order = OrdersDb.GetOrderById(idOrder);
@@ -139,6 +154,10 @@ namespace BLL
             OrdersDb.DeleteOrder(idOrder);
         }
 
+        /// <summary>
+        /// Method to set the order to delivered/undelivered
+        /// </summary>
+        /// <param name="idOrder">The primary key of the affected order</param>
         public void SetOrderToDelivered(int idOrder)
         {
 
@@ -168,21 +187,40 @@ namespace BLL
 
         }
 
+        /// <summary>
+        /// Method to get all orders from a customer
+        /// </summary>
+        /// <param name="idCustomer">The primary key of the customer</param>
+        /// <returns>Returns a list of Order objects</returns>
         public List<Order> GetAllOrdersByCustomer(int idCustomer)
         {
             return OrdersDb.GetAllOrdersByCustomer(idCustomer);
         }
 
+        /// <summary>
+        /// Method to get all orders delivered by a courier
+        /// </summary>
+        /// <param name="idCourier">The primary key of the courier</param>
+        /// <returns>Returns a list of Order objects</returns>
         public List<Order> GetAllOrdersByCourier(int idCourier)
         {
             return OrdersDb.GetAllOrdersByCourier(idCourier);
         }
 
+        /// <summary>
+        /// Method to get all orders from a restaurant
+        /// </summary>
+        /// <param name="idRestaurant">The primary key of the restaurant</param>
+        /// <returns>Returns a list of Order objects</returns>
         public List<Order> GetAllOrdersByRestaurant(int idRestaurant)
         {
             return OrdersDb.GetAllOrdersByRestaurant(idRestaurant);
         }
 
+        /// <summary>
+        /// Method to set the total to an order according to its compositions
+        /// </summary>
+        /// <param name="idOrder">The primary key of the affected order</param>
         public void SetTotal(int idOrder)
         {
             List<Composition> compositions = CompositionDb.GetCompositionsByOrder(idOrder);
@@ -196,6 +234,11 @@ namespace BLL
             OrdersDb.SetTotal(idOrder, total);
         }
 
+        /// <summary>
+        /// Method to get an order by its id
+        /// </summary>
+        /// <param name="idOrder">The primary key of the order</param>
+        /// <returns>Returns an Order object</returns>
         public Order GetOrderById(int idOrder)
         {
             return OrdersDb.GetOrderById(idOrder);
