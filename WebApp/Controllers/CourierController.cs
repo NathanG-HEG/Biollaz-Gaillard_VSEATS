@@ -1,17 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BLL;
 using BLL.Interfaces;
-using DataAccessLayer;
 using WebApp.Models;
 using DTO;
 using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Controllers
 {
+    /// <summary>
+    /// Controller that has all the functions available for the courier.
+    /// </summary>
     public class CourierController : Controller
     {
         public IOrderManager OrderManager { get; }
@@ -32,6 +30,10 @@ namespace WebApp.Controllers
             DishManager = dishManager;
         }
 
+        /// <summary>
+        /// Calls the index view when a courier is signed in. The index page is a list of the courier's orders.
+        /// </summary>
+        /// <returns>Index view</returns>
         [HttpGet]
         public IActionResult Index()
         {
@@ -71,12 +73,22 @@ namespace WebApp.Controllers
             return View(ordersViewModel);
         }
 
+        /// <summary>
+        /// Sets an order to deliver by calling the order manager. Then reload the page to display the changes.
+        /// </summary>
+        /// <param name="id">Order's primary key</param>
+        /// <returns>The current view</returns>
         public IActionResult SetToDelivered(int id)
         {
             OrderManager.SetOrderToDelivered(id);
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
+        /// <summary>
+        /// Display more detailed information about a given order.
+        /// </summary>
+        /// <param name="id">Order's primary key</param>
+        /// <returns>The details view</returns>
         public IActionResult Details(int id)
         {
             Order o = OrderManager.GetOrderById(id);
