@@ -1,10 +1,6 @@
-// File:    DeliveryAreas.cs
-// Author:  bbiol
-// Created: 17 October 2021 10:47:53
-// Purpose: Definition of Class DeliveryAreas
-
-using System;
-
+/// <summary>
+/// Class to model a delivery area.
+/// </summary>
 public class DeliveryArea
 {
     public int IdArea { get; set; }

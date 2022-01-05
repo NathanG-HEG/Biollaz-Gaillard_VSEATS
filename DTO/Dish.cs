@@ -1,10 +1,6 @@
-// File:    Dishes.cs
-// Author:  bbiol
-// Created: 17 October 2021 10:47:53
-// Purpose: Definition of Class Dishes
-
-using System;
-
+/// <summary>
+/// Class to model a dish
+/// </summary>
 public class Dish
 {
     public int IdDish { get; set; }

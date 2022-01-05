@@ -1,10 +1,6 @@
-// File:    Courriers.cs
-// Author:  bbiol
-// Created: 17 October 2021 10:47:53
-// Purpose: Definition of Class Courriers
-
-using System;
-
+/// <summary>
+/// Class to model a courier. 
+/// </summary>
 public class Courier
 {
     public int IdCourier { get; set; }
@@ -15,9 +11,5 @@ public class Courier
     public string PwdHash { get; set; }
     public string Salt { get; set; }
 
-    public Courier()
-    {
-    
-    }
 
 }

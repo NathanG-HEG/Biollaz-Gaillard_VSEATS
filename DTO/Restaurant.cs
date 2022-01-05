@@ -1,10 +1,6 @@
-// File:    Restaurants.cs
-// Author:  bbiol
-// Created: 17 October 2021 10:47:53
-// Purpose: Definition of Class Restaurants
-
-using System;
-
+/// <summary>
+/// Class to model a restaurant
+/// </summary>
 public class Restaurant
 {
     public int IdRestaurant { get; set; }
