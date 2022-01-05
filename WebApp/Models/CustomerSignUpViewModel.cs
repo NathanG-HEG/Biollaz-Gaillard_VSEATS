@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebApp.Models
 {
+    /// <summary>
+    /// Used to display and pass information when customer signs up. 
+    /// </summary>
     public class CustomerSignUpViewModel
     {
         [Required]

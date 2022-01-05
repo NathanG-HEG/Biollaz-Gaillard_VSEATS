@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebApp.Models
 {
+    /// <summary>
+    /// Used to display and pass information when a delivery man signs up. 
+    /// </summary>
     public class CourierSignUpViewModel
     {
         [Required]

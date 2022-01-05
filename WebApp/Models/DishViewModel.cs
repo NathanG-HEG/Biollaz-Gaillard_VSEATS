@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace WebApp.Models
 {
+    /// <summary>
+    /// Class to model a dish. It is a subset of the DTO's dish object. 
+    /// </summary>
     public class DishViewModel
     {
         public int IdDish { get; set; }

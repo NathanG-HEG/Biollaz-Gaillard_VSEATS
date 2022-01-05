@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace WebApp.Models
 {
+    /// <summary>
+    /// Stores restaurants data such as their image, name or city.
+    /// </summary>
     public class RestaurantViewModel
     {
         public string Name { get; set; }
@@ -12,8 +15,6 @@ namespace WebApp.Models
         public string ImagePath { get; set; }
         public string IconPath { get; set; }
         public int IdRestaurant { get; set; }
-        public string ConnectedCustomer { get; set; }
-        public List<DishViewModel> Dishes { get; set; }
         public float Revenue { get; set; }
         public int Sales { get; set; }
 

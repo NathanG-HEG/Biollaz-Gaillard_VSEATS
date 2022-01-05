@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 namespace WebApp.Models
 {
     
+    /// <summary>
+    /// Generic login class which stores a user's email address and password. It is being used for customers, couriers and restaurants.
+    /// </summary>
     public class UserLoginViewModel
     {
         [EmailAddress, Required]

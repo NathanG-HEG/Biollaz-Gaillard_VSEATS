@@ -6,6 +6,10 @@ using DTO;
 
 namespace WebApp.Models
 {
+    /// <summary>
+    /// Class filled with a lot of information related to orders such as their customer, courier, delivery address, ...
+    /// It is being used when creating the order as well as when displaying the orders.
+    /// </summary>
     public class OrderViewModel
     {
         public int IdOrder { get; set; }
