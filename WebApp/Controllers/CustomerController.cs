@@ -2,16 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BLL;
 using BLL.BusinessExceptions;
 using DTO;
 using Microsoft.AspNetCore.Http;
-using Microsoft.VisualBasic.CompilerServices;
 using WebApp.Models;
 namespace WebApp.Controllers
 {
+    /// <summary>
+    /// Controller that has all the functions accessible to the customer via the web interface
+    /// </summary>
     public class CustomerController : Controller
     {
         public ICustomerManager CustomerManager { get; }
@@ -20,6 +19,15 @@ namespace WebApp.Controllers
         public IDeliveryAreaManager DeliveryAreaManager { get; }
         public IDishManager DishManager { get; }
         public IComposeManager ComposeManager { get; }
+        /// <summary>
+        /// Controller constructor
+        /// </summary>
+        /// <param name="customerManager">The customer manager object</param>
+        /// <param name="restaurantManager">The restaurant manager object</param>
+        /// <param name="orderManager">The order manager object</param>
+        /// <param name="deliveryAreaManager">The delivery area manager object</param>
+        /// <param name="dishManager">The dish manager object</param>
+        /// <param name="composeManager">The compositions manager object</param>
         public CustomerController(ICustomerManager customerManager, IRestaurantManager restaurantManager,
         IOrderManager orderManager, IDeliveryAreaManager deliveryAreaManager, IDishManager dishManager, IComposeManager composeManager)
         {
@@ -31,6 +39,10 @@ namespace WebApp.Controllers
             ComposeManager = composeManager;
         }
 
+        /// <summary>
+        /// Default page display when hopping on the website. It corresponds to a list of restaurants.
+        /// </summary>
+        /// <returns>Create a an HTML page corresponding to a list of restaurants</returns>
         public IActionResult Index()
         {
             //if you are not connected you are considered as a client
@@ -62,6 +74,11 @@ namespace WebApp.Controllers
             return View(restaurantsVm);
         }
 
+        /// <summary>
+        /// Page displayed when ordering from a restaurant
+        /// </summary>
+        /// <param name="id">The primary key of the restaurant</param>
+        /// <returns>Create a an HTML page corresponding to a list of available dishes</returns>
         public IActionResult Order(int id)
         {
             if (HttpContext.Session.GetString("TypeOfUser") != "Customer")
@@ -98,6 +115,11 @@ namespace WebApp.Controllers
             return View(orderViewModel);
         }
 
+        /// <summary>
+        /// HTTP post that gets the ordered compositions and returns a page where the order details can be set
+        /// </summary>
+        /// <param name="orderViewModel">The compositions that were choosen on the previous page</param>
+        /// <returns>Create a an HTML page corresponding to an order details setting</returns>
         [HttpPost]
         public IActionResult Checkout(OrderViewModel orderViewModel)
         {
@@ -162,7 +184,11 @@ namespace WebApp.Controllers
 
             return View(orderViewModel);
         }
-
+        /// <summary>
+        /// HTTP post that get the order details set by the user
+        /// </summary>
+        /// <param name="orderViewModel">The order compositions and details that were selected on the two previous page</param>
+        /// <returns>Create a an HTML page corresponding to an order confirmation page</returns>
         [HttpPost]
         public IActionResult Confirmation(OrderViewModel orderViewModel)
         {
@@ -224,6 +250,10 @@ namespace WebApp.Controllers
             return View(orderViewModel);
         }
 
+        /// <summary>
+        /// Function that list all orders from a customer
+        /// </summary>
+        /// <returns>Create a an HTML page corresponding to a list of all current orders and all orders</returns>
         public IActionResult MyOrders()
         {
             int? idCustomer = HttpContext.Session.GetInt32("IdMember");
@@ -253,6 +283,11 @@ namespace WebApp.Controllers
             return View(ordersVm);
         }
 
+        /// <summary>
+        /// Function that allows the user to see the full details of an order
+        /// </summary>
+        /// <param name="id">The primary key of the displayed order</param>
+        /// <returns>Create a an HTML page corresponding to details of an order</returns>
         public IActionResult Details(int id)
         {
             int? idCustomer = HttpContext.Session.GetInt32("IdMember");
@@ -299,6 +334,11 @@ namespace WebApp.Controllers
             return View(orderVm);
         }
 
+        /// <summary>
+        /// Function to cancel and order if possible
+        /// </summary>
+        /// <param name="id">The primary key of the order to delete</param>
+        /// <returns>Create a an HTML page corresponding to a list of current orders and all orders</returns>
         public IActionResult Cancel(int id)
         {
             try
