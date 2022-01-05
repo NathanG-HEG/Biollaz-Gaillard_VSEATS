@@ -1,17 +1,20 @@
-/// <summary>
-/// Class to model a delivery area.
-/// </summary>
-public class DeliveryArea
+namespace DTO
 {
-    public int IdArea { get; set; }
-    public string Name { get; set; }
-    public int Postcode { get; set; }
-
-    public override string ToString()
+    /// <summary>
+    /// Class to model a delivery area.
+    /// </summary>
+    public class DeliveryArea
     {
-        return "\nIdArea: " + IdArea +
-               "\nName: " + Name +
-               "\nPostcode: " + Postcode;
-    }
+        public int IdArea { get; set; }
+        public string Name { get; set; }
+        public int Postcode { get; set; }
 
+        public override string ToString()
+        {
+            return "\nIdArea: " + IdArea +
+                   "\nName: " + Name +
+                   "\nPostcode: " + Postcode;
+        }
+
+    }
 }

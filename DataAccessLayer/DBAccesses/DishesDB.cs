@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using DataAccessLayer.Interfaces;
+using DTO;
 using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer.DBAccesses

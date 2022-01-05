@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Security.Cryptography;
 using BLL.BusinessExceptions;
 using BLL.Interfaces;
 using DataAccessLayer.DBAccesses;
+using DTO;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Configuration;
 
-namespace BLL
+namespace BLL.Managers
 {
     /// <summary>
     /// Manager to create, change and get restaurants

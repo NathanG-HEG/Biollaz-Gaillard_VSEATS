@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using DataAccessLayer.Interfaces;
+using DTO;
 using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer.DBAccesses
@@ -36,7 +37,7 @@ namespace DataAccessLayer.DBAccesses
                 using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "INSERT INTO Restaurants (ID_area, name, emailAddress, pwdHash, salt)" +
-                                   " VALUES (@idArea, @name, @emailAddress, @pwdHahs, @salt)";
+                                   " VALUES (@idArea, @name, @emailAddress, @pwdHash, @salt)";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@idArea", idArea);
                     cmd.Parameters.AddWithValue("@name", name);

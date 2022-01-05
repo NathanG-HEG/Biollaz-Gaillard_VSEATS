@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using BLL.Interfaces;
 using DataAccessLayer.DBAccesses;
+using DTO;
 using Microsoft.Extensions.Configuration;
 
-namespace BLL
+namespace BLL.Managers
 {
     /// <summary>
     /// Manager to get delivery areas

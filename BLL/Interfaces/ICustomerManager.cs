@@ -1,4 +1,6 @@
 ﻿
+using DTO;
+
 namespace BLL.Interfaces
 {
     public interface ICustomerManager

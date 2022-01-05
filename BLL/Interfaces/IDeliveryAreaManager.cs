@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using DTO;
 
 namespace BLL.Interfaces
 {

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using BLL.BusinessExceptions;
+using BLL.Interfaces;
 using DataAccessLayer.DBAccesses;
-using Microsoft.Extensions.Configuration;
 using DTO;
+using Microsoft.Extensions.Configuration;
 
-namespace BLL
+namespace BLL.Managers
 {
     /// <summary>
     /// The manager used to create, delete and get the compositions

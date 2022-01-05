@@ -2,9 +2,10 @@
 using BLL.BusinessExceptions;
 using BLL.Interfaces;
 using DataAccessLayer.DBAccesses;
+using DTO;
 using Microsoft.Extensions.Configuration;
 
-namespace BLL
+namespace BLL.Managers
 {
     /// <summary>
     /// Manager to create, change and get dishes

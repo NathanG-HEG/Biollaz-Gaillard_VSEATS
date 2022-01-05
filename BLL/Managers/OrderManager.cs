@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using BLL.BusinessExceptions;
 using BLL.Interfaces;
 using DataAccessLayer.DBAccesses;
-using Microsoft.Extensions.Configuration;
 using DTO;
+using Microsoft.Extensions.Configuration;
 
-namespace BLL
+namespace BLL.Managers
 {
     /// <summary>
     /// Manager to create, get, change and delete orders

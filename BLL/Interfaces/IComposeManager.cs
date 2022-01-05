@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DTO;
 
-namespace BLL
+namespace BLL.Interfaces
 {
     public interface IComposeManager
     {
