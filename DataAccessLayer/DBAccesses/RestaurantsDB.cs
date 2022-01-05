@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataAccessLayer.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer.DBAccesses
 {
+    /// <summary>
+    /// RestaurantsDB is used to manage the sql operations related to the restaurants.
+    /// </summary>
     public class RestaurantsDB : IRestaurantsDB
     {
 
@@ -17,7 +17,15 @@ namespace DataAccessLayer.DBAccesses
         {
             IConfiguration = iConfiguration;
         }
-
+        /// <summary>
+        /// Adds a restaurant in Restaurants table.
+        /// </summary>
+        /// <param name="idArea">Delivery area's primary key</param>
+        /// <param name="name">Restaurant's name</param>
+        /// <param name="emailAddress">Restaurant's email address</param>
+        /// <param name="pwdHash">Password's hash key</param>
+        /// <param name="salt">Salt used to hash this restaurant's password</param>
+        /// <returns>The number of rows affected</returns>
         public int AddRestaurant(int idArea, string name, string emailAddress, string pwdHash, string salt)
         {
             string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
@@ -51,6 +59,11 @@ namespace DataAccessLayer.DBAccesses
             return result;
         }
 
+        /// <summary>
+        /// Gets a restaurant with the given name.
+        /// </summary>
+        /// <param name="name">Restaurant's name</param>
+        /// <returns>A restaurant object</returns>
         public Restaurant GetRestaurantByName(string name)
         {
             string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
@@ -95,6 +108,12 @@ namespace DataAccessLayer.DBAccesses
             return restaurant;
         }
 
+        /// <summary>
+        /// Gets a restaurant using its email address and password's hash key.
+        /// </summary>
+        /// <param name="emailAddress">Restaurant's email address</param>
+        /// <param name="pwdHash">Password's hash key</param>
+        /// <returns>A restaurant object</returns>
         public Restaurant GetRestaurantByLogin(string emailAddress, string pwdHash)
         {
             string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
@@ -140,6 +159,10 @@ namespace DataAccessLayer.DBAccesses
             return restaurant;
         }
 
+        /// <summary>
+        /// Gets all restaurants.
+        /// </summary>
+        /// <returns>A list of restaurants</returns>
         public List<Restaurant> GetAllRestaurants()
         {
             string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
@@ -188,6 +211,11 @@ namespace DataAccessLayer.DBAccesses
             return restaurants;
         }
 
+        /// <summary>
+        /// Gets all restaurants related to an area.
+        /// </summary>
+        /// <param name="idArea">Delivery area's primary key</param>
+        /// <returns>A list of restaurant object</returns>
         public List<Restaurant> GetAllRestaurantsByArea(int idArea)
         {
             string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
@@ -235,63 +263,11 @@ namespace DataAccessLayer.DBAccesses
 
             return restaurants;
         }
-
-        public int UpdateImage(string path, int idRestaurant)
-        {
-            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
-            int result = 0;
-
-            try
-            {
-                using (SqlConnection cn = new SqlConnection(connectionString))
-                {
-                    string query = "UPDATE restaurants " +
-                                   "SET image = @path " +
-                                   "WHERE id_restaurant = @idRestaurant;";
-                    SqlCommand cmd = new SqlCommand(query, cn);
-                    cmd.Parameters.AddWithValue("@idRestaurant", idRestaurant);
-                    cmd.Parameters.AddWithValue("@path", path);
-
-                    cn.Open();
-
-                    result = cmd.ExecuteNonQuery();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception caught while setting image path: " + e.Message);
-            }
-            return result;
-        }
-
-        public int UpdateLogo(string path, int idRestaurant)
-        {
-            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
-            int result = 0;
-
-            try
-            {
-                using (SqlConnection cn = new SqlConnection(connectionString))
-                {
-                    string query = "UPDATE restaurants " +
-                                   "SET logo = @path " +
-                                   "WHERE id_restaurant = @idRestaurant;";
-                    SqlCommand cmd = new SqlCommand(query, cn);
-                    cmd.Parameters.AddWithValue("@idRestaurant", idRestaurant);
-                    cmd.Parameters.AddWithValue("@path", path);
-
-                    cn.Open();
-
-                    result = cmd.ExecuteNonQuery();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception caught while setting logo path: " + e.Message);
-            }
-            return result;
-        }
-
+        /// <summary>
+        /// Gets the restaurant with the given id.
+        /// </summary>
+        /// <param name="id">Restaurant's primary key</param>
+        /// <returns>A restaurant object</returns>
         public Restaurant GetRestaurantById(int id)
         {
             string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
@@ -336,6 +312,11 @@ namespace DataAccessLayer.DBAccesses
             return restaurant;
         }
 
+        /// <summary>
+        /// Gets a restaurant using an order's primary key.
+        /// </summary>
+        /// <param name="idOrder">Order's primary key</param>
+        /// <returns>A restaurant object</returns>
         public Restaurant GetRestaurantByOrder(int idOrder)
         {
             string connectionString = IConfiguration.GetConnectionString("DefaultConnection");

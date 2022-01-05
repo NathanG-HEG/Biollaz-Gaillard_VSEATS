@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebApp.Models
 {
+    
     public class UserLoginViewModel
     {
         [EmailAddress, Required]

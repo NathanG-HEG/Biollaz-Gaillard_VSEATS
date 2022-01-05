@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer.DBAccesses
 {
+    /// <summary>
+    /// CourierDB is used to manage the sql operations related to the delivery men.
+    /// </summary>
     public class CouriersDB : ICouriersDB
     {
         private IConfiguration Configuration { get; }
@@ -14,6 +17,16 @@ namespace DataAccessLayer.DBAccesses
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Inserts a courier into its table.
+        /// </summary>
+        /// <param name="idArea">Delivery area where the courier work</param>
+        /// <param name="firstName">First name of the courier</param>
+        /// <param name="lastName">Last name of the courier</param>
+        /// <param name="emailAddress">Email address of the courier</param>
+        /// <param name="pwdHash">The hashed key of the password</param>
+        /// <param name="salt">The salt used to hash this courier's password</param>
+        /// <returns>The number of rows affected</returns>
         public int AddCourier(int idArea, string firstName, string lastName, string emailAddress, string pwdHash, string salt)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -47,7 +60,11 @@ namespace DataAccessLayer.DBAccesses
 
             return result;
         }
-
+        /// <summary>
+        /// Gets all courier related to a specified delivery area.
+        /// </summary>
+        /// <param name="idArea">Delivery area's primary key</param>
+        /// <returns>A List of courier object</returns>
         public List<Courier> GetAllCouriersByArea(int idArea)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -93,6 +110,11 @@ namespace DataAccessLayer.DBAccesses
             return couriers;
         }
 
+        /// <summary>
+        /// Gets a courier with a specified id.
+        /// </summary>
+        /// <param name="idCourier">The requested courier's id</param>
+        /// <returns>A courier object</returns>
         public Courier GetCourierById(int idCourier)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -135,6 +157,10 @@ namespace DataAccessLayer.DBAccesses
             return courier;
         }
 
+        /// <summary>
+        /// Gets all courier
+        /// </summary>
+        /// <returns>A list of courier</returns>
         public List<Courier> GetAllCouriers()
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -179,6 +205,12 @@ namespace DataAccessLayer.DBAccesses
             return couriers;
         }
 
+        /// <summary>
+        /// Gets a courier using his password's hash key and email address
+        /// </summary>
+        /// <param name="emailAddress">The courier's email address</param>
+        /// <param name="pwdHash">The courier's password's hash key</param>
+        /// <returns>A courier object</returns>
         public Courier GetCourierByLogin(string emailAddress, string pwdHash)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");

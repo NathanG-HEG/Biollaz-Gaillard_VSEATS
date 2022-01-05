@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataAccessLayer.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer.DBAccesses
 {
+    /// <summary>
+    /// DeliveryAreaDB is used to manage the sql operations related to the delivery areas.
+    /// </summary>
     public class DeliveryAreasDB : IDeliveryAreasDB
     {
         private IConfiguration Configuration { get; }
@@ -17,6 +17,12 @@ namespace DataAccessLayer.DBAccesses
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Adds a delivery area to the delivery_areas table.
+        /// </summary>
+        /// <param name="name">Delivery area's name</param>
+        /// <param name="postcode">Delivery area's postcode</param>
+        /// <returns></returns>
         public int AddDeliveryArea(string name, int postcode)
         {
             {
@@ -45,6 +51,11 @@ namespace DataAccessLayer.DBAccesses
             }
         }
 
+        /// <summary>
+        /// Gets a delivery area with a specified name.
+        /// </summary>
+        /// <param name="name">The delivery area's name</param>
+        /// <returns>A delivery area object</returns>
         public DeliveryArea GetDeliveryAreaByName(string name)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -85,6 +96,11 @@ namespace DataAccessLayer.DBAccesses
             return deliveryArea;
         }
 
+        /// <summary>
+        /// Gets a delivery area with a specified postcode.
+        /// </summary>
+        /// <param name="postcode">The delivery area's postcode</param>
+        /// <returns>A delivery area object</returns>
         public DeliveryArea GetDeliveryAreaByPostcode(int postcode)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -125,6 +141,10 @@ namespace DataAccessLayer.DBAccesses
             return deliveryArea;
         }
 
+        /// <summary>
+        /// Gets all delivery areas.
+        /// </summary>
+        /// <returns>A list of delivery area object</returns>
         public List<DeliveryArea> GetAllDeliveryAreas()
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -166,6 +186,11 @@ namespace DataAccessLayer.DBAccesses
             return deliveryAreas;
         }
 
+        /// <summary>
+        /// Gets a delivery area with a specified id.
+        /// </summary>
+        /// <param name="id">The delivery area's id</param>
+        /// <returns>A delivery area object</returns>
         public DeliveryArea GetDeliveryAreaById(int id)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");

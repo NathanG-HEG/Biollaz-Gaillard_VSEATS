@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataAccessLayer.Interfaces;
 using Microsoft.Extensions.Configuration;
 using DTO;
 
 namespace DataAccessLayer.DBAccesses
 {
+    /// <summary>
+    /// CompositionDB is used to manage the sql operations related to the compositions. Compositions comport a reference to a dish, a quantity and a reference to an order.
+    /// </summary>
     public class CompositionDB : ICompositionDB
     {
         private IConfiguration Configuration { get; }
@@ -19,6 +19,13 @@ namespace DataAccessLayer.DBAccesses
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// AddComposition is responsible for inserting one composition at a time into Compose table.
+        /// </summary>
+        /// <param name="idDish">The dish's primary key</param>
+        /// <param name="idOrder">The order's primary key</param>
+        /// <param name="quantity">The chosen dish's quantity</param>
+        /// <returns>The number of rows affected</returns>
         public int AddComposition(int idDish, int idOrder, int quantity)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -49,7 +56,11 @@ namespace DataAccessLayer.DBAccesses
             return result;
         }
 
-
+        /// <summary>
+        /// Deletes all compositions related to a specified order.
+        /// </summary>
+        /// <param name="idOrder">Order's primary key</param>
+        /// <returns>The number of rows affected</returns>
         public int DeleteCompositionsByOrder(int idOrder)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -75,6 +86,11 @@ namespace DataAccessLayer.DBAccesses
             return result;
         }
 
+        /// <summary>
+        /// Gets all compositions related to a specified order.
+        /// </summary>
+        /// <param name="idOrder">Order's primary key</param>
+        /// <returns>A list of composition object</returns>
         public List<Composition> GetCompositionsByOrder(int idOrder)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -111,7 +127,7 @@ namespace DataAccessLayer.DBAccesses
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception occurred while accessing compositions for "+idOrder+": " + e.Message);
+                Console.WriteLine("Exception occurred while accessing compositions for " + idOrder + ": " + e.Message);
             }
 
             return compositions;
