@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace WebApp.Models
+﻿namespace WebApp.Models
 {
     /// <summary>
     /// Stores restaurants data such as their image, name or city.

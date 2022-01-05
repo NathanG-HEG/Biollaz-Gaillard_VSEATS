@@ -1,13 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models
 {
-    
+
     /// <summary>
     /// Generic login class which stores a user's email address and password. It is being used for customers, couriers and restaurants.
     /// </summary>

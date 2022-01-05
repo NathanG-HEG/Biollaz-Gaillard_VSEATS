@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace WebApp.Models
+﻿namespace WebApp.Models
 {
     /// <summary>
     /// Class to manage dish information display, as well as the quantity ordered by the client.
