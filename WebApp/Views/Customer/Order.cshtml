@@ -3,10 +3,11 @@
 @{
     ViewData["Title"] = "Order";
     var i = 0;
+    var backgroundImage = "/Biollaz_Gaillard_VSEAT/" + Model.ImagePath;
 }
 
 <div>
-    <div class="topImageL" style="background-image: url('~/@Model.ImagePath');">
+    <div class="topImageL" style="background-image: url('@backgroundImage');">
     </div>
     <div class="topImageTitle">
         <h1>@Html.DisplayFor(model => model.RestaurantName)</h1>
