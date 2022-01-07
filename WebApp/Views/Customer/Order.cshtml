@@ -12,51 +12,60 @@
     <div class="topImageTitle">
         <h1>@Html.DisplayFor(model => model.RestaurantName)</h1>
     </div>
+    <div style="margin-right: auto; margin-top: 10px; margin-bottom: 10px; margin-left: auto;">
+        <table style="margin-right: auto;margin-left: auto;">
+            <tr>
+                <td style="min-width: 200px; min-height: 90px; border: gainsboro; background: #90ba61;"></td>
+                <td style="min-width: 200px; min-height: 90px; border: gainsboro; background: gainsboro;"></td>
+                <td style="min-width: 200px; min-height: 90px; border: gainsboro; background: gainsboro;"></td>
+            </tr>
+        </table>
+    </div>
     <form asp-action="Checkout">
         <div style="text-align: right; font-size: 140%; margin-right: 180px" class="form-group">
-            <input type="submit" value="Check Out" class="btn btn-primary"/>
+            <input type="submit" value="Check Out" class="btn btn-primary" />
         </div>
-        <hr/>
+        <hr />
         <div asp-validation-summary="All" class="text-danger"></div>
 
         <table class="table">
             <thead>
-            <tr>
-                <th>
-                    Plate
-                </th>
-                <th>
-                </th>
-                <th>
-                    Price
-                </th>
-                <td id="total">
-                    CHF 0
-                </td>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model.AvailableCompositions)
-            {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DishName)
-                    </td>
-                    <td>
-                        <img src="~/@item.DishImagePath" height="64" width="64"/>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => item.DishPrice) CHF
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <label class="control-label">Quantity</label>
-                            <input asp-for="AvailableCompositions[i].Quantity" class="form-control" style="width: 70px" id="@i" min="0" max="9999" value="0" onclick="refreshTotal()"/>
-                        </div>
+                    <th>
+                        Plate
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <td id="total">
+                        CHF 0
                     </td>
                 </tr>
-                i++;
-            }
+            </thead>
+            <tbody>
+                @foreach (var item in Model.AvailableCompositions)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DishName)
+                        </td>
+                        <td>
+                            <img src="~/@item.DishImagePath" height="64" width="64" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.DishPrice) CHF
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label class="control-label">Quantity</label>
+                                <input asp-for="AvailableCompositions[i].Quantity" class="form-control" style="width: 70px" id="@i" min="0" max="9999" value="0" onclick="refreshTotal()" />
+                            </div>
+                        </td>
+                    </tr>
+                    i++;
+                }
             </tbody>
         </table>
     </form>
