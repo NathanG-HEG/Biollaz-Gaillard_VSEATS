@@ -220,7 +220,7 @@ namespace WebApp.Controllers
             if (orderViewModel.ExpectedDeliveryTime.Equals(DateTime.MinValue))
             {
                 ModelState.AddModelError("", "Choose a delivery time.");
-                return View("Checkout", orderViewModel); ;
+                return View("Checkout", orderViewModel);
             }
             if (orderViewModel.DeliveryAddress == null)
             {
@@ -229,7 +229,7 @@ namespace WebApp.Controllers
             }
             orderViewModel.AreaName = delA.Name;
             // Inserts the compositions in the DB and creates the order
-            int idOrder = -1;
+            int idOrder;
             try
             {
                 idOrder = OrderManager.CreateNewOrder((int)HttpContext.Session.GetInt32("IdMember"), delA.IdArea,
