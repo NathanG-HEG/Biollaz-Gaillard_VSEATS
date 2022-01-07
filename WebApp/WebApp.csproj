@@ -10,23 +10,17 @@
 		<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
 	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="wwwroot\Images\coarse_dirt.png" />
-    <None Remove="wwwroot\Images\dirt.png" />
-    <None Remove="wwwroot\Images\dirt1.png" />
-  </ItemGroup>
-
-  <ItemGroup>
+	<ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BLL\BLL.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="wwwroot\Images\Dishes\" />
+		<Folder Include="wwwroot\Images\Restaurants\" />
+	</ItemGroup>
 
   <ItemGroup>
-    <Resource Include="wwwroot\Images\coarse_dirt.png" />
-    <Resource Include="wwwroot\Images\dirt.png" />
+    <ProjectReference Include="..\BLL\BLL.csproj" />
   </ItemGroup>
 
 </Project>

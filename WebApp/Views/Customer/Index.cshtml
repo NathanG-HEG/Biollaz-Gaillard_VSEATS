@@ -49,7 +49,7 @@
                     @{
                         var iconPath = item.IconPath;
                     }
-                    <img src="@iconPath" width="32" height="32" />
+                    <img src="~/@iconPath" width="32" height="32" />
                 </td>
                 <td>
                     @Html.ActionLink("Order now", "Order", new { id = item.IdRestaurant})
