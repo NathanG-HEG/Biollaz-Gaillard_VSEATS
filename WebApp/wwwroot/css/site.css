@@ -98,7 +98,9 @@ body {
 }
 
 
-/* Slideshow*/
+/*Dishes Slideshow
+-------------------------------------------------- */
+
 .slideshow-container {
     max-width: 1000px;
     position: relative;
@@ -110,7 +112,18 @@ body {
 }
 
 .imgSlideshow {
-    vertical-align: middle;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
 }
 
-
+.slideShow_text {
+    color: #f2f2f2;
+    font-size: 20px;
+    padding: 8px 12px;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+}

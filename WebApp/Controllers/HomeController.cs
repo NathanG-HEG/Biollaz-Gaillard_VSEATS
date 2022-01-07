@@ -46,6 +46,11 @@ namespace WebApp.Controllers
         /// <returns>Create a an HTML page corresponding to a list of restaurants</returns>
         public IActionResult Index()
         {
+            //if you are not connected you are considered as a client
+            if (HttpContext.Session.GetInt32("IdMember") == null)
+            {
+                HttpContext.Session.SetString("TypeOfUser", "Customer");
+            }
             return View();
         }
 
