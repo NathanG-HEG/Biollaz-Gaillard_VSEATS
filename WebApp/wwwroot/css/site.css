@@ -96,3 +96,20 @@ body {
     line-height: 60px; /* Vertically center the text there */
 }
 
+
+/* Slideshow*/
+.slideshow-container {
+    max-width: 1000px;
+    position: relative;
+    margin: auto;
+}
+
+.slides {
+    display: none;
+}
+
+.imgSlideshow {
+    vertical-align: middle;
+}
+
+

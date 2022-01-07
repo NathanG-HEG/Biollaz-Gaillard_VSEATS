@@ -8,4 +8,32 @@
     <p>VSEAT gives you access to fast food delivery without losing on the freshness and quality of service of our well known partners</p>
 </div>
 
+<div class="slideshow-container">
+    <div class="slides">
+        <img src="/Images/Restaurants/Biollaz-L.jpg" style="width:75%" class="imgSlideshow">
+    </div>
 
+    <div class="slides">
+        <img src="/Images/Restaurants/Dorsia-L.jpg" style="width:100%" class="imgSlideshow">
+    </div>
+
+    <div class="slides">
+        <img src="/Images/Restaurants/Antalya-L.jpg" style="width:60%" class="imgSlideshow">
+    </div>
+</div>
+
+<script>
+    var slideIndex = 0;
+    showSlides();
+    function showSlides() {
+        var i;
+        var slides = document.getElementsByClassName("slides");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) { slideIndex = 1 }
+        slides[slideIndex - 1].style.display = "block";
+        setTimeout(showSlides, 7000);
+    }
+</script>
