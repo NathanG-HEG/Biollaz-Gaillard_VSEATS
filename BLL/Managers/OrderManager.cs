@@ -105,7 +105,6 @@ namespace BLL.Managers
                     }
                 }
 
-                //checking for the orders later than the one in creation
                 if (nbOrdersIn30Minutes < Utilities.MaxOrdersSimultaneously)
                 {
                     idCourier = c.IdCourier;
