@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to VSEAT</h1>
+    <p>What if your favorite local restaurants were on your doorstep? That is now possible with VSEAT!</p>
+    <p>VSEAT gives you access to fast food delivery without losing on the freshness and quality of service of our well known partners</p>
+</div>
+
+<div class="slideshow-container">
+
+    <div class="slides" style="margin-left: auto; margin-right: auto;">
+        <a href="@Url.Action("Order", "Customer", new{id=1})">
+            <img src="~/Images/Dishes/Bucatini.jpg" style="width: 60%; margin-left: auto; margin-right: auto;" class="imgSlideshow">
+            <div class="slideShow_text">Delicious Bucatini at Luigia</div>
+        </a>
+    </div>
+
+    <div class="slides">
+        <a href="@Url.Action("Order", "Customer", new{id=21})">
+            <img src="~/Images/Dishes/ZerodixBurger.png" style="width: 60%" class="imgSlideshow">
+            <div class="slideShow_text" style="color: black;">Zerodix's famous burger</div>
+        </a>
+    </div>
+
+    <div class="slides">
+        <a href="@Url.Action("Order", "Customer", new{id=24})">
+            <img src="~/Images/Dishes/Cabillaud.jpeg" style="width: 60%" class="imgSlideshow">
+            <div class="slideShow_text">Sublime Cabillaud at La Cordee</div>
+        </a>
+    </div>
+
+    <div class="slides">
+        <a href="@Url.Action("Order", "Customer", new{id=25})">
+            <img src="~/Images/Dishes/blueberry-pancake.jpg" style="width: 60%" class="imgSlideshow">
+            <div class="slideShow_text" style="color: black;">Sweet blueberry pancakes at Monte-Rosa</div>
+        </a>
+    </div>
+
+    <div class="slides">
+        <a href="@Url.Action("Order", "Customer", new{id=28})">
+            <img src="~/Images/Dishes/Ratatouille.jpg" style="width: 60%" class="imgSlideshow">
+            <div class="slideShow_text" style="color: black;">Remy's favorite</div>
+        </a>
+    </div>
+</div>
+
+<script>
+    var slideIndex = 0;
+    showSlides();
+    function showSlides() {
+        var i;
+        var slides = document.getElementsByClassName("slides");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) { slideIndex = 1 }
+        slides[slideIndex - 1].style.display = "block";
+        setTimeout(showSlides, 7000);
+    }
+</script>

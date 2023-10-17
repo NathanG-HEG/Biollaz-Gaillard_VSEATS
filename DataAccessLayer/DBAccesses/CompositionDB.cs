@@ -1,18 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataAccessLayer.Interfaces;
+using Microsoft.Extensions.Configuration;
+using DTO;
 
 namespace DataAccessLayer.DBAccesses
 {
+    /// <summary>
+    /// CompositionDB is used to manage the sql operations related to the compositions. Compositions comport a reference to a dish, a quantity and a reference to an order.
+    /// </summary>
     public class CompositionDB : ICompositionDB
     {
+        private IConfiguration Configuration { get; }
+
+        public CompositionDB(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        /// <summary>
+        /// AddComposition is responsible for inserting one composition at a time into Compose table.
+        /// </summary>
+        /// <param name="idDish">The dish's primary key</param>
+        /// <param name="idOrder">The order's primary key</param>
+        /// <param name="quantity">The chosen dish's quantity</param>
+        /// <returns>The number of rows affected</returns>
         public int AddComposition(int idDish, int idOrder, int quantity)
         {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try
@@ -40,16 +56,15 @@ namespace DataAccessLayer.DBAccesses
             return result;
         }
 
-        public int DeleteComposition(int idComposition)
+        /// <summary>
+        /// Deletes all compositions related to a specified order.
+        /// </summary>
+        /// <param name="idOrder">Order's primary key</param>
+        /// <returns>The number of rows affected</returns>
+        public int DeleteCompositionsByOrder(int idOrder)
         {
-            throw new NotImplementedException();
-        }
-
-        public int DeleteCompositionByOrder(int idOrder)
-        {
-            string connectionString = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             int result = 0;
-
             try
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
@@ -71,14 +86,19 @@ namespace DataAccessLayer.DBAccesses
             return result;
         }
 
+        /// <summary>
+        /// Gets all compositions related to a specified order.
+        /// </summary>
+        /// <param name="idOrder">Order's primary key</param>
+        /// <returns>A list of composition object</returns>
         public List<Composition> GetCompositionsByOrder(int idOrder)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             List<Composition> compositions = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM compose WHERE ID_order=@idOrder;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -107,10 +127,11 @@ namespace DataAccessLayer.DBAccesses
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception occurred while accessing compositions for "+idOrder+": " + e.Message);
+                Console.WriteLine("Exception occurred while accessing compositions for " + idOrder + ": " + e.Message);
             }
 
             return compositions;
         }
+
     }
 }

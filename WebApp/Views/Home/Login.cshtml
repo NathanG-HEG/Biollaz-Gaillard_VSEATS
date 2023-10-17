@@ -1,0 +1,42 @@
+﻿@model WebApp.Models.UserLoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Login">
+            <div class="form-group">
+                <label class="control-label">Email address</label>
+                <input asp-for="emailAddress" class="form-control" />
+                <span asp-validation-for="emailAddress" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Password</label>
+                <br />
+                <input asp-for="password" type="password" id="pwd" class="form-control">
+                Show Password <input type="checkbox" onclick="showPassword()">
+                <span asp-validation-for="password" class="text-danger"></span>
+            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group">
+                <input type="submit" value="Log in" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Customer" asp-action="Index">Log in later</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

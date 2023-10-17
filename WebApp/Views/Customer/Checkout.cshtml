@@ -1,0 +1,141 @@
+﻿@model WebApp.Models.OrderViewModel
+@using Microsoft.AspNetCore.Http
+
+@{
+    ViewData["Title"] = "Checkout";
+    var currentRestaurantId = Context.Session.GetInt32("CurrentRestaurantId");
+}
+
+<h1>Checkout</h1>
+<form asp-action="Confirmation">
+    <div style="text-align: right; font-size: 140%; margin-right: 180px" class="form-group">
+        <input type="submit" value="Check Out" class="btn btn-primary" />
+    </div>
+    <div style="margin-right: auto; margin-top: 10px; margin-bottom: 10px; margin-left: auto;">
+        <table style="margin-right: auto;margin-left: auto;">
+            <tr>
+                <td style="min-width: 200px; min-height: 90px; border: gainsboro; background: #90ba61;"></td>
+                <td style="min-width: 200px; min-height: 90px; border: gainsboro; background: #90ba61;"></td>
+                <td style="min-width: 200px; min-height: 90px; border: gainsboro; background: gainsboro;"></td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                First Name
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CustomerFirstName)
+            </dd>
+            <dt class="col-sm-2">
+                Last Name
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CustomerLastName)
+            </dd>
+
+            <dt class="col-sm-2">
+                Delivery Time
+            </dt>
+            <dd class="col-sm-10">
+                <select name="ExpectedDeliveryTime" size="4" asp-for="ExpectedDeliveryTime">
+                    @{
+                        DateTime dateTime = DateTime.Now;
+                        DateTime dateTimeRoundToQuarter = new DateTime(dateTime.Year, dateTime.Month,
+                            dateTime.Day, dateTime.Hour, (dateTime.Minute / 15) * 15, 0);
+
+                        //customer can order up to one day before the delivery (24 quarter)
+                        for (int i1 = 4; i1 < 24 * 4 + 4; i1++)
+                        {
+                            DateTime dateTemp = dateTimeRoundToQuarter.AddMinutes(15 * i1);
+                            var minute = dateTemp.Minute.ToString();
+                            if (minute.Equals("0")) minute = "00";
+
+                            <option value="@dateTemp">
+                                @dateTemp.DayOfWeek, @dateTemp.Hour:@minute
+                            </option>
+                        }
+                    }
+                </select>
+            </dd>
+            <dt class="col-sm-2">
+                Delivery Address
+            </dt>
+            <dd class="col-sm-10">
+                <input asp-for="DeliveryAddress" class="form-control" />
+            </dd>
+
+            <dt class="col-sm-2">
+                Postcode
+            </dt>
+            <dd class="col-sm-10">
+                <input asp-for="PostCode" class="form-control" />
+            </dd>
+            <dt class="col-sm-2">
+                Restaurant
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.RestaurantName)
+            </dd>
+
+            <dt class="col-sm-2">
+                Order Total
+            </dt>
+            <dd class="col-sm-10">
+                CHF @Html.DisplayFor(model => model.OrderTotal)
+                <input asp-for="OrderTotal" type="hidden" value="@Model.OrderTotal" />
+            </dd>
+        </dl>
+    </div>
+
+    <table class="table">
+        <thead>
+        <td>
+            Plate
+        </td>
+        <td>
+            Price
+        </td>
+        <td>
+            Quantity
+        </td>
+        <td></td>
+        </thead>
+        <tbody>
+            @{
+                var i = 0;
+                foreach (var comp in Model.OrderCompositions)
+                {
+                    <tr>
+                        <input asp-for="@Model.OrderCompositions[i].IdDish" type="hidden" value="@comp.IdDish" />
+                        <td>
+                            @Html.DisplayFor(dish => comp.DishName)
+                        </td>
+                        <td>
+                            CHF @Html.DisplayFor(Dish => comp.DishPrice)
+                        </td>
+                        <td>
+                            @comp.Quantity
+                            <input type="hidden" value="@comp.Quantity" asp-for="@Model.OrderCompositions[i].Quantity" />
+                        </td>
+                        <td>
+                            <img src=~/@comp.DishImagePath width="60" height="60" />
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</form>
+<div>
+    <button onclick="history.back();" class="btn btn-primary">Back to order</button>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,30 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BLL.BusinessExceptions;
 using BLL.Interfaces;
-using DataAccessLayer;
 using DataAccessLayer.DBAccesses;
+using DTO;
+using Microsoft.Extensions.Configuration;
 
-namespace BLL
+namespace BLL.Managers
 {
+    /// <summary>
+    /// Manager to create, get, change and delete orders
+    /// </summary>
     public class OrderManager : IOrderManager
     {
         private OrdersDB OrdersDb { get; }
         private CouriersDB CouriersDb { get; }
         private CompositionDB CompositionDb { get; }
         private DishesDB DishesDb { get; }
+        private IConfiguration Configuration { get; }
+        private Utilities Utilities { get; }
 
-        public OrderManager()
+        /// <summary>
+        /// Manager constructor
+        /// </summary>
+        /// <param name="configuration">The configuration used to inject the manager</param>
+        public OrderManager(IConfiguration configuration)
         {
-            OrdersDb = new OrdersDB();
-            CouriersDb = new CouriersDB();
-            CompositionDb = new CompositionDB();
-            DishesDb = new DishesDB();
+            Configuration = configuration;
+            Utilities = new Utilities(Configuration);
+            OrdersDb = new OrdersDB(Configuration);
+            CouriersDb = new CouriersDB(Configuration);
+            CompositionDb = new CompositionDB(Configuration);
+            DishesDb = new DishesDB(Configuration);
         }
 
+        /// <summary>
+        /// Method to create a new order
+        /// </summary>
+        /// <param name="idCustomer">The primary key of the customer who place the order</param>
+        /// <param name="idArea">The primary key of the area the customer is delivered</param>
+        /// <param name="expectedDeliveryTime">The expected delivery time</param>
+        /// <param name="deliveryAddress">The delivery address</param>
+        /// <returns>Returns the primary key of the newly created order</returns>
         public int CreateNewOrder(int idCustomer, int idArea, DateTime expectedDeliveryTime, string deliveryAddress)
         {
 
@@ -88,7 +105,6 @@ namespace BLL
                     }
                 }
 
-                //checking for the orders later than the one in creation
                 if (nbOrdersIn30Minutes < Utilities.MaxOrdersSimultaneously)
                 {
                     idCourier = c.IdCourier;
@@ -111,6 +127,10 @@ namespace BLL
             return idOrder;
         }
 
+        /// <summary>
+        /// Method to delete an order. 
+        /// </summary>
+        /// <param name="idOrder">The primary key of the order to be deleted</param>
         public void DeleteOrder(int idOrder)
         {
             Order order = OrdersDb.GetOrderById(idOrder);
@@ -129,12 +149,33 @@ namespace BLL
             }
 
             //compositions related to the order must be deleted first to respect referential integrity 
-            CompositionDb.DeleteCompositionByOrder(idOrder);
+            CompositionDb.DeleteCompositionsByOrder(idOrder);
             OrdersDb.DeleteOrder(idOrder);
         }
 
+        /// <summary>
+        /// Method to set the order to delivered/undelivered
+        /// </summary>
+        /// <param name="idOrder">The primary key of the affected order</param>
         public void SetOrderToDelivered(int idOrder)
         {
+
+            /*
+             * invert the current order's state
+             * if the order has already been set to delivered, sets it to not delivered
+             * if the order hasn't been delivered, sets it to delivered
+             */
+
+            if (GetOrderById(idOrder).TimeOfDelivery != DateTime.MinValue)
+            {
+                //result is the number of rows affected, so if it is 0 then the status was not updated
+                int resultUnDelivered = OrdersDb.SetOrderToUnDelivered(idOrder);
+                if (resultUnDelivered == 0)
+                {
+                    throw new DataBaseException("Error occurred, delivery time of order " + idOrder + " has not been set.");
+                }
+                return;
+            }
 
             //result is the number of rows affected, so if it is 0 then the status was not updated
             int result = OrdersDb.SetOrderToDelivered(idOrder);
@@ -142,23 +183,43 @@ namespace BLL
             {
                 throw new DataBaseException("Error occurred, delivery time of order " + idOrder + " has not been set.");
             }
+
         }
 
+        /// <summary>
+        /// Method to get all orders from a customer
+        /// </summary>
+        /// <param name="idCustomer">The primary key of the customer</param>
+        /// <returns>Returns a list of Order objects</returns>
         public List<Order> GetAllOrdersByCustomer(int idCustomer)
         {
             return OrdersDb.GetAllOrdersByCustomer(idCustomer);
         }
 
+        /// <summary>
+        /// Method to get all orders delivered by a courier
+        /// </summary>
+        /// <param name="idCourier">The primary key of the courier</param>
+        /// <returns>Returns a list of Order objects</returns>
         public List<Order> GetAllOrdersByCourier(int idCourier)
         {
             return OrdersDb.GetAllOrdersByCourier(idCourier);
         }
 
+        /// <summary>
+        /// Method to get all orders from a restaurant
+        /// </summary>
+        /// <param name="idRestaurant">The primary key of the restaurant</param>
+        /// <returns>Returns a list of Order objects</returns>
         public List<Order> GetAllOrdersByRestaurant(int idRestaurant)
         {
             return OrdersDb.GetAllOrdersByRestaurant(idRestaurant);
         }
 
+        /// <summary>
+        /// Method to set the total to an order according to its compositions
+        /// </summary>
+        /// <param name="idOrder">The primary key of the affected order</param>
         public void SetTotal(int idOrder)
         {
             List<Composition> compositions = CompositionDb.GetCompositionsByOrder(idOrder);
@@ -172,6 +233,11 @@ namespace BLL
             OrdersDb.SetTotal(idOrder, total);
         }
 
+        /// <summary>
+        /// Method to get an order by its id
+        /// </summary>
+        /// <param name="idOrder">The primary key of the order</param>
+        /// <returns>Returns an Order object</returns>
         public Order GetOrderById(int idOrder)
         {
             return OrdersDb.GetOrderById(idOrder);

@@ -1,15 +1,12 @@
-﻿using DataAccessLayer;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using DTO;
 
-namespace BLL
+namespace BLL.Interfaces
 {
     public interface IComposeManager
     {
-
         public void AddComposition(int idDish, int idOrder, int quantity);
         public List<Composition> GetCompositionsByOrder(int idOrder);
-        public void DeleteComposition(int idComposition);
-
 
     }
 }

@@ -1,0 +1,157 @@
+﻿
+@model IEnumerable<WebApp.Models.OrderViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Orders</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Customer last name
+            </th>
+            <th>
+                Delivery address
+            </th>
+            <th>
+                Postcode
+            </th>
+            <th>
+                Expected delivery time
+            </th>
+            <th>
+                Actual delivery time
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            <tr>
+                <th>Orders to deliver</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                if (item.TimeOfDelivery == DateTime.MinValue)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CustomerLastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DeliveryAddress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AreaName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ExpectedDeliveryTime)
+                        </td>
+                        <td>
+                            @{
+                                string time;
+                                if (item.TimeOfDelivery != DateTime.MinValue)
+                                {
+                                    time = item.TimeOfDelivery.ToString();
+                                }
+                                else
+                                {
+                                    time = "not yet";
+                                }
+                            }
+                            @time
+                        </td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", new { id = item.IdOrder }) |
+                            @{
+                                if (item.TimeOfDelivery != DateTime.MinValue)
+                                {
+                                    @Html.ActionLink("Set to undelivered", "SetToDelivered", new { id = item.IdOrder })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Set to delivered", "SetToDelivered", new { id = item.IdOrder })
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            <tr>
+                <th>Delivered orders</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            foreach (var item in Model)
+            {
+                if (item.TimeOfDelivery != DateTime.MinValue)
+                {
+
+
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CustomerLastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DeliveryAddress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AreaName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ExpectedDeliveryTime)
+                        </td>
+                        <td>
+                            @{
+                                string time;
+                                if (item.TimeOfDelivery != DateTime.MinValue)
+                                {
+                                    time = item.TimeOfDelivery.ToString();
+                                }
+                                else
+                                {
+                                    time = "Undelivered";
+                                }
+                            }
+                            @time
+                        </td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", new {id = item.IdOrder}) |
+                            @{
+                                if (item.TimeOfDelivery != DateTime.MinValue)
+                                {
+                                    @Html.ActionLink("Set to undelivered", "SetToDelivered", new {id = item.IdOrder})
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Set to delivered", "SetToDelivered", new {id = item.IdOrder})
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        }
+        else
+        {
+            <tr>
+                <td>
+                    No orders yet
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

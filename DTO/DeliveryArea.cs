@@ -1,21 +1,20 @@
-// File:    DeliveryAreas.cs
-// Author:  bbiol
-// Created: 17 October 2021 10:47:53
-// Purpose: Definition of Class DeliveryAreas
-
-using System;
-
-public class DeliveryArea
+namespace DTO
 {
-    public int IdArea { get; set; }
-    public string Name { get; set; }
-    public int Postcode { get; set; }
-
-    public override string ToString()
+    /// <summary>
+    /// Class to model a delivery area.
+    /// </summary>
+    public class DeliveryArea
     {
-        return "\nIdArea: " + IdArea +
-               "\nName: " + Name +
-               "\nPostcode: " + Postcode;
-    }
+        public int IdArea { get; set; }
+        public string Name { get; set; }
+        public int Postcode { get; set; }
 
+        public override string ToString()
+        {
+            return "\nIdArea: " + IdArea +
+                   "\nName: " + Name +
+                   "\nPostcode: " + Postcode;
+        }
+
+    }
 }

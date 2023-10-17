@@ -1,0 +1,122 @@
+﻿@model WebApp.Models.OrderViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Customer first name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CustomerFirstName)
+        </dd>
+        <dt class="col-sm-2">
+            Customer last name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CustomerLastName)
+        </dd>
+        <dt class="col-sm-2">
+            Delivery address
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DeliveryAddress)
+        </dd>
+        <dt class="col-sm-2">
+            Postcode
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AreaName)
+        </dd>
+        <dt class="col-sm-2">
+            Order total
+        </dt>
+        <dd class="col-sm-10">
+            CHF
+            @Html.DisplayFor(model => model.OrderTotal)
+        </dd>
+        <dt class="col-sm-2">
+            Expected delivery time
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExpectedDeliveryTime)
+        </dd>
+        <dt class="col-sm-2">
+            Actual delivery time
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                string time;
+                if (Model.TimeOfDelivery != DateTime.MinValue)
+                {
+                    time = Model.TimeOfDelivery.ToString();
+                }
+                else
+                {
+                    time = "not yet";
+                }
+            }
+            @time
+        </dd>
+
+    </dl>
+</div>
+
+@if (Model.OrderCompositions != null)
+{
+    <table class="table">
+        <thead>
+        <td>
+            Plate
+        </td>
+        <td>
+            Price
+        </td>
+        <td>
+            Quantity
+        </td>
+        <td></td>
+        </thead>
+        <tbody>
+        @{
+            foreach (var comp in Model.OrderCompositions)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(compItem =>comp.DishName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(compItem => comp.DishPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(compItem => comp.Quantity)
+                    </td>
+                    <td>
+                        <img src=~/@comp.DishImagePath width="60" height="60" />
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+
+    </table>
+}
+
+<div>
+    <a asp-action="Index">Back to List</a> |
+    @{
+        if (Model.TimeOfDelivery != DateTime.MinValue)
+        {
+            @Html.ActionLink("Set to undelivered", "SetToDelivered", new { id = Model.IdOrder })
+        }
+        else
+        {
+            @Html.ActionLink("Set to delivered", "SetToDelivered", new { id = Model.IdOrder })
+        }
+    }
+</div>

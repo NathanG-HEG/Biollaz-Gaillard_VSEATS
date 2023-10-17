@@ -1,30 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataAccessLayer.Interfaces;
+using DTO;
+using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer.DBAccesses
 {
+    /// <summary>
+    /// RestaurantsDB is used to manage the sql operations related to the restaurants.
+    /// </summary>
     public class RestaurantsDB : IRestaurantsDB
     {
-        public int AddRestaurant(int idArea, string name, string emailAddress, string password)
+
+        public IConfiguration IConfiguration { get; set; }
+        public RestaurantsDB(IConfiguration iConfiguration)
         {
-            string connectionString = Connection.GetConnectionString();
+            IConfiguration = iConfiguration;
+        }
+        /// <summary>
+        /// Adds a restaurant in Restaurants table.
+        /// </summary>
+        /// <param name="idArea">Delivery area's primary key</param>
+        /// <param name="name">Restaurant's name</param>
+        /// <param name="emailAddress">Restaurant's email address</param>
+        /// <param name="pwdHash">Password's hash key</param>
+        /// <param name="salt">Salt used to hash this restaurant's password</param>
+        /// <returns>The number of rows affected</returns>
+        public int AddRestaurant(int idArea, string name, string emailAddress, string pwdHash, string salt)
+        {
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             int result = 0;
 
             try
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
                 {
-                    string query = "INSERT INTO Restaurants (ID_area, name, emailAddress, password) VALUES (@idArea, @name, @emailAddress, @password)";
+                    string query = "INSERT INTO Restaurants (ID_area, name, emailAddress, pwdHash, salt)" +
+                                   " VALUES (@idArea, @name, @emailAddress, @pwdHash, @salt)";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@idArea", idArea);
                     cmd.Parameters.AddWithValue("@name", name);
                     cmd.Parameters.AddWithValue("@emailAddress", emailAddress);
-                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@pwdHash", pwdHash);
+                    cmd.Parameters.AddWithValue("@salt", salt);
 
                     cn.Open();
 
@@ -41,14 +60,19 @@ namespace DataAccessLayer.DBAccesses
             return result;
         }
 
+        /// <summary>
+        /// Gets a restaurant with the given name.
+        /// </summary>
+        /// <param name="name">Restaurant's name</param>
+        /// <returns>A restaurant object</returns>
         public Restaurant GetRestaurantByName(string name)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             Restaurant restaurant = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Restaurants WHERE name=@name;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -66,7 +90,11 @@ namespace DataAccessLayer.DBAccesses
                             restaurant.IdArea = (int)dr["ID_area"];
                             restaurant.Name = (string)dr["name"];
                             restaurant.EmailAddress = (string)dr["emailAddress"];
-                            restaurant.Password = (string)dr["password"];
+                            restaurant.PwdHash = (string)dr["pwdHash"];
+                            if (dr["image"] != DBNull.Value)
+                                restaurant.Image = (string)dr["image"];
+                            if (dr["logo"] != DBNull.Value)
+                                restaurant.Logo = (string)dr["logo"];
 
                         }
                     }
@@ -81,19 +109,25 @@ namespace DataAccessLayer.DBAccesses
             return restaurant;
         }
 
-        public Restaurant GetRestaurantByLogin(string emailAddress, string password)
+        /// <summary>
+        /// Gets a restaurant using its email address and password's hash key.
+        /// </summary>
+        /// <param name="emailAddress">Restaurant's email address</param>
+        /// <param name="pwdHash">Password's hash key</param>
+        /// <returns>A restaurant object</returns>
+        public Restaurant GetRestaurantByLogin(string emailAddress, string pwdHash)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             Restaurant restaurant = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT * FROM Restaurants WHERE emailAddress=@emailAddress AND password=@password;";
+                    string query = "SELECT * FROM Restaurants WHERE emailAddress=@emailAddress AND pwdHash=@pwdHash;";
                     SqlCommand cmd = new SqlCommand(query, cn);
                     cmd.Parameters.AddWithValue("@emailAddress", emailAddress);
-                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@pwdHash", pwdHash);
 
                     cn.Open();
 
@@ -107,7 +141,12 @@ namespace DataAccessLayer.DBAccesses
                             restaurant.IdArea = (int)dr["ID_area"];
                             restaurant.Name = (string)dr["name"];
                             restaurant.EmailAddress = (string)dr["emailAddress"];
-                            restaurant.Password = (string)dr["password"];
+                            restaurant.PwdHash = (string)dr["pwdHash"];
+                            restaurant.Salt = (string) dr["salt"];
+                            if (dr["image"] != DBNull.Value)
+                                restaurant.Image = (string)dr["image"];
+                            if (dr["logo"] != DBNull.Value)
+                                restaurant.Logo = (string)dr["logo"];
 
                         }
                     }
@@ -121,14 +160,18 @@ namespace DataAccessLayer.DBAccesses
             return restaurant;
         }
 
+        /// <summary>
+        /// Gets all restaurants.
+        /// </summary>
+        /// <returns>A list of restaurants</returns>
         public List<Restaurant> GetAllRestaurants()
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             List<Restaurant> restaurants = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Restaurants;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -148,7 +191,12 @@ namespace DataAccessLayer.DBAccesses
                             restaurant.IdArea = (int)dr["ID_area"];
                             restaurant.Name = (string)dr["name"];
                             restaurant.EmailAddress = (string)dr["emailAddress"];
-                            restaurant.Password = (string)dr["password"];
+                            restaurant.PwdHash = (string)dr["pwdHash"];
+                            restaurant.Salt = (string) dr["salt"];
+                            if (dr["image"] != DBNull.Value)
+                                restaurant.Image = (string) dr["image"];
+                            if (dr["logo"] != DBNull.Value)
+                                restaurant.Logo = (string) dr["logo"];
 
                             restaurants.Add(restaurant);
                         }
@@ -164,14 +212,19 @@ namespace DataAccessLayer.DBAccesses
             return restaurants;
         }
 
+        /// <summary>
+        /// Gets all restaurants related to an area.
+        /// </summary>
+        /// <param name="idArea">Delivery area's primary key</param>
+        /// <returns>A list of restaurant object</returns>
         public List<Restaurant> GetAllRestaurantsByArea(int idArea)
         {
-            string connectionStrings = Connection.GetConnectionString();
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
             List<Restaurant> restaurants = null;
 
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionStrings))
+                using (SqlConnection cn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT * FROM Restaurants WHERE @idArea = id_Area;";
                     SqlCommand cmd = new SqlCommand(query, cn);
@@ -192,7 +245,11 @@ namespace DataAccessLayer.DBAccesses
                             restaurant.IdArea = (int)dr["ID_area"];
                             restaurant.Name = (string)dr["name"];
                             restaurant.EmailAddress = (string)dr["emailAddress"];
-                            restaurant.Password = (string)dr["password"];
+                            restaurant.PwdHash = (string)dr["pwdHash"];
+                            if (dr["image"] != DBNull.Value)
+                                restaurant.Image = (string)dr["image"];
+                            if (dr["logo"] != DBNull.Value)
+                                restaurant.Logo = (string)dr["logo"];
 
                             restaurants.Add(restaurant);
                         }
@@ -207,61 +264,106 @@ namespace DataAccessLayer.DBAccesses
 
             return restaurants;
         }
-
-        public int UpdateImage(string path, int idRestaurant)
+        /// <summary>
+        /// Gets the restaurant with the given id.
+        /// </summary>
+        /// <param name="id">Restaurant's primary key</param>
+        /// <returns>A restaurant object</returns>
+        public Restaurant GetRestaurantById(int id)
         {
-            string connectionString = Connection.GetConnectionString();
-            int result = 0;
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
+            Restaurant restaurant = null;
 
             try
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
                 {
-                    string query = "UPDATE restaurants " +
-                                   "SET image = @path " +
-                                   "WHERE id_restaurant = @idRestaurant;";
+                    string query = "SELECT * FROM Restaurants WHERE ID_Restaurant=@id;";
                     SqlCommand cmd = new SqlCommand(query, cn);
-                    cmd.Parameters.AddWithValue("@idRestaurant", idRestaurant);
-                    cmd.Parameters.AddWithValue("@path", path);
+                    cmd.Parameters.AddWithValue("@id", id);
 
                     cn.Open();
 
-                    result = cmd.ExecuteNonQuery();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            restaurant = new Restaurant();
+
+                            restaurant.IdRestaurant = (int)dr["ID_restaurant"];
+                            restaurant.IdArea = (int)dr["ID_area"];
+                            restaurant.Name = (string)dr["name"];
+                            restaurant.EmailAddress = (string)dr["emailAddress"];
+                            restaurant.PwdHash = (string)dr["pwdHash"];
+                            if (dr["image"] != DBNull.Value)
+                                restaurant.Image = (string)dr["image"];
+                            if (dr["logo"] != DBNull.Value)
+                                restaurant.Logo = (string)dr["logo"];
+
+                        }
+                    }
                 }
+
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception caught while setting image path: " + e.Message);
+                Console.WriteLine("Exception occurred while accessing restaurant " + id + ": " + e.Message);
             }
-            return result;
+
+            return restaurant;
         }
 
-        public int UpdateLogo(string path, int idRestaurant)
+        /// <summary>
+        /// Gets a restaurant using an order's primary key.
+        /// </summary>
+        /// <param name="idOrder">Order's primary key</param>
+        /// <returns>A restaurant object</returns>
+        public Restaurant GetRestaurantByOrder(int idOrder)
         {
-            string connectionString = Connection.GetConnectionString();
-            int result = 0;
+            string connectionString = IConfiguration.GetConnectionString("DefaultConnection");
+            Restaurant restaurant = null;
 
             try
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
                 {
-                    string query = "UPDATE restaurants " +
-                                   "SET logo = @path " +
-                                   "WHERE id_restaurant = @idRestaurant;";
+                    string query =
+                        "SELECT DISTINCT(r.ID_RESTAURANT), r.EMAILADDRESS, r.ID_AREA,  r.IMAGE, r.LOGO, r.NAME, r.pwdHash FROM Restaurants r " +
+                        "INNER JOIN Dishes d ON d.ID_Restaurant = r.ID_Restaurant " +
+                        "INNER JOIN Compose c ON c.ID_Dish = d.ID_Dish " +
+                        "INNER JOIN Orders o ON c.ID_Order = o.ID_Order " +
+                        "WHERE o.ID_Order = @idOrder;";
                     SqlCommand cmd = new SqlCommand(query, cn);
-                    cmd.Parameters.AddWithValue("@idRestaurant", idRestaurant);
-                    cmd.Parameters.AddWithValue("@path", path);
+                    cmd.Parameters.AddWithValue("@idOrder", idOrder);
 
                     cn.Open();
 
-                    result = cmd.ExecuteNonQuery();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            restaurant = new Restaurant();
+
+                            restaurant.IdRestaurant = (int)dr["ID_restaurant"];
+                            restaurant.IdArea = (int)dr["ID_area"];
+                            restaurant.Name = (string)dr["name"];
+                            restaurant.EmailAddress = (string)dr["emailAddress"];
+                            restaurant.PwdHash = (string)dr["pwdHash"];
+                            if (dr["image"] != DBNull.Value)
+                                restaurant.Image = (string)dr["image"];
+                            if (dr["logo"] != DBNull.Value)
+                                restaurant.Logo = (string)dr["logo"];
+
+                        }
+                    }
                 }
+
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception caught while setting logo path: " + e.Message);
+                Console.WriteLine("Exception occurred while accessing restaurant using order " + idOrder + ": " + e.Message);
             }
-            return result;
+            return restaurant;
         }
     }
 }
